@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 04. 20:12
+-- Létrehozás ideje: 2025. Már 08. 15:55
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -34,17 +34,6 @@ CREATE TABLE `inventory` (
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
---
--- A tábla adatainak kiíratása `inventory`
---
-
-INSERT INTO `inventory` (`InventoryID`, `MaterialID`, `LocationID`, `Quantity`) VALUES
-(25, 1, 3, 25),
-(26, 1, 4, 0),
-(27, 2, 3, 0),
-(28, 2, 4, 0),
-(29, 1, 1, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -65,8 +54,11 @@ CREATE TABLE `location` (
 INSERT INTO `location` (`LocationID`, `LocationName`, `LocationDescription`, `LocationCapacity`) VALUES
 (1, 'Bevételezés', 'Anyag készletre vétele', 0),
 (2, 'Kivezetés', 'Anyag kivezetése a rendszerből', 0),
-(3, 'Rekesz 1', 'Rekesz 1 leírás', 10),
-(4, 'Rekesz 2', 'Rekesz 2 leírás', 10);
+(3, 'Tárhely 1 ', 'Tárhely 1 leírás', 100),
+(4, 'Tárhely 2', 'Tárhely 2 leírás', 100),
+(5, 'Tárhely 3', 'Tárhely 3 leírás', 100),
+(6, 'Tárhely 4', 'Tárhely 4 leírás', 100),
+(7, 'Tárhely 5', 'Tárhely 5 leírás', 100);
 
 -- --------------------------------------------------------
 
@@ -87,8 +79,31 @@ CREATE TABLE `material` (
 --
 
 INSERT INTO `material` (`MaterialID`, `MaterialNumber`, `MaterialDescription`, `Unit`, `price/unit`) VALUES
-(1, 100, 'Anyag 1', 'db', 10),
-(2, 101, 'Anyag 2', 'm', 30);
+(1, 1001, 'Anyag 1', 'm', 100),
+(2, 1002, 'Anyag 2', 'liter', 150),
+(3, 1003, 'Anyag 3', 'db', 80),
+(4, 1004, 'Anyag 4', 'db', 60);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `roletype`
+--
+
+CREATE TABLE `roletype` (
+  `RoleID` int(11) NOT NULL,
+  `RoleName` varchar(30) NOT NULL,
+  `RoleDescription` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `roletype`
+--
+
+INSERT INTO `roletype` (`RoleID`, `RoleName`, `RoleDescription`) VALUES
+(1, 'user', 'can only move material'),
+(2, 'superuser', 'user+material manipulation+location manipulation'),
+(3, 'admin', 'superuser+user manupulation');
 
 -- --------------------------------------------------------
 
@@ -107,73 +122,82 @@ CREATE TABLE `transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- A tábla adatainak kiíratása `transaction`
---
-
-INSERT INTO `transaction` (`TransactionID`, `TransactionDateTime`, `MaterialID`, `TransactionFromID`, `TransactedQty`, `TransactionToID`, `UserID`) VALUES
-(36, '2025-03-04 19:29:50', 1, 1, 25, 3, 1);
-
---
 -- Eseményindítók `transaction`
 --
 DELIMITER $$
 CREATE TRIGGER `MaterialTransfer` AFTER INSERT ON `transaction` FOR EACH ROW BEGIN
-#létrehoz anyag+tárhely rekorot ha még nem lenne, még nem működik rendesen
+#1. Létrehoz anyag+tárhely rekorot ha még nem lenne az inventory táblába
 
+#1.1 Betárolás előtt
 IF NOT EXISTS
       ( SELECT MaterialID,LocationID
       	FROM inventory
-      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID )
-     THEN 
-    	INSERT INTO inventory (LocationID,MaterialID,Quantity)
-        values(new.TransactionFromID,new.MaterialID,0);
+      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID) AND new.TransactionFromID=1
         
-         
+     THEN INSERT INTO inventory (LocationID,MaterialID,Quantity)
+       	values(new.TransactionToID,new.MaterialID,0);         
     END IF;
 
+#1.2 kitárolás előtt
 IF NOT EXISTS
       ( SELECT MaterialID,LocationID
       	FROM inventory
-      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID )
-     THEN 
-    	INSERT INTO inventory (LocationID,MaterialID,Quantity)
-        values(new.TransactionToID,new.MaterialID,0);
+      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID) AND new.TransactionToID=2
         
-         
+     THEN INSERT INTO inventory (LocationID,MaterialID,Quantity)
+       	values(new.TransactionFromID,new.MaterialID,0);         
     END IF;
 
+#1.3 mozgatás
+	#1.3.1 Indító és fogadó tárhely és anyag
+	IF NOT EXISTS
+      ( SELECT MaterialID,LocationID
+      	FROM inventory
+      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID)  AND new.TransactionFromID!=1 AND new.TransactionToID!=2
+        
+     THEN 
+     	INSERT INTO inventory (LocationID,MaterialID ,Quantity)
+       	VALUES(new.TransactionFromID,new.MaterialID,0);      
+    END IF;
+    
+    IF NOT EXISTS
+      ( SELECT MaterialID,LocationID
+      	FROM inventory
+      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID)  AND new.TransactionFromID!=1 AND new.TransactionToID!=2
+        
+     THEN 
+     	INSERT INTO inventory (LocationID,MaterialID ,Quantity)
+       	VALUES(new.TransactionToID,new.MaterialID,0);      
+    END IF;
+     
+     
+     
+     
+#2. Inventory tábla értékeinek módosítása az anyagmozgatásnak megfelelően:
 
-#Bevételez
+#2.1 Bevételez
 	IF new.TransactionFromID=1 THEN 
     	UPDATE inventory
         SET Quantity=Quantity+new.TransactedQty
     	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID;
 	END IF;
-#Kitárol
+#2.2 Kitárol
     IF new.TransactionToID=2 THEN
     	UPDATE inventory
         SET Quantity=Quantity-new.TransactedQty
     	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID;
 	END IF;  
-#Mozgat tárhelyek között  
+#2.3 Mozgat tárhelyek között  
     IF new.TransactionFromID!=1 AND new.TransactionToID!=2 THEN
-	#indító tárhely minuszolás
+	#2.3.1 Indító tárhely minuszolás
    		UPDATE inventory
     	SET Quantity=Quantity-new.TransactedQty
     	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID;
-	#fogadó tárhely pluszolás
+	#2.3.2 Fogadó tárhely pluszolás
     	UPDATE inventory
     	SET Quantity=Quantity+new.TransactedQty
     	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID; 
 	END IF;
-
-END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `TransferValidate` BEFORE INSERT ON `transaction` FOR EACH ROW BEGIN
-#if no material&location in inventory tabe-->no logging. 
-	
 
 END
 $$
@@ -189,17 +213,19 @@ CREATE TABLE `user` (
   `UserID` int(11) NOT NULL,
   `UserName` varchar(30) NOT NULL,
   `Password` varchar(8) NOT NULL,
-  `Role` text NOT NULL
+  `SALT` varchar(64) NOT NULL,
+  `HASH` varchar(64) NOT NULL,
+  `Role` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `user`
 --
 
-INSERT INTO `user` (`UserID`, `UserName`, `Password`, `Role`) VALUES
-(1, 'Operátor Józsi', 'operator', 'Operator'),
-(2, 'SuperUser Kata', 'supuser', 'Superuser'),
-(3, 'Admin Tibor', 'admin', 'Administrator');
+INSERT INTO `user` (`UserID`, `UserName`, `Password`, `SALT`, `HASH`, `Role`) VALUES
+(1, 'user józsi', '', '', '', 1),
+(2, 'superuser béla', '', '', '', 2),
+(3, 'admin klára', '', '', '', 3);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -226,6 +252,12 @@ ALTER TABLE `material`
   ADD PRIMARY KEY (`MaterialID`);
 
 --
+-- A tábla indexei `roletype`
+--
+ALTER TABLE `roletype`
+  ADD PRIMARY KEY (`RoleID`);
+
+--
 -- A tábla indexei `transaction`
 --
 ALTER TABLE `transaction`
@@ -241,7 +273,8 @@ ALTER TABLE `transaction`
 -- A tábla indexei `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`UserID`);
+  ADD PRIMARY KEY (`UserID`),
+  ADD KEY `Role` (`Role`);
 
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
@@ -251,31 +284,37 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT a táblához `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `InventoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `InventoryID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `location`
 --
 ALTER TABLE `location`
-  MODIFY `LocationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `LocationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT a táblához `material`
 --
 ALTER TABLE `material`
-  MODIFY `MaterialID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `MaterialID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT a táblához `roletype`
+--
+ALTER TABLE `roletype`
+  MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT a táblához `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `TransactionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `TransactionID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -285,17 +324,23 @@ ALTER TABLE `user`
 -- Megkötések a táblához `inventory`
 --
 ALTER TABLE `inventory`
-  ADD CONSTRAINT `inventory_ibfk_2` FOREIGN KEY (`LocationID`) REFERENCES `location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `inventory_ibfk_3` FOREIGN KEY (`MaterialID`) REFERENCES `material` (`MaterialID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `inventory_ibfk_2` FOREIGN KEY (`LocationID`) REFERENCES `location` (`LocationID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `inventory_ibfk_3` FOREIGN KEY (`MaterialID`) REFERENCES `material` (`MaterialID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `transaction`
 --
 ALTER TABLE `transaction`
-  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `transaction_ibfk_4` FOREIGN KEY (`TransactionFromID`) REFERENCES `location` (`LocationID`),
-  ADD CONSTRAINT `transaction_ibfk_5` FOREIGN KEY (`TransactionToID`) REFERENCES `location` (`LocationID`),
-  ADD CONSTRAINT `transaction_ibfk_6` FOREIGN KEY (`MaterialID`) REFERENCES `material` (`MaterialID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `transaction_ibfk_4` FOREIGN KEY (`TransactionFromID`) REFERENCES `location` (`LocationID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `transaction_ibfk_5` FOREIGN KEY (`TransactionToID`) REFERENCES `location` (`LocationID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `transaction_ibfk_6` FOREIGN KEY (`MaterialID`) REFERENCES `material` (`MaterialID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`Role`) REFERENCES `roletype` (`RoleID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
