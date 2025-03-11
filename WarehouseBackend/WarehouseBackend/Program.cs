@@ -1,4 +1,9 @@
 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using WarehouseBackend.Models;
+
+
 namespace WarehouseBackend
 {
     public class Program
@@ -6,6 +11,11 @@ namespace WarehouseBackend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var connectionString = builder.Configuration.GetConnectionString("MySql");
+            builder.Services.AddDbContext<WarehouseContext>(options =>options.UseMySQL(connectionString));
+            
+
 
             // Add services to the container.
 
