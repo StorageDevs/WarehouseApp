@@ -29,6 +29,8 @@ namespace WarehouseBackend.Controllers
 
             var material = await _context.Materials.ToListAsync();
 
+            
+
             if (material!=null )
             {
                 return Ok(new {Result = material, message = "Successfull request" });

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace WarehouseBackend.Models;
 
@@ -15,7 +16,9 @@ public partial class Material
 
     public decimal PriceUnit { get; set; }
 
-    public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
+    [JsonIgnore]
+        public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
 
+    [JsonIgnore]
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }
