@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 08. 15:55
+-- Létrehozás ideje: 2025. Már 13. 16:38
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `warehouse`
 --
+CREATE DATABASE IF NOT EXISTS `warehouse` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
+USE `warehouse`;
 
 -- --------------------------------------------------------
 
@@ -33,6 +35,15 @@ CREATE TABLE `inventory` (
   `LocationID` int(11) NOT NULL,
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `inventory`
+--
+
+INSERT INTO `inventory` (`InventoryID`, `MaterialID`, `LocationID`, `Quantity`) VALUES
+(1, 1, 4, 20),
+(2, 2, 3, -15),
+(3, 2, 5, 15);
 
 -- --------------------------------------------------------
 
@@ -120,6 +131,14 @@ CREATE TABLE `transaction` (
   `TransactionToID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `transaction`
+--
+
+INSERT INTO `transaction` (`TransactionID`, `TransactionDateTime`, `MaterialID`, `TransactionFromID`, `TransactedQty`, `TransactionToID`, `UserID`) VALUES
+(1, '2025-03-11 22:07:18', 1, 1, 20, 4, 1),
+(2, '2025-03-11 22:09:52', 2, 3, 15, 5, 3);
 
 --
 -- Eseményindítók `transaction`
@@ -284,19 +303,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT a táblához `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `InventoryID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `InventoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT a táblához `location`
 --
 ALTER TABLE `location`
-  MODIFY `LocationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `LocationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT a táblához `material`
 --
 ALTER TABLE `material`
-  MODIFY `MaterialID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `MaterialID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT a táblához `roletype`
@@ -308,7 +327,7 @@ ALTER TABLE `roletype`
 -- AUTO_INCREMENT a táblához `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `TransactionID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `TransactionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `user`
