@@ -57,6 +57,8 @@ namespace WarehouseBackend
             app.MapControllers();
 
             app.Run();
+
+            app.UseCors(MyAllowSpecificOrigins);
         }
     }
 }

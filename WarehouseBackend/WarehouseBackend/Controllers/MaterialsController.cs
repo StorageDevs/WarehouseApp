@@ -22,110 +22,130 @@ namespace WarehouseBackend.Controllers
             _context = context;
         }
 
-        // GET: api/Materials
-        [HttpGet] //Working
+        #region// GET: api/Materials
+        [HttpGet] 
         public async Task<ActionResult<IEnumerable<Material>>> GetAllMaterials()
         {
-
-            var material = await _context.Materials.ToListAsync();
-
-            
-
-            if (material!=null )
+            try
             {
-                return Ok(new {Result = material, message = "Successfull request" });
-
+                var material = await _context.Materials.ToListAsync();
+                if (material!=null )
+                {
+                    return Ok(new {Result = material, message = "Successfull request" });
+                }
+                return NotFound(new { material = "", Message = "No such material" });
             }
-            Exception e = new Exception();
-            return BadRequest(new { Results = "something went wrong", Message = e.Message });
-
-            
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Result = "", Message = ex.Message });
+            }
         }
+        #endregion
 
-
-
-        // GET: api/Materials/5
+        #region// GET: api/Materials/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Material>> GetMaterial(int id)
         {
-            var material = await _context.Materials.FindAsync(id);
-
-            if (material == null)
+            try
             {
-                return NotFound();
+                var material = await _context.Materials.FindAsync(id);
+                if (material == null)
+                {
+                    return NotFound();
+                }
+                return material;
             }
-
-            return material;
+            catch (Exception ex )
+            {
+                return StatusCode(500, new { Result = "", Message = ex.Message });
+            }
         }
+        #endregion
 
-        // PUT: api/Materials/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-
+        #region// PUT: api/Materials/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMaterial(int id, UpdateMaterial updateMaterial)
         {
 
-            var existingMaterial = await _context.Materials.FindAsync(id);
-
-            if (existingMaterial != null)
+            try
             {
-                existingMaterial.MaterialNumber = updateMaterial.MaterialNumber;
-                existingMaterial.MaterialDescription = updateMaterial.MaterialDescription;
-                existingMaterial.Unit = updateMaterial.Unit;
-                existingMaterial.PriceUnit = updateMaterial.PriceUnit;
+                var existingMaterial = await _context.Materials.FindAsync(id);
 
+                if (existingMaterial != null)
+                {
+                    existingMaterial.MaterialNumber = updateMaterial.MaterialNumber;
+                    existingMaterial.MaterialDescription = updateMaterial.MaterialDescription;
+                    existingMaterial.Unit = updateMaterial.Unit;
+                    existingMaterial.PriceUnit = updateMaterial.PriceUnit;
 
-                _context.Materials.Update(existingMaterial);
-                await _context.SaveChangesAsync();
+                    _context.Materials.Update(existingMaterial);
+                    await _context.SaveChangesAsync();
 
-                return Ok();
+                    return Ok(new { Result = existingMaterial, message = "Successfull request" });
+                }
+                return NotFound(new { Result = "", Message = "No such material" });
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Result = "", Message = ex.Message });
 
-            return NotFound();
-
-
-
+            }
         }
+        #endregion
 
-        // POST: api/Materials
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost] //működik
+        #region// POST: api/Materials
+        [HttpPost] 
         public async Task<ActionResult<Material>> AddMaterial(CreateMaterial creatematerial)
         {
-            var newMaterial = new Material
+            try
             {
-               MaterialNumber = creatematerial.MaterialNumber,
-               MaterialDescription= creatematerial.MaterialDescription,
-               Unit=creatematerial.Unit,
-               PriceUnit=creatematerial.PriceUnit,
+                var newMaterial = new Material
+                {
+                    MaterialNumber = creatematerial.MaterialNumber,
+                    MaterialDescription = creatematerial.MaterialDescription,
+                    Unit = creatematerial.Unit,
+                    PriceUnit = creatematerial.PriceUnit,
 
-            };
+                };
 
-            await _context.Materials.AddAsync(newMaterial);
-            await _context.SaveChangesAsync();
+                await _context.Materials.AddAsync(newMaterial);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetMaterial", new { id = newMaterial.MaterialId }, newMaterial);
+            }
+            catch (Exception ex)
+            {
 
-            return CreatedAtAction("GetMaterial", new { id = newMaterial.MaterialId }, newMaterial);
+                return StatusCode(500, new { Result = "", Message = ex.Message });
+            }
         }
+        #endregion
 
-        // DELETE: api/Materials/5
-        [HttpDelete("{id}")] //működik
+        #region// DELETE: api/Materials/5
+        [HttpDelete("{id}")] 
         public async Task<IActionResult> DeleteMaterial(int id)
         {
-            var material = await _context.Materials.FindAsync(id);
-            if (material == null)
+            
+
+            try
             {
-                return NotFound();
+                var material = await _context.Materials.FindAsync(id);
+                if (material == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Materials.Remove(material);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
             }
+            catch (Exception ex)
+            {
 
-            _context.Materials.Remove(material);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+                return StatusCode(500, new { Result = "", Message = ex.Message });
+            }
         }
-
-        private bool MaterialExists(int id)
-        {
-            return _context.Materials.Any(e => e.MaterialId == id);
-        }
+        #endregion
+       
     }
 }

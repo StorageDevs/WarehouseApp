@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MySqlX.XDevAPI.Common;
 using WarehouseBackend.Models;
 using static WarehouseBackend.Models.Location_DTO;
 
@@ -25,104 +26,143 @@ namespace WarehouseBackend.Controllers
             _context = context;
         }
 
-        // GET: api/Locations
-        [HttpGet] //Működik
+        #region // GET: api/Locations
+        [HttpGet] 
         public async Task<ActionResult> GetAllLocations()
         {
-             
-                var locations=await _context.Locations.ToListAsync();
+            try
+            {
+                var locations = await _context.Locations.ToListAsync();
 
-                if (locations!=null)
+                if (locations.Any())
                 {
-                    return Ok(new { Result = locations,message="Sikres lekérdezés"});
+                    return Ok(new { Result = locations, message = "Successfull request" });
                 }
+                return NotFound(new { Result = "", Message ="No such location"  });
 
-                Exception e = new();
-                return BadRequest(new { Results = "", Message = e.Message });
-            
-            
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,new { Result = "", Message = ex.Message });
+            }
         }
+        #endregion
 
-        // GET: api/Locations/5
-        [HttpGet("{id}")] //Működik
+        #region// GET: api/Locations/5
+        [HttpGet("{id}")] 
         public async Task<ActionResult<Location>> GetLocation(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
-
-            if (location == null)
+            try
             {
-                return NotFound();
+                var location = await _context.Locations.FindAsync(id);
+
+                if(location == null) 
+                { 
+
+                    return NotFound(new { Result = "", Message = "No such location" });
+                }
+                return Ok(new { Result = location, message = "Successfull request" });
             }
-
-            return location;
+            catch (Exception ex)
+            {
+               return StatusCode(500,new {Result="",Message=ex.Message}); 
+            }
         }
+        #endregion
 
-        // PUT: api/Locations/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")] //Működik
+        #region // PUT: api/Locations/5
+        [HttpPut("{id}")] 
         public async Task<ActionResult> UpdateLocation(int id, UpdateLocationDTO updateLocationDTO)
         {
-            var existingLocation=await _context.Locations.FindAsync(id);
-
-            if (existingLocation!=null)
+            try
             {
-                existingLocation.LocationName = updateLocationDTO.LocationName;
-                existingLocation.LocationDescription = updateLocationDTO.LocationDescroption;
-                existingLocation.LocationCapacity=updateLocationDTO.LocationCapacity;
+                var existingLocation = await _context.Locations.FindAsync(id);
 
-                _context.Locations.Update(existingLocation);
-                await _context.SaveChangesAsync();
+                if (existingLocation!=null)
+                {
+                    existingLocation.LocationName = updateLocationDTO.LocationName;
+                    existingLocation.LocationDescription = updateLocationDTO.LocationDescroption;
+                    existingLocation.LocationCapacity = updateLocationDTO.LocationCapacity;
+                    _context.Locations.Update(existingLocation);
 
-                return Ok();
+                    await _context.SaveChangesAsync();
+
+                    return Ok(new { Result = existingLocation, message = "Successfull request" });
+                }
+                return NotFound(new { Result = "", Message = "No such location" });
 
             }
+            catch (Exception ex)
+            {
+              return StatusCode(500, new { Result = "", Message = ex.Message });
+            }
 
-            return NotFound();
         }
+        #endregion
 
-        // POST: api/Locations 
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost] //Működik
+        #region // POST: api/Locations 
+       
+        [HttpPost] 
         public async Task<ActionResult> AddLocation(CreateLocationDTO createLocationDTO) 
         {
+            try
+            {
+                var location = new Location
+                {
+                    LocationName = createLocationDTO.LocationName,
+                    LocationDescription = createLocationDTO.LocationDescription,
+                    LocationCapacity = createLocationDTO.LocationCapacity,
 
-            var location = new Location
-            { 
-               LocationName=createLocationDTO.LocationName,
-               LocationDescription=createLocationDTO.LocationDescription,
-               LocationCapacity=createLocationDTO.LocationCapacity,
-                                 
-            };
+                };
 
-            await _context.Locations.AddAsync(location);
-            await _context.SaveChangesAsync();
+                await _context.Locations.AddAsync(location);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetLocation", new { id = location.LocationId}, location);
 
-                        
-
-            return CreatedAtAction("GetLocation", new { id = location.LocationId }, location);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Result = "", Message = ex.Message });
+            }
 
            
         }
+        #endregion
 
-        // DELETE: api/Locations/5
-        [HttpDelete("{id}")] //Működik
+        #region // DELETE: api/Locations/5
+        [HttpDelete("{id}")] 
         public async Task<IActionResult> DeleteLocation(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
-            if (location == null)
+            try
             {
-                return NotFound();
+                var location = await _context.Locations.FindAsync(id);
+                if (location == null)
+                {
+                    return NotFound(new { Result = "", Message = "No such location" });
+                }
+                _context.Locations.Remove(location);
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Result = "", Message = ex.Message });
             }
 
-            _context.Locations.Remove(location);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
-        private bool LocationExists(int id)
-        {
-            return _context.Locations.Any(e => e.LocationId == id);
-        }
+   
+
+
+
+        //private bool LocationExists(int id)
+        //{
+        //    return _context.Locations.Any(e => e.LocationId == id);
+        //}
+
+
+
+
+        #endregion
     }
 }
