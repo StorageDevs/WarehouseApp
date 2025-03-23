@@ -66,7 +66,7 @@ const handleChange = (event) => {
           <label>Name:</label>
             <input type="text" id="name" name="name" value={locationData.name} onChange={handleChange} className='form-control' placeholder='Location Name'/>
           <label>Description:</label>
-            <input type="text" id="description" name="description" value={materialData.description} onChange={handleChange} className='form-control' placeholder='Location Description'/>
+            <input type="text" id="description" name="description" value={locationData.description} onChange={handleChange} className='form-control' placeholder='Location Description'/>
           <label>Capacity:</label>
             <input type="number" id="capacity" name="capacity" value={locationData.capacity} onChange={handleChange} className='form-control' placeholder='Location Capacity'/>
             <br></br>

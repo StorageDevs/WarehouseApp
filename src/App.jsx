@@ -6,8 +6,7 @@ import LocationPage from "./pages/LocationPage";
 import DashboardPage from "./pages/DashBoard";
 import Navbar from './components/Navbar';
 import * as THREE from "three";
-import CLOUDS from "vanta/src/vanta.clouds"; // Itt választhatod a Vanta animációt
-
+import CLOUDS from "vanta/src/vanta.clouds";
 
 const App = () => {
   const [vantaEffect, setVantaEffect] = useState(null);
@@ -36,7 +35,7 @@ const App = () => {
   return (
     <div ref={vantaRef} style={{ minHeight: "100vh", width: "100vw", position: "fixed", top: 0, left: 0 }}>
     <Router>
-    {isAuthenticated && <Navbar />} {/* Csak akkor jelenik meg, ha be van jelentkezve */}
+    {isAuthenticated && <Navbar />} {}
       <Routes>
         <Route path = "*" element={<DashboardPage/>} />
         <Route path="/dashboard" element={<DashboardPage/>} />
