@@ -96,7 +96,7 @@ const styles = {
     justifyContent: "center",
   },
   loginContainer: {
-    backgroundColor: "rgba(255, 255, 255, 0.7)", 
+    backgroundColor: "rgba(199, 223, 228, 0.84)", 
     padding: "30px",
     borderRadius: "12px",
     boxShadow: "0 4px 10px rgba(24, 22, 22, 0.3)",
@@ -113,7 +113,7 @@ const styles = {
   },
   inputGroup: {
     marginBottom: "10px",
-    width: "95%",
+    width: "100%",
   },
   label: {
     display: "block",

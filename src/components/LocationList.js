@@ -4,7 +4,7 @@ import { Table, TableCell, TableContainer, TableHead, TableRow, Paper } from '@m
 
 const LocationList = () => {
   
-  const url = "http://localhost:5118/api/Locations"
+  const url = "https://localhost:7055/api/Locations"
 
   const [LocationData, setLocationData] = useState([]);
 
