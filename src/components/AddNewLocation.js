@@ -38,7 +38,7 @@ const handleChange = (event) => {
 
   const handleSubmit = async (event) => 
   {
-    const url = "https://localhost:7055/api/Locations"
+    const url = "http://localhost:7055/api/Locations"
     event.preventDefault();
 
     const request = await fetch(url, {

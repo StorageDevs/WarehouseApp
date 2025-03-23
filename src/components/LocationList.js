@@ -4,31 +4,31 @@ import { Table, TableCell, TableContainer, TableHead, TableRow, Paper } from '@m
 
 const LocationList = () => {
   
-  const url = "https://localhost:7055/api/Locations"
+  const url = "http://localhost:7055/api/Locations"
 
   const [LocationData, setLocationData] = useState([]);
 
-  useEffect(() => 
-  {
-    (async () => 
-      {
-      const request = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
+  useEffect(() => {
+    (async () => {
+      try {
+        const request = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!request.ok) {
+          throw new Error("Network response was not ok");
         }
-      })
-      
-      if(!request.ok)
-      {
-        console.log("Error")
-        return
+  
+        const response = await request.json();
+        setLocationData(response.result);
+        console.log("Locations fetched successfully:", response.message);
+      } catch (error) {
+        console.error("Failed to fetch materials:", error);
       }
-
-      const response = await request.json();
-      setLocationData(response.result);
-      console.log(response.message);
-      })()
-    },);
+    })();
+  }, );
 
     const LocationElements = LocationData.map((location) => 
     {

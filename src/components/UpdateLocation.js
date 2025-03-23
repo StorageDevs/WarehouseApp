@@ -4,7 +4,7 @@ function UpdateLocation(props)
 {
     const handleLocationData = async() =>
     {
-        const url = `https://localhost:7055/api/Locations?id=${props.locationId}`
+        const url = `http://localhost:7055/api/Locations?id=${props.locationId}`
         const request = await fetch(url, {
             method: "PUT",
             body: JSON.stringify(props.locationData),

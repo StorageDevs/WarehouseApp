@@ -4,31 +4,31 @@ import { Table, TableCell, TableContainer, TableHead, TableRow, Paper } from '@m
 
 const MaterialList = () => {
   
-  const url = "https://localhost:7055/api/Materials"
+  const url = "http://localhost:7055/api/Materials"
 
   const [MaterialData, setMaterialData] = useState([]);
 
-  useEffect(() => 
-  {
-    (async () => 
-      {
-      const request = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
+  useEffect(() => {
+    (async () => {
+      try {
+        const request = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!request.ok) {
+          throw new Error("Network response was not ok");
         }
-      })
-      
-      if(!request.ok)
-      {
-        console.log("Error")
-        return
+  
+        const response = await request.json();
+        setMaterialData(response.result);
+        console.log("Materials fetched successfully:", response.message);
+      } catch (error) {
+        console.error("Failed to fetch materials:", error);
       }
-
-      const response = await request.json();
-      setMaterialData(response.result);
-      console.log(response.message);
-      })()
-    },);
+    })();
+  }, );
 
     const MaterialElements = MaterialData.map((material) => 
     {
