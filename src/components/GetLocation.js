@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AddNewLocation from '../components/AddNewLocation'
 
 const LocationForm = ({ onAddLocation }) => {
   const [formData, setFormData] = useState({
