@@ -3,16 +3,18 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginPage from './pages/LoginPage';
 import MaterialsPage from './pages/MaterialsPage';
 import LocationPage from "./pages/LocationPage";
-import DashboardPage from "./pages/DashBoard";
+import InventoryPage from "./pages/InventoryPage";
+import HomePage from "./pages/Home";
 import Navbar from './components/Navbar';
 import * as THREE from "three";
 import CLOUDS from "vanta/src/vanta.clouds";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   const [vantaEffect, setVantaEffect] = useState(null);
   const vantaRef = useRef(null);
 
-  // const isAuthenticated = localStorage.getItem('access_token'); // Ellenőrzi, hogy be van-e jelentkezve
+ // const isAuthenticated = localStorage.getItem('access_token'); 
   const isAuthenticated = true;
 
   useEffect(() => {
@@ -37,14 +39,15 @@ const App = () => {
     <Router>
     {isAuthenticated && <Navbar />} {}
       <Routes>
-        <Route path = "*" element={<DashboardPage/>} />
-        <Route path="/dashboard" element={<DashboardPage/>} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path = "*" element={<LoginPage/>} />
+        <Route path="/home" element={isAuthenticated ? <HomePage /> : <Navigate from="/login" />} />
+        <Route path="/login" element={<LoginPage /> } />
+        <Route path="/inventories" element={<InventoryPage />} />
         <Route path="/locations" element={<LocationPage />} />
-        <Route path="/materials" element={isAuthenticated ? <MaterialsPage /> : <Navigate from="/login" />} />
+        <Route path="/materials" element={<MaterialsPage />} />
+      
       </Routes>
     </Router>
-    
     </div>
   );
 };

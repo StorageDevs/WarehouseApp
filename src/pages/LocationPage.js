@@ -3,7 +3,7 @@ import LocationList from '../components/LocationList';
 
 const LocationPage = () => {
   return (
-    <div>
+    <div style={{ textAlign: 'center', marginTop: '20px' }}>
       <h3>Locations</h3>
       <LocationList />
     </div>

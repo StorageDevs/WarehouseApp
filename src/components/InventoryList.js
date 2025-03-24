@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 //import axios from "axios";
 import { Table, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-const LocationList = () => {
+const InventoryList = () => {
   
-  const url = "http://localhost:5118/api/Locations"
+  const url = "http://localhost:5118/api/Inventories"
 
-  const [LocationData, setLocationData] = useState([]);
+  const [InventoryData, setInventoryData] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -22,25 +22,25 @@ const LocationList = () => {
         }
   
         const response = await request.json();
-        setLocationData(response.result);
-        console.log("Locations fetched successfully:", response.message);
+        setInventoryData(response.result);
+        console.log("Inventory fetched successfully:", response.message);
       } catch (error) {
-        console.error("Failed to fetch materials:", error);
+        console.error("Failed to fetch inventory:", error);
       }
     })();
   }, );
 
-    const LocationElements = LocationData.map((location) => 
+    const InventoryElements = InventoryData.map((inventory) => 
     {
       return (
         <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{location.locationId}</TableCell>
-              <TableCell>{location.locationName}</TableCell>
-              <TableCell>{location.locationDescription}</TableCell>
-              <TableCell>{location.locationCapacity}</TableCell>
+              <TableCell>{inventory.materialNumber}</TableCell>
+              <TableCell>{inventory.materialDescription}</TableCell>
+              <TableCell>{inventory.locationName}</TableCell>
+              <TableCell>{inventory.inventoryQuantity}</TableCell>
             </TableRow>
           </TableHead>
         </Table>
@@ -50,10 +50,10 @@ const LocationList = () => {
     return (
       <>
         <div>
-          {LocationElements}
+          {InventoryElements}
         </div>
       </>
     )
 }
 
-export default LocationList;
+export default InventoryList;

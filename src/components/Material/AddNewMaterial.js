@@ -40,7 +40,7 @@ const handleChange = (event) => {
 
   const handleSubmit = async (event) => 
   {
-    const url = "http://localhost:7055/api/Materials"
+    const url = "http://localhost:5118/api/Materials"
     event.preventDefault();
 
     const request = await fetch(url, {

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5118/api/Locations/';
 
-export const getMaterials = async () => {
+export const getLocation = async () => {
   try {
     const response = await axios.get(API_URL, {
       headers: {
@@ -11,7 +11,7 @@ export const getMaterials = async () => {
     });
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch materials', error);
+    console.error('Failed to fetch locations', error);
   }
 };
 

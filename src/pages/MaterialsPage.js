@@ -3,8 +3,8 @@ import MaterialList from '../components/MaterialList';
 
 const MaterialsPage = () => {
   return (
-    <div>
-      <h3>Warehouse Materials</h3>
+    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+      <h3>Materials</h3>
       <MaterialList />
     </div>
   );

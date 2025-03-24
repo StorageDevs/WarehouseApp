@@ -1,13 +1,13 @@
 import React from "react";
 
-const DashboardPage = () => {
+const HomePage = () => {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <h1>Welcome to the StorageDevs Warehouse Management System</h1>
         <p>
           This platform allows you to efficiently manage your inventory. Use the
-          "Material" and "Location" tab to add, modify, or delete items. The Dashboard serves
+          "Material" and "Location" tab to add, modify, or delete items. Check the "Inventory" tab to see the current stock. The Dashboard serves
           as a quick overview and guide for new users.
         </p>
         <p>
@@ -36,4 +36,4 @@ const styles = {
   },
 };
 
-export default DashboardPage;
+export default HomePage;

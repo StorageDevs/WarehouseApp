@@ -4,7 +4,7 @@ import { Table, TableCell, TableContainer, TableHead, TableRow, Paper } from '@m
 
 const MaterialList = () => {
   
-  const url = "http://localhost:7055/api/Materials"
+  const url = "http://localhost:5118/api/Materials"
 
   const [MaterialData, setMaterialData] = useState([]);
 

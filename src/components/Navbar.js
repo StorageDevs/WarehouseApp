@@ -9,7 +9,7 @@ const NavigationBar = () => {
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    navigate('/dashboard'); 
+    navigate('/home'); 
   };
 
   const navbarStyle = {
@@ -20,11 +20,11 @@ const NavigationBar = () => {
 
   return (
     <Navbar style={navbarStyle} expand="lg">
-      <Navbar.Brand as={Link} to="/dashboard">Warehouse Management</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/home">Warehouse Management</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ms-auto">
-          <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
+          <Nav.Link as={Link} to="/inventories">Inventory</Nav.Link>
           <Nav.Link as={Link} to="/locations">Location</Nav.Link>
           <Nav.Link as={Link} to="/materials">Material</Nav.Link>
         </Nav>
