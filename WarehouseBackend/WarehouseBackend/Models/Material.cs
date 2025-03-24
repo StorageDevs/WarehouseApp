@@ -17,7 +17,7 @@ public partial class Material
     public decimal PriceUnit { get; set; }
 
     [JsonIgnore]
-        public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
+    public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
 
     [JsonIgnore]
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();

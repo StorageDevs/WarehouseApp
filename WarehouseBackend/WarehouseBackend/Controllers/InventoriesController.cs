@@ -35,17 +35,25 @@ namespace WarehouseBackend.Controllers
             {
                 var result = await
                             (
-                                from inventory in _context.Inventories
+                                from transaction in _context.Transactions
                                 join material in _context.Materials
-                                on inventory.MaterialId equals material.MaterialId
-                                join location in _context.Locations
-                                on inventory.LocationId equals location.LocationId
+                                on transaction.MaterialId equals material.MaterialId
+                                join locationFrom in _context.Locations
+                                on transaction.TransactionFromId equals locationFrom.LocationId
+                                join locationTo in _context.Locations
+                                on transaction.TransactionToId equals locationTo.LocationId
+                                join user in _context.Users
+                                on transaction.UserId equals user.UserId
+
                                 select new
                                 {
                                     MaterialNumber=material.MaterialNumber,
                                     MaterialDescription = material.MaterialDescription,
-                                    LocationName = location.LocationName,
-                                    Quantity = inventory.Quantity
+                                    LocationFrom = locationFrom.LocationName,
+                                    LocationTo = locationTo.LocationName,
+                                    TransferQuantity = transaction.TransactedQty,
+                                    User =user.UserName,
+                                    TransacionTime=transaction.TransactionDateTime
                                 }
                             )
                             .ToListAsync();

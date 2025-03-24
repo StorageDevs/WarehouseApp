@@ -81,7 +81,7 @@ namespace WarehouseBackend.Controllers
                 if (existingLocation!=null)
                 {
                     existingLocation.LocationName = updateLocationDTO.LocationName;
-                    existingLocation.LocationDescription = updateLocationDTO.LocationDescroption;
+                    existingLocation.LocationDescription = updateLocationDTO.LocationDescription;
                     existingLocation.LocationCapacity = updateLocationDTO.LocationCapacity;
                     _context.Locations.Update(existingLocation);
 
