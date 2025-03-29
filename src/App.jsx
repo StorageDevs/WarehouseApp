@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import MaterialsPage from './pages/MaterialsPage';
+import GetInventory from "./components/Inventory/GetInventory";
+import GetAllMaterial from "./components/Material/GetAllMaterial";
 import LocationPage from "./pages/LocationPage";
-import InventoryPage from "./pages/InventoryPage";
 import HomePage from "./pages/Home";
 import Navbar from './components/Navbar';
 import * as THREE from "three";
@@ -42,9 +42,9 @@ const App = () => {
         <Route path = "*" element={<LoginPage/>} />
         <Route path="/home" element={isAuthenticated ? <HomePage /> : <Navigate from="/login" />} />
         <Route path="/login" element={<LoginPage /> } />
-        <Route path="/inventories" element={<InventoryPage />} />
+        <Route path="/inventories" element={<GetInventory />} />
         <Route path="/locations" element={<LocationPage />} />
-        <Route path="/materials" element={<MaterialsPage />} />
+        <Route path="/materials" element={<GetAllMaterial />} />
       
       </Routes>
     </Router>

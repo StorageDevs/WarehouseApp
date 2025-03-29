@@ -1,40 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react'
 
-const InventoryForm = ({ onAddInventory }) => {
-  const [formData, setFormData] = useState({
-    materialId: "",
-    materialNumber: "",
-    materialDescription: "",
-    locationId: "",
-    locationName: "",
-    inventoryQuantity: "",
-  });
+function GetInventory() {
+  const url = "https://localhost:7055/api/Inventories"
+  const [inventoryData, setInventoryData] = useState([]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  useEffect(() => 
+  {
+    (async () => 
+      {
+      const request = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      
+      if(!request.ok)
+      {
+        console.log("Error")
+        return
+      }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (onAddInventory) {
-      onAddInventory({
-        id: Date.now(),
-        ...formData,
-      });
-    }
-    setFormData({ materialId: "", materialNumber: "", materialDescription: "", locationId: "", locationName: "", inventoryQuantity: "" });
-  };
+      const response = await request.json();
+      setInventoryData(response.result);
+      console.log(response.message);
+      })()
+    }, []);
 
-  return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
-      <input type="number" name="materialId" placeholder="materialId" value={formData.materialId} onChange={handleChange} required />
-      <input type="number" name="materialNumber" placeholder="materialNumber" value={formData.materialNumber} onChange={handleChange} required />
-      <input type="text" name="materialDescription" placeholder="materialDescription" value={formData.materialDescription} onChange={handleChange} required />
-      <input type="number" name="locationId" placeholder="locationId" value={formData.locationId} onChange={handleChange} required />
-      <input type="text" name="locationName" placeholder="locationName" value={formData.locationName} onChange={handleChange} required />
-      <input type="number" name="inventoryQuantity" placeholder="inventoryQuantity" value={formData.inventoryQuantity} onChange={handleChange} required />
-    </form>
-  );
-};
+    return (
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+        {inventoryData.map((inventory) => (
+          <div
+            className="card"
+            style={{
+              width: 200,
+              margin: 10,
+              padding: 10,
+              border: "2px solid #ccc",
+              borderRadius: "8px",
+              boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
+            }}
+            key={inventory.inventoryId}
+          >
+          <div className="card-body">Number: {inventory.materialNumber}</div>
+          <div className="card-body">Description: {inventory.materialDescription}</div>
+          <div className="card-body">LocationFrom: {inventory.locationFrom}</div>
+          <div className="card-body">LocationTo: {inventory.locationTo}</div>
+          <div className="card-body">Quantity: {inventory.transferQuantity}</div>
+          <div className="card-body">User: {inventory.user}</div>
+          <div className="card-body">Time: {inventory.transactionTime}</div>
+          </div>
+        ))}
+      </div>
+    );
+}
 
-export default InventoryForm;
+export default GetInventory

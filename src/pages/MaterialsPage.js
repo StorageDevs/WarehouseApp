@@ -1,11 +1,11 @@
 import React from 'react';
-import MaterialList from '../components/MaterialList';
+import GetAllMaterial from '../components/Material/GetAllMaterial';
 
 const MaterialsPage = () => {
   return (
     <div style={{ textAlign: 'center', marginTop: '20px' }}>
       <h3>Materials</h3>
-      <MaterialList />
+      <GetAllMaterial />
     </div>
   );
 };

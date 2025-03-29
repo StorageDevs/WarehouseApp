@@ -4,8 +4,7 @@ function DeleteMaterial (props)
 {
     const handleMaterialId = async () => 
         {
-          const url = `http://localhost:5118/api/Materials
-          ?id=${props.materialId}`
+          const url = `https://localhost:7055/api/Materials?id=${props.materialId}`
       
           const request = await fetch(url, {
             method: "DELETE",

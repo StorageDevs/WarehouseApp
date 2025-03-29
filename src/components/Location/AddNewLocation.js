@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import UpdateLocation from './UpdateLocation';
 
 function AddNewLocation(props) 
 {
@@ -21,11 +20,6 @@ useEffect(() =>
         number: props.locationObj.number || '',
         description: props.locationObj.description || '',
         capacity: props.locationObj.capacity || ''
-        
-          ? new Date(new Date(props.locationObj.myear).getTime() - new Date().getTimezoneOffset() * 60000)
-              .toISOString()
-              .split('T')[0]
-            : ''
           });
         }
       }, [props.locationObj]);
@@ -38,7 +32,7 @@ const handleChange = (event) => {
 
   const handleSubmit = async (event) => 
   {
-    const url = "http://localhost:5118/api/Locations"
+    const url = "https://localhost:7055/api/Locations"
     event.preventDefault();
 
     const request = await fetch(url, {
@@ -71,7 +65,7 @@ const handleChange = (event) => {
             <input type="number" id="capacity" name="capacity" value={locationData.capacity} onChange={handleChange} className='form-control' placeholder='Location Capacity'/>
             <br></br>
           <button type="submit" className='btn btn-primary'>Submit</button>
-          <UpdateLocation locationData={locationData} locationId={props.locationObj.id} handleCount={props.handleCount}/>
+          
           </form>
       </div>
   )

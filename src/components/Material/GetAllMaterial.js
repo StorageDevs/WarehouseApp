@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
-function GetLocation() {
-  const url = "https://localhost:7055/api/Locations"
-  const [locationData, setLocationData] = useState([]);
-  
+function GetAllMaterial() {
+  const url = "https://localhost:7055/api/Materials"
+  const [materialData, setMaterialData] = useState([]);
+
   useEffect(() => 
   {
     (async () => 
       {
       const request = await fetch(url, {
-        method: "GET",
+       
         headers: {
           "Content-Type": "application/json",
         }
@@ -22,14 +22,14 @@ function GetLocation() {
       }
 
       const response = await request.json();
-      setLocationData(response.result);
+      setMaterialData(response.result);
       console.log(response.message);
       })()
     }, []);
 
     return (
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-        {locationData.map((location) => (
+        {materialData.map((material) => (
           <div
             className="card"
             style={{
@@ -40,16 +40,16 @@ function GetLocation() {
               borderRadius: "8px",
               boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
             }}
-            key={location.locationId}
+            key={material.materialId}
           >
-            <div className="card-body">ID: {location.locationId}</div>
-            <div className="card-body">Name: {location.locationName}</div>
-            <div className="card-body">Description: {location.locationDescription}</div>
-            <div className="card-body">Capacity: {location.locationCapacity}</div>
+            <div className="card-body">Material Number: {material.materialNumber}</div>
+            <div className="card-body">Description: {material.materialDescription}</div>
+            <div className="card-body">Unit: {material.unit}</div>
+            <div className="card-body">Priceunit: {material.priceUnit}</div>
           </div>
         ))}
       </div>
     );
 }
 
-export default GetLocation
+export default GetAllMaterial

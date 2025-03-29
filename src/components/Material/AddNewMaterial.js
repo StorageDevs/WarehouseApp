@@ -23,11 +23,6 @@ useEffect(() =>
         description: props.materialObj.description || '',
         unit: props.materialObj.unit || '',
         priceUnit: props.materialObj.priceUnit || ''
-        
-          ? new Date(new Date(props.materialObj.myear).getTime() - new Date().getTimezoneOffset() * 60000)
-              .toISOString()
-              .split('T')[0]
-            : ''
           });
         }
       }, [props.materialObj]);
@@ -40,7 +35,7 @@ const handleChange = (event) => {
 
   const handleSubmit = async (event) => 
   {
-    const url = "http://localhost:5118/api/Materials"
+    const url = "https://localhost:7055/api/Materials"
     event.preventDefault();
 
     const request = await fetch(url, {

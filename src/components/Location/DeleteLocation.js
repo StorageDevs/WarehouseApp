@@ -4,8 +4,7 @@ function DeleteLocation (props)
 {
     const handleLocationId = async () => 
         {
-          const url = `http://localhost:5118/api/Locations
-          ?id=${props.locationId}`
+          const url = `https://localhost:7055/api/Locations?id=${props.locationId}`
       
           const request = await fetch(url, {
             method: "DELETE",
