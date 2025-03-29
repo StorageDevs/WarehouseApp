@@ -28,15 +28,18 @@ function GetInventory() {
     }, []);
 
     return (
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+      <div>
+        <br></br>
+        <h2 style={{ textAlign: "center", marginBottom: "20px", padding: "10px" }}>Inventory</h2>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "left"}}>
         {inventoryData.map((inventory) => (
           <div
             className="card"
             style={{
-              width: 200,
+              width: 450,
               margin: 10,
               padding: 10,
-              border: "2px solid #ccc",
+              border: "5px solid #ccc",
               borderRadius: "8px",
               boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
             }}
@@ -44,14 +47,15 @@ function GetInventory() {
           >
           <div className="card-body">Number: {inventory.materialNumber}</div>
           <div className="card-body">Description: {inventory.materialDescription}</div>
-          <div className="card-body">LocationFrom: {inventory.locationFrom}</div>
-          <div className="card-body">LocationTo: {inventory.locationTo}</div>
+          <div className="card-body">From: {inventory.locationFrom}</div>
+          <div className="card-body">To: {inventory.locationTo}</div>
           <div className="card-body">Quantity: {inventory.transferQuantity}</div>
           <div className="card-body">User: {inventory.user}</div>
           <div className="card-body">Time: {inventory.transactionTime}</div>
           </div>
         ))}
       </div>
+    </div>
     );
 }
 

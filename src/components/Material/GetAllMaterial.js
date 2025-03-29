@@ -28,15 +28,18 @@ function GetAllMaterial() {
     }, []);
 
     return (
+    <div>
+      <br></br>
+        <h2 style={{ textAlign: "center", marginBottom: "20px", padding: "10px" }}>Materials</h2>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
         {materialData.map((material) => (
           <div
             className="card"
             style={{
-              width: 200,
+              width: 450,
               margin: 10,
               padding: 10,
-              border: "1px solid #ccc",
+              border: "5px solid #ccc",
               borderRadius: "8px",
               boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
             }}
@@ -49,7 +52,8 @@ function GetAllMaterial() {
           </div>
         ))}
       </div>
-    );
+    </div>
+  );
 }
 
 export default GetAllMaterial

@@ -28,15 +28,18 @@ function GetLocation() {
     }, []);
 
     return (
+    <div>
+      <br></br>
+        <h2 style={{ textAlign: "center", marginBottom: "20px", padding: "10px" }}>Locations</h2>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
         {locationData.map((location) => (
           <div
             className="card"
             style={{
-              width: 200,
+              width: 450,
               margin: 10,
               padding: 10,
-              border: "1px solid #ccc",
+              border: "5px solid #ccc",
               borderRadius: "8px",
               boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
             }}
@@ -49,7 +52,8 @@ function GetLocation() {
           </div>
         ))}
       </div>
-    );
+    </div>
+  );
 }
 
 export default GetLocation

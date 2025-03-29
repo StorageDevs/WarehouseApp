@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginPage from './pages/LoginPage';
 import GetInventory from "./components/Inventory/GetInventory";
 import GetAllMaterial from "./components/Material/GetAllMaterial";
+import GetTransactions from "./components/Transactions/GetTransactions";
 import LocationPage from "./pages/LocationPage";
 import HomePage from "./pages/Home";
 import Navbar from './components/Navbar';
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/home" element={isAuthenticated ? <HomePage /> : <Navigate from="/login" />} />
         <Route path="/login" element={<LoginPage /> } />
         <Route path="/inventories" element={<GetInventory />} />
+        <Route path="/transactions" element={<GetTransactions />} />
         <Route path="/locations" element={<LocationPage />} />
         <Route path="/materials" element={<GetAllMaterial />} />
       
