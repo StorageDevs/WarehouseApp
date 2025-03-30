@@ -35,26 +35,42 @@ namespace WarehouseBackend.Controllers
             {
                 var result = await
                             (
-                                from transaction in _context.Transactions
-                                join material in _context.Materials
-                                on transaction.MaterialId equals material.MaterialId
-                                join locationFrom in _context.Locations
-                                on transaction.TransactionFromId equals locationFrom.LocationId
-                                join locationTo in _context.Locations
-                                on transaction.TransactionToId equals locationTo.LocationId
-                                join user in _context.Users
-                                on transaction.UserId equals user.UserId
+                                //from transaction in _context.Transactions
+                                //join material in _context.Materials
+                                //on transaction.MaterialId equals material.MaterialId
+                                //join locationFrom in _context.Locations
+                                //on transaction.TransactionFromId equals locationFrom.LocationId
+                                //join locationTo in _context.Locations
+                                //on transaction.TransactionToId equals locationTo.LocationId
+                                //join user in _context.Users
+                                //on transaction.UserId equals user.UserId
 
+                                //select new
+                                //{
+                                //    MaterialNumber=material.MaterialNumber,
+                                //    MaterialDescription = material.MaterialDescription,
+                                //    LocationFrom = locationFrom.LocationName,
+                                //    LocationTo = locationTo.LocationName,
+                                //    TransferQuantity = transaction.TransactedQty,
+                                //    User =user.UserName,
+                                //    TransacionTime=transaction.TransactionDateTime
+                                //}
+
+                                from inventory in _context.Inventories
+                                join material in _context.Materials
+                                on inventory.MaterialId equals material.MaterialId
+                                join location in _context.Locations
+                                on inventory.LocationId equals location.LocationId
                                 select new
                                 {
-                                    MaterialNumber=material.MaterialNumber,
+                                    MaterialId = material.MaterialId,
+                                    MaterialNumber = material.MaterialNumber,
                                     MaterialDescription = material.MaterialDescription,
-                                    LocationFrom = locationFrom.LocationName,
-                                    LocationTo = locationTo.LocationName,
-                                    TransferQuantity = transaction.TransactedQty,
-                                    User =user.UserName,
-                                    TransacionTime=transaction.TransactionDateTime
+                                    LocationId = location.LocationId,
+                                    LocationName = location.LocationName,
+                                    Quantity = inventory.Quantity
                                 }
+
                             )
                             .ToListAsync();
                 return Ok(new { Result = result, message = "Successfull request" });

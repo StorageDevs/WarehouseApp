@@ -15,7 +15,7 @@ namespace WarehouseBackend
             var connectionString = builder.Configuration.GetConnectionString("MySql");
             builder.Services.AddDbContext<WarehouseContext>(options =>options.UseMySQL(connectionString));
 
-
+            #region //CORS policy
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
             builder.Services.AddCors(options =>
@@ -25,13 +25,12 @@ namespace WarehouseBackend
                                       policy =>
                                       {
                                           policy.WithOrigins("http://localhost:3000",
-
                                                              "http://localhost:3000")
                                                                 .AllowAnyHeader()
                                                                 .AllowAnyMethod();
                                       });
             });
-
+            #endregion
 
             // Add services to the container.
 
@@ -53,12 +52,13 @@ namespace WarehouseBackend
 
             app.UseAuthorization();
 
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.MapControllers();
 
             app.Run();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            
         }
     }
 }
