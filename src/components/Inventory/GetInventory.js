@@ -36,22 +36,24 @@ function GetInventory() {
           <div
             className="card"
             style={{
-              width: 450,
+              width: 300,
+              height: "auto",
               margin: 10,
               padding: 10,
               border: "5px solid #ccc",
               borderRadius: "8px",
               boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
+              position: "relative",
             }}
             key={inventory.inventoryId}
           >
-          <div className="card-body">Number: {inventory.materialNumber}</div>
-          <div className="card-body">Description: {inventory.materialDescription}</div>
-          <div className="card-body">From: {inventory.locationFrom}</div>
-          <div className="card-body">To: {inventory.locationTo}</div>
-          <div className="card-body">Quantity: {inventory.transferQuantity}</div>
-          <div className="card-body">User: {inventory.user}</div>
-          <div className="card-body">Time: {inventory.transactionTime}</div>
+          <div className="card-body">Number: {inventory.materialNumber}<br />
+          Description: {inventory.materialDescription}<br />
+          From: {inventory.locationFrom}<br />
+          To: {inventory.locationTo}<br />
+          Quantity: {inventory.transferQuantity}<br />
+          User: {inventory.user}<br />
+          Time: {inventory.transactionTime}</div>
           </div>
         ))}
       </div>

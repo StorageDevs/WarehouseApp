@@ -1,12 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import UpdateMaterial from './UpdateMaterial';
 
 function AddNewMaterial(props) 
 {
   const [materialData, setMaterialdata] = useState(
     {
-      id: "",
       number: "",
       description: "",
       unit: "",
@@ -18,7 +16,6 @@ useEffect(() =>
     if (props.materialObj)
     {
         setMaterialdata({
-        id: props.materialObj.id || '',
         number: props.materialObj.number || '',
         description: props.materialObj.description || '',
         unit: props.materialObj.unit || '',
@@ -58,19 +55,15 @@ const handleChange = (event) => {
     return (
       <div>
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
-          <label>ID:</label>
-            <input type="number" id="id" name="id" value={materialData.id} onChange={handleChange} className='form-control' placeholder='Material ID'/>
           <label>Number:</label>
             <input type="number" id="number" name="number" value={materialData.number} onChange={handleChange} className='form-control' placeholder='Material Number'/>
           <label>Description:</label>
             <input type="text" id="description" name="description" value={materialData.description} onChange={handleChange} className='form-control' placeholder='Material Description'/>
           <label>Unit:</label>
             <input type="text" id="unit" name="unit" value={materialData.unit} onChange={handleChange} className='form-control' placeholder='Material Unit'/>
-          <label>PriceUnit:</label>
-            <input type="number" id="priceunit" name="priceunit" value={materialData.priceUnit} onChange={handleChange} className='form-control' placeholder='Material Priceunit' />
-            <br></br>
+          <label>Price/Unit:</label>
+            <input type="number" id="priceUnit" name="priceUnit" value={materialData.priceUnit} onChange={handleChange} className='form-control' placeholder='Material Priceunit' />
           <button type="submit" className='btn btn-primary'>Submit</button>
-          <UpdateMaterial materialData={materialData} materialId={props.materialObj.id} handleCount={props.handleCount}/>
           </form>
       </div>
   )

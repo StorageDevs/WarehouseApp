@@ -30,7 +30,7 @@ const LoginPage = () => {
     if (username === "admin" && password === "admin") {
       localStorage.setItem("jwt", "fake-jwt-token"); 
       setError("");
-      navigate("/materials");
+      navigate("/inventories");
     } else {
       setError("Wrong username or password!");
     }
@@ -45,7 +45,7 @@ const LoginPage = () => {
       const token = response.data.token;
       localStorage.setItem("jwt", token);
       setError("");
-      navigate("/materials");
+      navigate("/inventories");
     } catch (error) {
       setError("Wrong username or password!!");
     }

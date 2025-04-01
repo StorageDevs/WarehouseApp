@@ -4,12 +4,12 @@ import LoginPage from './pages/LoginPage';
 import GetInventory from "./components/Inventory/GetInventory";
 import GetAllMaterial from "./components/Material/GetAllMaterial";
 import GetTransactions from "./components/Transactions/GetTransactions";
-import LocationPage from "./pages/LocationPage";
 import HomePage from "./pages/Home";
 import Navbar from './components/Navbar';
 import * as THREE from "three";
 import CLOUDS from "vanta/src/vanta.clouds";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import GetLocation from "./components/Location/GetLocation";
 
 const App = () => {
   const [vantaEffect, setVantaEffect] = useState(null);
@@ -45,7 +45,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage /> } />
         <Route path="/inventories" element={<GetInventory />} />
         <Route path="/transactions" element={<GetTransactions />} />
-        <Route path="/locations" element={<LocationPage />} />
+        <Route path="/locations" element={<GetLocation />} />
         <Route path="/materials" element={<GetAllMaterial />} />
       
       </Routes>

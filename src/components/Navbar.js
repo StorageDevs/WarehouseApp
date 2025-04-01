@@ -30,7 +30,7 @@ const NavigationBar = () => {
           <Nav.Link as={Link} to="/materials">Material</Nav.Link>
         </Nav>
         <Nav>
-          <Nav.Link as={Link} to="/login">Login</Nav.Link>
+          <Nav.Link as={Link} variant="outline-light" to="/login">Login</Nav.Link>
           <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
         </Nav>
       </Navbar.Collapse>

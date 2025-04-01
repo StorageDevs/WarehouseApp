@@ -36,24 +36,25 @@ function GetTransactions() {
           <div
             className="card"
             style={{
-              width: 450,
+              width: 200,
+              height: "auto",
               margin: 10,
               padding: 10,
               border: "5px solid #ccc",
               borderRadius: "8px",
               boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
+              position: "relative",
             }}
             key={transaction.transactionId}
           >
-          <div className="card-body">Transaction Id: {transaction.transactionId}</div>
-          <div className="card-body">Mat. Number: {transaction.materialNumber}</div>
-          <div className="card-body">Mat. Description: {transaction.materialDescription}</div>
-          <div className="card-body">From: {transaction.transferFrom}</div>
-          <div className="card-body">To: {transaction.transferTo}</div>
-          <div className="card-body">Quantity: {transaction.transferedQuantity}</div>
-          <div className="card-body">By: {transaction.transferBy}</div>
-          <div className="card-body">Date: {transaction.transferDate}</div>
-
+          <div className="card-body">Transaction Id: {transaction.transactionId}
+          Mat. Number: {transaction.materialNumber}
+          Mat. Description: {transaction.materialDescription}
+          From: {transaction.transferFrom}
+          To: {transaction.transferTo}
+          Quantity: {transaction.transferedQuantity}
+          By: {transaction.transferBy}
+          Date: {transaction.transferDate}</div>
           </div>
         ))}
       </div>
