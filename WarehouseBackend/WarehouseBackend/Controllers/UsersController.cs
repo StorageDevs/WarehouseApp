@@ -21,14 +21,15 @@ namespace WarehouseBackend.Controllers
             _context = context;
         }
 
-        // GET: api/Users //Működik
+        #region// GET: api/Users 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
+        #endregion
 
-        // GET: api/Users/5 //Működik
+        #region// GET: api/Users/5 
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -41,11 +42,9 @@ namespace WarehouseBackend.Controllers
 
             return user;
         }
+        #endregion
 
-
-
-        //Működik
-        // PUT: api/Users/5 
+        #region// PUT: api/Users/5 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, UpdateUser updateUser)
@@ -67,12 +66,9 @@ namespace WarehouseBackend.Controllers
             return NotFound();
 
         }
+        #endregion
 
-
-
-
-
-        // POST: api/Users
+        #region// POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(CreateUser createUser)
@@ -93,8 +89,9 @@ namespace WarehouseBackend.Controllers
             return CreatedAtAction("GetUser", new { id = NewUser.UserId }, NewUser);
 
         }
+        #endregion
 
-        // DELETE: api/Users/5
+        #region// DELETE: api/Users/5
         [HttpDelete("{id}")] //
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -107,8 +104,9 @@ namespace WarehouseBackend.Controllers
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { Result = user, Message = "Deleted succefully" });
         }
+        #endregion
 
         private bool UserExists(int id)
         {

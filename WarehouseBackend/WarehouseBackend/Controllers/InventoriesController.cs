@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
@@ -15,7 +16,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace WarehouseBackend.Controllers
-{
+{   
     [Route("api/[controller]")]
     [ApiController]
     public class InventoriesController : ControllerBase
@@ -28,6 +29,7 @@ namespace WarehouseBackend.Controllers
         }
 
         #region // GET: api/Inventories, all in inventory table
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
         {

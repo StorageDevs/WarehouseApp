@@ -142,7 +142,7 @@ namespace WarehouseBackend.Controllers
                 }
                 _context.Locations.Remove(location);
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok( new {Result=location,Message="Deleted succefully"});
             }
             catch (Exception ex)
             {

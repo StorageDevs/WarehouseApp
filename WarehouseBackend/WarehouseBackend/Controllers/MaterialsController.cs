@@ -137,7 +137,7 @@ namespace WarehouseBackend.Controllers
                 _context.Materials.Remove(material);
                 await _context.SaveChangesAsync();
 
-                return NoContent();
+                return Ok(new { Result = material, Message = "Deleted succefully" });
             }
             catch (Exception ex)
             {

@@ -1,9 +1,12 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WarehouseBackend.Models;
 
-
+  
 namespace WarehouseBackend
 {
     public class Program
@@ -32,6 +35,34 @@ namespace WarehouseBackend
             });
             #endregion
 
+
+            #region//Authentication
+            var settingsSection = builder.Configuration.GetSection("AuthSettings:JwtOptions");
+
+            var secret = settingsSection.GetValue<string>("Secret");
+            var issuer = settingsSection.GetValue<string>("Issuer");
+            var auidience = settingsSection.GetValue<string>("Audience");
+
+            var key = Encoding.ASCII.GetBytes(secret);
+
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = auidience,
+                    ValidateAudience = true
+                };
+            });
+
+            #endregion
             // Add services to the container.
 
             builder.Services.AddControllers();

@@ -6,6 +6,7 @@ using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySqlX.XDevAPI.Common;
 using WarehouseBackend.Models;
 using static WarehouseBackend.Models.TransactionDTO;
 
@@ -78,7 +79,7 @@ namespace WarehouseBackend.Controllers
                 return NotFound();
             }
 
-            return transaction;
+            return Ok(new { Result = transaction, message = "Successfull request" });
         }
         #endregion
 
