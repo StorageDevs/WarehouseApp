@@ -3,6 +3,11 @@ import React from "react";
 const HomePage = () => {
   return (
     <div style={styles.container}>
+      <video autoPlay loop muted style={styles.videoBackground}>
+        <source src="/video2.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
       <div style={styles.card}>
         <h1>Welcome to the StorageDevs Warehouse Management System</h1>
         <p>
@@ -20,10 +25,22 @@ const HomePage = () => {
 
 const styles = {
   container: {
+    position: "relative",
     display: "flex",
-    height: "80vh",
+    height: "100vh",
     justifyContent: "center",
     alignItems: "center",
+    overflow: "hidden",
+  },
+  videoBackground: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    transform: "translate(-50%, -50%)",
+    zIndex: "-1",
   },
   card: {
     backgroundColor: "rgba(65, 126, 196, 0.9)",
@@ -33,6 +50,7 @@ const styles = {
     textAlign: "center",
     maxWidth: "800px",
     width: "100%",
+    zIndex: "1",
   },
 };
 

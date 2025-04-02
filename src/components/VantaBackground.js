@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
-import CLOUDS from "vanta/dist/vanta.clouds.min";
+import CLOUDS from "vanta/src/vanta.clouds";
 
 const VantaBackground = () => {
   const [vantaEffect, setVantaEffect] = useState(null);
@@ -11,9 +11,11 @@ const VantaBackground = () => {
       setVantaEffect(
         CLOUDS({
           el: vantaRef.current,
-          THREE: THREE,
-          color: 0x2196f3, 
-          backgroundColor: 0x0f0f0f,
+          THREE,
+          color: 0x1a1a2e,
+          backgroundColor: 0x0f3460,
+          speed: 1.4,
+          vertexColors: false,
         })
       );
     }
@@ -22,7 +24,9 @@ const VantaBackground = () => {
     };
   }, [vantaEffect]);
 
-  return <div ref={vantaRef} style={{ width: "100vw", height: "100vh", position: "fixed", zIndex: -1 }} />;
+  return (
+    <div ref={vantaRef} style={{ minHeight: "100vh", width: "100vw", position: "fixed", top: 0, left: 0, zIndex: -1 }} />
+  );
 };
 
 export default VantaBackground;

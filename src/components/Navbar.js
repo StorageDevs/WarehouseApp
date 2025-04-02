@@ -2,25 +2,36 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 
-
 const NavigationBar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    navigate('/home'); 
+    navigate('/home');
   };
 
   const navbarStyle = {
-    background: 'linear-gradient(to right,rgb(129, 176, 230),rgb(32, 60, 112))',
+    background: 'linear-gradient(to right, rgb(129, 176, 230), rgb(32, 60, 112))',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   };
 
+  const logoStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    fontWeight: 'bold',
+    color: 'white',
+    textTransform: 'uppercase',
+  };
+
   return (
     <Navbar style={navbarStyle} expand="lg">
-      <Navbar.Brand as={Link} to="/home">Warehouse Management</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/home" style={logoStyle}>
+        <img src="/boxes.png" alt="Logo" style={{ width: 30, height: 30 }} />
+        SD Warehouse Management
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ms-auto">

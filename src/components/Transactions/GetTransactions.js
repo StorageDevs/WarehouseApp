@@ -50,7 +50,7 @@ function GetAllTransaction() {
             {transactionData.map((transaction) => (
               <div className="card" key={transaction.transactionId}>
                 <div className="card-body">
-                  <p><strong>Transaction Id: {transaction.transactionId}</strong></p>
+                  <p><strong>ID: {transaction.transactionId}</strong></p>
                   <p><strong>Mat. Number: {transaction.materialNumber}</strong></p>          
                   <p><strong>Mat. Description: {transaction.materialDescription}</strong></p>          
                   <p><strong>From: {transaction.transferFrom}</strong></p>          
@@ -65,12 +65,20 @@ function GetAllTransaction() {
         </>
       )}
 
-      <style>
+<style>
         {`
           .container {
             max-width: 1200px;
             margin: auto;
             padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+          
+          .container::-webkit-scrollbar {
+          display: none;
           }
 
           .title {
@@ -89,6 +97,14 @@ function GetAllTransaction() {
             flex-wrap: wrap;
             gap: 20px;
             justify-content: left;
+            overflow-y: auto;
+            max-height: 80vh; 
+            padding: 10px;
+            scrollbar-width: none;
+          }
+
+          .card-container::-webkit-scrollbar {
+          display: none;
           }
 
           .card {

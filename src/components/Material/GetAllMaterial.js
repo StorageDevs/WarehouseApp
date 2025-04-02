@@ -88,12 +88,20 @@ function GetAllMaterial() {
         </>
       )}
 
-      <style>
+<style>
         {`
           .container {
             max-width: 1200px;
             margin: auto;
             padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+          
+          .container::-webkit-scrollbar {
+          display: none;
           }
 
           .title {
@@ -112,6 +120,14 @@ function GetAllMaterial() {
             flex-wrap: wrap;
             gap: 20px;
             justify-content: left;
+            overflow-y: auto;
+            max-height: 80vh; 
+            padding: 10px;
+            scrollbar-width: none;
+          }
+
+          .card-container::-webkit-scrollbar {
+          display: none;
           }
 
           .card {
