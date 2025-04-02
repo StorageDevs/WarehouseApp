@@ -14,7 +14,7 @@ function DeleteMaterial (props)
           });
           if(!request.ok)
           {
-             console.log("Error")
+             console.log("Error during deletion")
              return
           }
           const response = await request.json();

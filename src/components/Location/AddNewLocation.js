@@ -1,74 +1,75 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react';
 
-function AddNewLocation(props) 
-{
-  const [locationData, setLocationdata] = useState(
+function AddNewLocation({ closeForm }) {
+  const [locationData, setLocationData] = useState(
     {
-      id: "",
-      name: "",
-      description: "",
-      capacity: "",
-    })
+      locationId: "",
+      locationName: "",
+      locationDescription: "",
+      locationCapacity: "",
+    });
 
-useEffect(() =>
-  {
-    if (props.locationObj)
-    {
-        setLocationdata({
-        id: props.locationObj.id || '',
-        number: props.locationObj.number || '',
-        description: props.locationObj.description || '',
-        capacity: props.locationObj.capacity || ''
-          });
-        }
-      }, [props.locationObj]);
-
-
-const handleChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    setLocationdata({ ...locationData, [name]: value });
-  }
+    setLocationData({ ...locationData, [name]: value });
+  };
 
-  const handleSubmit = async (event) => 
-  {
-    const url = "https://localhost:7055/api/Locations"
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const url = "https://localhost:7055/api/Locations";
 
     const request = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(locationData),
     });
-    if(!request.ok)
-    {
-       console.log("Error")
-       return
-    }
-    const response = await request.json();
-    props.handleCount();
-    console.log(response.message);
-  }
 
-    return (
-      <div>
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
+    if (!request.ok) {
+      console.log("Error");
+      return;
+    }
+
+    console.log("Location added successfully");
+    closeForm();
+  };
+
+  return (
+    <div className="add-form">
+      <h3>Add New Location</h3>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
           <label>ID:</label>
-            <input type="number" id="id" name="id" value={locationData.id} onChange={handleChange} className='form-control' placeholder='Location ID'/>
+            <input type="number" id="id" name="locationId" value={locationData.locationId} onChange={handleChange} className='form-control' placeholder='Location Id'/>
           <label>Name:</label>
-            <input type="text" id="name" name="name" value={locationData.name} onChange={handleChange} className='form-control' placeholder='Location Name'/>
+            <input type="text" id="name" name="locationName" value={locationData.locationName} onChange={handleChange} className='form-control' placeholder='Location Name'/>
           <label>Description:</label>
-            <input type="text" id="description" name="description" value={locationData.description} onChange={handleChange} className='form-control' placeholder='Location Description'/>
+            <input type="text" id="description" name="locationDescription" value={locationData.locationDescription} onChange={handleChange} className='form-control' placeholder='Location Description'/>
           <label>Capacity:</label>
-            <input type="number" id="capacity" name="capacity" value={locationData.capacity} onChange={handleChange} className='form-control' placeholder='Location Capacity'/>
-            <br></br>
-          <button type="submit" className='btn btn-primary'>Submit</button>
-          
-          </form>
-      </div>
-  )
+            <input type="number" id="capacity" name="locationCapacity" value={locationData.locationCapacity} onChange={handleChange} className='form-control' placeholder='Location Capacity'/>
+
+        <button type="submit" className="btn btn-success">Submit</button>
+        <button type="button" onClick={closeForm} className="btn btn-secondary">Cancel</button>
+      </form>
+
+      <style>
+        {`
+          .add-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+          }
+
+          @media (max-width: 600px) {
+            .add-form {
+              width: 95%;
+            }
+          }
+        `}
+      </style>
+    </div>
+  );
 }
 
-export default AddNewLocation
+export default AddNewLocation;

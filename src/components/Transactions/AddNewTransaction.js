@@ -1,77 +1,81 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react';
 
-function AddNewTransaction(props) 
-{
-  const [transactionData, setTransactiondata] = useState(
-    {
-      matNumber: "",
-      fromLocationName: "",
-      toLocationName: "",
-      quantity: "",
-      userName: ""
-    })
+function AddNewTransaction({ closeForm }) {
+  const [transactionData, setTransactionData] = useState({
+    materialNumber: "",
+    transactionFromLocationName: "",
+    transactionToLocationName: "",
+    transactedQty: "",
+    userName: ""
+  });
 
-useEffect(() =>
-  {
-    if (props.transactionObj)
-    {
-        setTransactiondata({
-        matNumber: props.transactionObj.matNumber || '',
-        fromLocationName: props.transactionObj.fromLocationName || '',
-        toLocationName: props.transactionObj.toLocationName || '',
-        quantity: props.transactionObj.quantity || '',
-        userName: props.transactionObj.userName || ''
-          });
-        }
-      }, [props.transactionObj]);
-
-
-const handleChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    setTransactiondata({ ...transactionData, [name]: value });
-  }
+    setTransactionData({ ...transactionData, [name]: value });
+  };
 
-  const handleSubmit = async (event) => 
-  {
-    const url = "https://localhost:7055/api/Transactions"
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const url = "https://localhost:7055/api/Transactions";
 
     const request = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(transactionData),
     });
-    if(!request.ok)
-    {
-       console.log("Error")
-       return
-    }
-    const response = await request.json();
-    props.handleCount();
-    console.log(response.message);
-  }
 
-    return (
-      <div>
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
-          <label>Number:</label>
-            <input type="number" id="number" name="number" value={transactionData.number} onChange={handleChange} className='form-control' placeholder='Material Number'/>
-          <label>From:</label>
-            <input type="text" id="from" name="from" value={transactionData.fromLocationName} onChange={handleChange} className='form-control' placeholder='Transaction From'/>
-          <label>To:</label>
-            <input type="text" id="to" name="to" value={transactionData.toLocationName} onChange={handleChange} className='form-control' placeholder='Transaction To'/>
-          <label>Quantity:</label>
-            <input type="number" id="quantity" name="quantity" value={transactionData.quantity} onChange={handleChange} className='form-control' placeholder='Transacted Quantity'/>
-          <label>Username:</label>
-            <input type="text" id="username" name="username" value={transactionData.userName} onChange={handleChange} className='form-control' placeholder='Username'/>
-            <br></br>
-          <button type="submit" className='btn btn-primary'>Submit</button>
-          </form>
-      </div>
-  )
+    if (!request.ok) {
+      console.log("Error");
+      return;
+    }
+
+    console.log("Transaction added successfully");
+    closeForm();
+  };
+
+  return (
+    <div className="add-form">
+      <h3>Add New Transaction</h3>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
+        <label>Mat. Number:</label>
+        <input type="number" name="materialNumber" value={transactionData.materialNumber} onChange={handleChange} className="form-control" />
+
+        <label>From (Location):</label>
+        <input type="text" name="transactionFromLocationName" value={transactionData.transactionFromLocationName} onChange={handleChange} className="form-control" />
+
+        <label>To (Location):</label>
+        <input type="text" name="transactionToLocationName" value={transactionData.transactionToLocationName} onChange={handleChange} className="form-control" />
+
+        <label>Quantity:</label>
+        <input type="number" name="transactedQty" value={transactionData.transactedQty} onChange={handleChange} className="form-control" />
+
+        <label>Username:</label>
+        <input type="text" name="userName" value={transactionData.userName} onChange={handleChange} className="form-control" />
+
+        <button type="submit" className="btn btn-success">Submit</button>
+        <button type="button" onClick={closeForm} className="btn btn-secondary">Cancel</button>
+      </form>
+
+      <style>
+        {`
+          .add-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+          }
+
+          @media (max-width: 600px) {
+            .add-form {
+              width: 95%;
+            }
+          }
+        `}
+      </style>
+    </div>
+  );
 }
 
-export default AddNewTransaction
+export default AddNewTransaction;

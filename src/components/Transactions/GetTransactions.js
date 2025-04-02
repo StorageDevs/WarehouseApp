@@ -1,65 +1,127 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
+import AddNewTransaction from "./AddNewTransaction";
 
-function GetTransactions() {
-  const url = "https://localhost:7055/api/Transactions"
+function GetAllTransaction() {
+  const url = "https://localhost:7055/api/Transactions";
   const [transactionData, setTransactionData] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false);
 
-  useEffect(() => 
-  {
-    (async () => 
-      {
+  useEffect(() => {
+    (async () => {
       const request = await fetch(url, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-      
-      if(!request.ok)
-      {
-        console.log("Error")
-        return
+        headers: { "Content-Type": "application/json" }
+      });
+
+      if (!request.ok) {
+        console.log("Error");
+        return;
       }
 
       const response = await request.json();
       setTransactionData(response.result);
       console.log(response.message);
-      })()
-    }, []);
+    })();
+  }, []);
 
-    return (
-      <div>
-        <br></br>
-        <h2 style={{ textAlign: "center", marginBottom: "20px", padding: "10px" }}>Transactions</h2>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "left"}}>
-        {transactionData.map((transaction) => (
-          <div
-            className="card"
-            style={{
-              width: 200,
-              height: "auto",
-              margin: 10,
-              padding: 10,
-              border: "5px solid #ccc",
-              borderRadius: "8px",
-              boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
-              position: "relative",
-            }}
-            key={transaction.transactionId}
-          >
-          <div className="card-body">Transaction Id: {transaction.transactionId}
-          Mat. Number: {transaction.materialNumber}
-          Mat. Description: {transaction.materialDescription}
-          From: {transaction.transferFrom}
-          To: {transaction.transferTo}
-          Quantity: {transaction.transferedQuantity}
-          By: {transaction.transferBy}
-          Date: {transaction.transferDate}</div>
+  const handleAddNewTransaction = () => {
+    setShowAddForm(true);
+  };
+
+  const closeAddForm = () => {
+    setShowAddForm(false);
+  };
+
+  return (
+    <div className="container">
+      {showAddForm ? (
+        <div className="overlay">
+          <AddNewTransaction closeForm={closeAddForm} />
+        </div>
+      ) : (
+        <>
+          <h2 className="title">Transactions</h2>
+          <div className="button-container">
+            <button onClick={handleAddNewTransaction} className="btn btn-primary">
+              Add New Transaction
+            </button>
           </div>
-        ))}
-      </div>
+          <div className="card-container">
+            {transactionData.map((transaction) => (
+              <div className="card" key={transaction.transactionId}>
+                <div className="card-body">
+                  <p><strong>Transaction Id: {transaction.transactionId}</strong></p>
+                  <p><strong>Mat. Number: {transaction.materialNumber}</strong></p>          
+                  <p><strong>Mat. Description: {transaction.materialDescription}</strong></p>          
+                  <p><strong>From: {transaction.transferFrom}</strong></p>          
+                  <p><strong>To: {transaction.transferTo}</strong></p>          
+                  <p><strong>Quantity: {transaction.transferedQuantity}</strong></p>        
+                  <p><strong>By: {transaction.transferBy}</strong></p>     
+                  <p><strong>Date: {transaction.transferDate}</strong></p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      <style>
+        {`
+          .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+          }
+
+          .title {
+            text-align: center;
+            margin-bottom: 20px;
+          }
+
+          .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+          }
+
+          .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: left;
+          }
+
+          .card {
+            width: 100%;
+            max-width: 300px;
+            padding: 15px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+          }
+
+          @media (max-width: 768px) {
+            .card {
+              max-width: 100%;
+            }
+          }
+
+          .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        `}
+      </style>
     </div>
-    );
+  );
 }
 
-export default GetTransactions
+export default GetAllTransaction;

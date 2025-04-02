@@ -47,8 +47,8 @@ function GetInventory() {
             }}
             key={inventory.inventoryId}
           >
-          <div className="card-body">Number: {inventory.materialNumber}<br />
-          Description: {inventory.materialDescription}<br />
+          <div className="card-body">Mat. Number: {inventory.materialNumber}<br />
+          Mat. Description: {inventory.materialDescription}<br />
           From: {inventory.locationFrom}<br />
           To: {inventory.locationTo}<br />
           Quantity: {inventory.transferQuantity}<br />
@@ -61,4 +61,4 @@ function GetInventory() {
     );
 }
 
-export default GetInventory
+export default GetInventory 
