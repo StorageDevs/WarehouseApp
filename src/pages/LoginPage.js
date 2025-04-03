@@ -27,14 +27,18 @@ const LoginPage = () => {
   }, []);
 
   const handleLogin = () => {
+    const isAdmin = username.toLowerCase().includes("admin");
     if (username === "admin" && password === "admin") {
       localStorage.setItem("jwt", "fake-jwt-token"); 
+      localStorage.setItem("isAdmin", isAdmin);
       setError("");
-      navigate("/inventories");
+      navigate("/home");
     } else {
       setError("Wrong username or password!");
     }
   };
+
+
 
     /*const handleLogin = async () => {
     try {

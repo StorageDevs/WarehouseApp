@@ -96,7 +96,7 @@ function GetAllTransaction() {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: left;
+            justify-content: center;
             overflow-y: auto;
             max-height: 80vh; 
             padding: 10px;

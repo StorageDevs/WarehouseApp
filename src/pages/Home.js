@@ -10,10 +10,13 @@ const HomePage = () => {
 
       <div style={styles.card}>
         <h1>Welcome to the StorageDevs Warehouse Management System</h1>
+        <br />
         <p>
-          This platform allows you to efficiently manage your inventory. Use the
-          "Material" and "Location" tab to add, modify, or delete items. Check the "Inventory" tab to see the current stock. The Dashboard serves
-          as a quick overview and guide for new users.
+        This platform allows you to efficiently manage your inventory. Use the "Material" and "Location" tabs to add, modify, or delete items. Check the "Inventory" tab to see the current stock. The "Transaction" tab helps you track all inventory movements.
+
+        If you are logged in as an admin, you will also have access to the "Users" tab, where you can manage user accounts.
+
+        If you don’t have a user account yet, please go to the "Register" tab to create one.
         </p>
         <p>
           For further assistance, navigate through the options in the top menu.

@@ -7,8 +7,9 @@ import GetTransactions from "./components/Transactions/GetTransactions";
 import HomePage from "./pages/Home";
 import NavigationBar from './components/Navbar';
 import GetLocation from "./components/Location/GetLocation";
-import VantaBackground from "./components/VantaBackground"; // Importáljuk az új komponenst
+import VantaBackground from "./components/VantaBackground";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import GetAllUser from "./components/Users/GetAllUsers";
 
 const App = () => {
  // const isAuthenticated = localStorage.getItem('access_token'); 
@@ -31,9 +32,10 @@ const MainContent = ({ isAuthenticated }) => {
     {isAuthenticated && <NavigationBar />} {}
       <Routes>
         <Route path = "*" element={<LoginPage/>} />
-        <Route path="/home" element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />} />
+        <Route path="/home" element={isAuthenticated ? <HomePage /> : <Navigate from="/login" />} />
         <Route path="/login" element={<LoginPage /> } />
         <Route path="/inventories" element={<GetInventory />} />
+        <Route path="/users" element={<GetAllUser />} />
         <Route path="/transactions" element={<GetTransactions />} />
         <Route path="/locations" element={<GetLocation />} />
         <Route path="/materials" element={<GetAllMaterial />} />

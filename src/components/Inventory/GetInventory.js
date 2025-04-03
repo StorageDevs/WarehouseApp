@@ -31,7 +31,7 @@ function GetInventory() {
       <div>
         <br></br>
         <h2 style={{ textAlign: "center", marginBottom: "20px", padding: "10px" }}>Inventory</h2>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "left"}}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center"}}>
         {inventoryData.map((inventory) => (
           <div
             className="card"
