@@ -28,6 +28,11 @@ function GetAllMaterial() {
     })();
   }, []);
 
+  const handleAddMaterial = (newMaterial) => {
+    setMaterialData((prevData) => [...prevData, newMaterial]);
+    setShowAddForm(false);
+  };
+
   const handleUpdate = (id, updatedMaterial) => {
     setMaterialData(materialData.map(mat => mat.materialId === id ? updatedMaterial : mat));
     setSelectedMaterial(null);
@@ -59,7 +64,7 @@ function GetAllMaterial() {
         <>
           {showAddForm ? (
             <div className="overlay">
-              <AddNewMaterial closeForm={closeAddForm} />
+              <AddNewMaterial closeForm={closeAddForm} addMaterial={handleAddMaterial}/>
             </div>
           ) : (
             <>
@@ -119,7 +124,7 @@ function GetAllMaterial() {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: left;
+            justify-content: center;
             overflow-y: auto;
             max-height: 80vh; 
             padding: 10px;

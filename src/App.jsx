@@ -31,14 +31,14 @@ const MainContent = ({ isAuthenticated }) => {
     {!isHomePage && <VantaBackground />}
     {isAuthenticated && <NavigationBar />} {}
       <Routes>
-        <Route path = "*" element={<LoginPage/>} />
-        <Route path="/home" element={isAuthenticated ? <HomePage /> : <Navigate from="/login" />} />
-        <Route path="/login" element={<LoginPage /> } />
-        <Route path="/inventories" element={<GetInventory />} />
-        <Route path="/users" element={<GetAllUser />} />
-        <Route path="/transactions" element={<GetTransactions />} />
-        <Route path="/locations" element={<GetLocation />} />
-        <Route path="/materials" element={<GetAllMaterial />} />
+        <Route path = "*" element={<HomePage/>} />
+        <Route path="/home" style={{ color: 'white' }} element={isAuthenticated ? <HomePage /> : <Navigate from="/login" />} />
+        <Route path="/login" style={{ color: 'white' }} element={<LoginPage /> } />
+        <Route path="/inventories" style={{ color: 'white' }} element={<GetInventory />} />
+        <Route path="/users" style={{ color: 'white' }} element={<GetAllUser />} />
+        <Route path="/transactions" style={{ color: 'white' }} element={<GetTransactions />} />
+        <Route path="/locations" style={{ color: 'white' }} element={<GetLocation />} />
+        <Route path="/materials" style={{ color: 'white' }} element={<GetAllMaterial />} />
       
       </Routes>
     </div>

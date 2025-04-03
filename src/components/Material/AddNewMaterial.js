@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function AddNewMaterial({ closeForm }) {
+function AddNewMaterial({ closeForm, addMaterial }) {
   const [materialData, setMaterialData] = useState({
     materialNumber: "",
     materialDescription: "",
@@ -27,6 +27,9 @@ function AddNewMaterial({ closeForm }) {
       console.log("Error");
       return;
     }
+
+    const newMaterial = await request.json();
+    addMaterial(newMaterial);
 
     console.log("Material added successfully");
     closeForm();

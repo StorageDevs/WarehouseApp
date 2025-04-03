@@ -28,6 +28,11 @@ function GetAllUser() {
     })();
   }, []);
 
+  const handleAddUser = (newUser) => {
+    setUserData((prevData) => [...prevData, newUser]);
+    setShowAddForm(false); 
+  };
+
   const handleUpdate = (id, updatedUser) => {
     setUserData(userData.map(user => user.userId === id ? updatedUser : user));
     setSelectedUser(null);
@@ -59,7 +64,7 @@ function GetAllUser() {
         <>
           {showAddForm ? (
             <div className="overlay">
-              <AddNewUser closeForm={closeAddForm} />
+              <AddNewUser closeForm={closeAddForm} addUser={handleAddUser}/>
             </div>
           ) : (
             <>

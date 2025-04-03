@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function AddNewLocation({ closeForm }) {
+function AddNewLocation({ closeForm, addLocation }) {
   const [locationData, setLocationData] = useState(
     {
       locationId: "",
@@ -28,6 +28,9 @@ function AddNewLocation({ closeForm }) {
       console.log("Error");
       return;
     }
+
+    const newLocation = await request.json();
+    addLocation(newLocation);
 
     console.log("Location added successfully");
     closeForm();

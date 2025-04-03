@@ -28,6 +28,11 @@ function GetLocation() {
     })();
   }, []);
 
+  const handleAddLocation = (newLocation) => {
+    setLocationData((prevData) => [...prevData, newLocation]);
+    setShowAddForm(false);
+  };
+
   const handleUpdate = (id, updatedLocation) => {
     setLocationData(locationData.map(loc => loc.locationId === id ? updatedLocation : loc));
     setSelectedLocation(null);
@@ -59,7 +64,7 @@ function GetLocation() {
         <>
           {showAddForm ? (
             <div className="overlay">
-              <AddNewLocation closeForm={closeAddForm} />
+              <AddNewLocation closeForm={closeAddForm} addLocation={handleAddLocation}/>
             </div>
           ) : (
             <>
@@ -119,7 +124,7 @@ function GetLocation() {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: left;
+            justify-content: center;
             overflow-y: auto;
             max-height: 80vh; 
             padding: 10px;

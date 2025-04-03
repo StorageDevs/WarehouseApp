@@ -58,7 +58,7 @@ const LoginPage = () => {
   return (
     <div ref={vantaRef} style={styles.vantaBackground}>
       <div style={styles.loginContainer}>
-        <h1 style={styles.title}>WH Login Panel</h1>
+        <h1 style={styles.title}>StorageDevs WH Login Panel</h1>
         {error && <p style={styles.error}>{error}</p>}
         <div style={styles.inputGroup}>
           <label style={styles.label}>Username:</label>

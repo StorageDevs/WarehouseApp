@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function AddNewTransaction({ closeForm }) {
+function AddNewTransaction({ closeForm, addTransaction }) {
   const [transactionData, setTransactionData] = useState({
     materialNumber: "",
     transactionFromLocationName: "",
@@ -30,6 +30,9 @@ function AddNewTransaction({ closeForm }) {
       console.log("Error");
       return;
     }
+
+    const newTransaction = await request.json(); 
+    addTransaction(newTransaction);
 
     console.log("Transaction added successfully");
     closeForm();

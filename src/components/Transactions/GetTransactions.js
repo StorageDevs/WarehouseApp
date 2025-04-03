@@ -23,6 +23,11 @@ function GetAllTransaction() {
       console.log(response.message);
     })();
   }, []);
+  
+  const handleAddTransaction = (newTransaction) => {
+    setTransactionData((prevData) => [...prevData, newTransaction]);
+    setShowAddForm(false);
+  };
 
   const handleAddNewTransaction = () => {
     setShowAddForm(true);
@@ -36,7 +41,7 @@ function GetAllTransaction() {
     <div className="container">
       {showAddForm ? (
         <div className="overlay">
-          <AddNewTransaction closeForm={closeAddForm} />
+          <AddNewTransaction closeForm={closeAddForm} addTransaction={handleAddTransaction}/>
         </div>
       ) : (
         <>

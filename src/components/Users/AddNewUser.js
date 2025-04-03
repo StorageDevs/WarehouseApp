@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function AddNewUser({ closeForm }) {
+function AddNewUser({ closeForm, addUser}) {
   const [userData, setUserData] = useState({
     userId: "",
     userName: "",
@@ -29,6 +29,9 @@ function AddNewUser({ closeForm }) {
       console.log("Error");
       return;
     }
+
+    const newUser = await request.json();
+    addUser(newUser);
 
     console.log("User added successfully");
     closeForm();
