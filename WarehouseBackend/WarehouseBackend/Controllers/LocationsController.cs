@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
@@ -27,6 +28,7 @@ namespace WarehouseBackend.Controllers
         }
 
         #region // GET: api/Locations
+        [Authorize(Roles = "superuser,admin")]
         [HttpGet] 
         public async Task<ActionResult> GetAllLocations()
         {
@@ -49,6 +51,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region// GET: api/Locations/5
+        [Authorize(Roles = "superuser,admin")]
         [HttpGet("{id}")] 
         public async Task<ActionResult<Location>> GetLocation(int id)
         {
@@ -71,6 +74,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region // PUT: api/Locations/5
+        [Authorize(Roles = "superuser,admin")]
         [HttpPut("{id}")] 
         public async Task<ActionResult> UpdateLocation(int id, UpdateLocationDTO updateLocationDTO)
         {
@@ -101,7 +105,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region // POST: api/Locations 
-       
+        [Authorize(Roles = "superuser,admin")]
         [HttpPost] 
         public async Task<ActionResult> AddLocation(CreateLocationDTO createLocationDTO) 
         {
@@ -130,6 +134,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region // DELETE: api/Locations/5
+        [Authorize(Roles = "superuser,admin")]
         [HttpDelete("{id}")] 
         public async Task<IActionResult> DeleteLocation(int id)
         {

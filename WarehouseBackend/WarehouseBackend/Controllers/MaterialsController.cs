@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace WarehouseBackend.Controllers
         }
 
         #region// GET: api/Materials
+        [Authorize(Roles = "superuser,admin")]
         [HttpGet] 
         public async Task<ActionResult<IEnumerable<Material>>> GetAllMaterials()
         {
@@ -43,6 +45,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region// GET: api/Materials/5
+        [Authorize(Roles = "superuser,admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Material>> GetMaterial(int id)
         {
@@ -63,6 +66,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region// PUT: api/Materials/5
+        [Authorize(Roles = "superuser,admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMaterial(int id, UpdateMaterial updateMaterial)
         {
@@ -94,6 +98,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region// POST: api/Materials
+        [Authorize(Roles = "superuser,admin")]
         [HttpPost] 
         public async Task<ActionResult<Material>> AddMaterial(CreateMaterial creatematerial)
         {
@@ -121,6 +126,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region// DELETE: api/Materials/5
+        [Authorize(Roles = "superuser,admin")]
         [HttpDelete("{id}")] 
         public async Task<IActionResult> DeleteMaterial(int id)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +29,7 @@ namespace WarehouseBackend.Controllers
         }
 
         #region // GET: api/Inventories, all in inventory table
-        [Authorize]
+        [Authorize(Roles ="user,superuser,admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
         {
@@ -37,27 +37,7 @@ namespace WarehouseBackend.Controllers
             {
                 var result = await
                             (
-                                //from transaction in _context.Transactions
-                                //join material in _context.Materials
-                                //on transaction.MaterialId equals material.MaterialId
-                                //join locationFrom in _context.Locations
-                                //on transaction.TransactionFromId equals locationFrom.LocationId
-                                //join locationTo in _context.Locations
-                                //on transaction.TransactionToId equals locationTo.LocationId
-                                //join user in _context.Users
-                                //on transaction.UserId equals user.UserId
-
-                                //select new
-                                //{
-                                //    MaterialNumber=material.MaterialNumber,
-                                //    MaterialDescription = material.MaterialDescription,
-                                //    LocationFrom = locationFrom.LocationName,
-                                //    LocationTo = locationTo.LocationName,
-                                //    TransferQuantity = transaction.TransactedQty,
-                                //    User =user.UserName,
-                                //    TransacionTime=transaction.TransactionDateTime
-                                //}
-
+                                
                                 from inventory in _context.Inventories
                                 join material in _context.Materials
                                 on inventory.MaterialId equals material.MaterialId
@@ -87,6 +67,7 @@ namespace WarehouseBackend.Controllers
 
 
         #region // GET: api/Inventories/5
+        [Authorize(Roles = "user,superuser,admin")]
         [HttpGet("CustomQuery")]
         public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories([FromQuery] int? materialId, [FromQuery] int? locationId)
         {

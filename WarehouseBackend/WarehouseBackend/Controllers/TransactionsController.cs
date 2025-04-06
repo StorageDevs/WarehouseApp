@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ namespace WarehouseBackend.Controllers
 
 
         #region// GET: api/Transactions
+        [Authorize(Roles = "user,superuser,admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
         {
@@ -69,6 +71,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region// GET: api/Transactions/5
+        [Authorize(Roles = "user,superuser,admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
@@ -85,7 +88,7 @@ namespace WarehouseBackend.Controllers
 
 
         #region// POST: api/Transactions
-
+        [Authorize(Roles = "user,superuser,admin")]
         [HttpPost]
         public async Task<ActionResult> AddTransaction(CreateTransaction CreateTransaction)
         {
