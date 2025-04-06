@@ -1,0 +1,74 @@
+CREATE TRIGGER `MaterialTransfer` AFTER INSERT ON `transaction`
+ FOR EACH ROW BEGIN
+#1. Létrehoz anyag+tárhely rekorot ha még nem lenne az inventory táblába
+
+#1.1 Betárolás előtt
+IF NOT EXISTS
+      ( SELECT MaterialID,LocationID
+      	FROM inventory
+      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID) AND new.TransactionFromID=1
+        
+     THEN INSERT INTO inventory (LocationID,MaterialID,Quantity)
+       	values(new.TransactionToID,new.MaterialID,0);         
+    END IF;
+
+#1.2 kitárolás előtt
+IF NOT EXISTS
+      ( SELECT MaterialID,LocationID
+      	FROM inventory
+      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID) AND new.TransactionToID=2
+        
+     THEN INSERT INTO inventory (LocationID,MaterialID,Quantity)
+       	values(new.TransactionFromID,new.MaterialID,0);         
+    END IF;
+
+#1.3 mozgatás
+	#1.3.1 Indító és fogadó tárhely és anyag
+	IF NOT EXISTS
+      ( SELECT MaterialID,LocationID
+      	FROM inventory
+      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID)  AND new.TransactionFromID!=1 AND new.TransactionToID!=2
+        
+     THEN 
+     	INSERT INTO inventory (LocationID,MaterialID ,Quantity)
+       	VALUES(new.TransactionFromID,new.MaterialID,0);      
+    END IF;
+    
+    IF NOT EXISTS
+      ( SELECT MaterialID,LocationID
+      	FROM inventory
+      	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID)  AND new.TransactionFromID!=1 AND new.TransactionToID!=2
+        
+     THEN 
+     	INSERT INTO inventory (LocationID,MaterialID ,Quantity)
+       	VALUES(new.TransactionToID,new.MaterialID,0);      
+    END IF;
+       
+     
+#2. Inventory tábla értékeinek módosítása az anyagmozgatásnak megfelelően:
+
+#2.1 Bevételez
+	IF new.TransactionFromID=1 THEN 
+    	UPDATE inventory
+        SET Quantity=Quantity+new.TransactedQty
+    	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID;
+	END IF;
+#2.2 Kitárol
+    IF new.TransactionToID=2 THEN
+    	UPDATE inventory
+        SET Quantity=Quantity-new.TransactedQty
+    	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID;
+	END IF;  
+#2.3 Mozgat tárhelyek között  
+    IF new.TransactionFromID!=1 AND new.TransactionToID!=2 THEN
+	#2.3.1 Indító tárhely minuszolás
+   		UPDATE inventory
+    	SET Quantity=Quantity-new.TransactedQty
+    	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionFromID;
+	#2.3.2 Fogadó tárhely pluszolás
+    	UPDATE inventory
+    	SET Quantity=Quantity+new.TransactedQty
+    	WHERE MaterialID=new.MaterialID AND LocationID=new.TransactionToID; 
+	END IF;
+
+END

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 13. 16:38
--- Kiszolgáló verziója: 10.4.32-MariaDB
--- PHP verzió: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Apr 06, 2025 at 11:00 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `warehouse`
+-- Database: `warehouse`
 --
 CREATE DATABASE IF NOT EXISTS `warehouse` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
 USE `warehouse`;
@@ -26,7 +26,7 @@ USE `warehouse`;
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `inventory`
+-- Table structure for table `inventory`
 --
 
 CREATE TABLE `inventory` (
@@ -37,18 +37,16 @@ CREATE TABLE `inventory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- A tábla adatainak kiíratása `inventory`
+-- Dumping data for table `inventory`
 --
 
 INSERT INTO `inventory` (`InventoryID`, `MaterialID`, `LocationID`, `Quantity`) VALUES
-(1, 1, 4, 20),
-(2, 2, 3, -15),
-(3, 2, 5, 15);
+(9, 1, 3, 20);
 
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `location`
+-- Table structure for table `location`
 --
 
 CREATE TABLE `location` (
@@ -59,7 +57,7 @@ CREATE TABLE `location` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- A tábla adatainak kiíratása `location`
+-- Dumping data for table `location`
 --
 
 INSERT INTO `location` (`LocationID`, `LocationName`, `LocationDescription`, `LocationCapacity`) VALUES
@@ -74,7 +72,7 @@ INSERT INTO `location` (`LocationID`, `LocationName`, `LocationDescription`, `Lo
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `material`
+-- Table structure for table `material`
 --
 
 CREATE TABLE `material` (
@@ -86,7 +84,7 @@ CREATE TABLE `material` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- A tábla adatainak kiíratása `material`
+-- Dumping data for table `material`
 --
 
 INSERT INTO `material` (`MaterialID`, `MaterialNumber`, `MaterialDescription`, `Unit`, `price/unit`) VALUES
@@ -98,28 +96,7 @@ INSERT INTO `material` (`MaterialID`, `MaterialNumber`, `MaterialDescription`, `
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `roletype`
---
-
-CREATE TABLE `roletype` (
-  `RoleID` int(11) NOT NULL,
-  `RoleName` varchar(30) NOT NULL,
-  `RoleDescription` varchar(256) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `roletype`
---
-
-INSERT INTO `roletype` (`RoleID`, `RoleName`, `RoleDescription`) VALUES
-(1, 'user', 'can only move material'),
-(2, 'superuser', 'user+material manipulation+location manipulation'),
-(3, 'admin', 'superuser+user manupulation');
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `transaction`
+-- Table structure for table `transaction`
 --
 
 CREATE TABLE `transaction` (
@@ -129,19 +106,18 @@ CREATE TABLE `transaction` (
   `TransactionFromID` int(11) NOT NULL,
   `TransactedQty` int(11) NOT NULL,
   `TransactionToID` int(11) NOT NULL,
-  `UserID` int(11) NOT NULL
+  `UserID` varchar(265) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- A tábla adatainak kiíratása `transaction`
+-- Dumping data for table `transaction`
 --
 
 INSERT INTO `transaction` (`TransactionID`, `TransactionDateTime`, `MaterialID`, `TransactionFromID`, `TransactedQty`, `TransactionToID`, `UserID`) VALUES
-(1, '2025-03-11 22:07:18', 1, 1, 20, 4, 1),
-(2, '2025-03-11 22:09:52', 2, 3, 15, 5, 3);
+(14, '2025-04-06 10:43:10', 1, 1, 20, 3, '');
 
 --
--- Eseményindítók `transaction`
+-- Triggers `transaction`
 --
 DELIMITER $$
 CREATE TRIGGER `MaterialTransfer` AFTER INSERT ON `transaction` FOR EACH ROW BEGIN
@@ -222,36 +198,12 @@ END
 $$
 DELIMITER ;
 
--- --------------------------------------------------------
-
 --
--- Tábla szerkezet ehhez a táblához `user`
---
-
-CREATE TABLE `user` (
-  `UserID` int(11) NOT NULL,
-  `UserName` varchar(30) NOT NULL,
-  `Password` varchar(8) NOT NULL,
-  `SALT` varchar(64) NOT NULL,
-  `HASH` varchar(64) NOT NULL,
-  `Role` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `user`
---
-
-INSERT INTO `user` (`UserID`, `UserName`, `Password`, `SALT`, `HASH`, `Role`) VALUES
-(1, 'user józsi', '', '', '', 1),
-(2, 'superuser béla', '', '', '', 2),
-(3, 'admin klára', '', '', '', 3);
-
---
--- Indexek a kiírt táblákhoz
+-- Indexes for dumped tables
 --
 
 --
--- A tábla indexei `inventory`
+-- Indexes for table `inventory`
 --
 ALTER TABLE `inventory`
   ADD PRIMARY KEY (`InventoryID`),
@@ -259,25 +211,21 @@ ALTER TABLE `inventory`
   ADD KEY `MaterialNumber` (`MaterialID`);
 
 --
--- A tábla indexei `location`
+-- Indexes for table `location`
 --
 ALTER TABLE `location`
-  ADD PRIMARY KEY (`LocationID`);
+  ADD PRIMARY KEY (`LocationID`),
+  ADD UNIQUE KEY `LocationName` (`LocationName`);
 
 --
--- A tábla indexei `material`
+-- Indexes for table `material`
 --
 ALTER TABLE `material`
-  ADD PRIMARY KEY (`MaterialID`);
+  ADD PRIMARY KEY (`MaterialID`),
+  ADD UNIQUE KEY `MaterialNumber` (`MaterialNumber`);
 
 --
--- A tábla indexei `roletype`
---
-ALTER TABLE `roletype`
-  ADD PRIMARY KEY (`RoleID`);
-
---
--- A tábla indexei `transaction`
+-- Indexes for table `transaction`
 --
 ALTER TABLE `transaction`
   ADD PRIMARY KEY (`TransactionID`),
@@ -289,77 +237,51 @@ ALTER TABLE `transaction`
   ADD KEY `TransactionToID` (`TransactionToID`);
 
 --
--- A tábla indexei `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`UserID`),
-  ADD KEY `Role` (`Role`);
-
---
--- A kiírt táblák AUTO_INCREMENT értéke
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT a táblához `inventory`
+-- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `InventoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `InventoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT a táblához `location`
+-- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
   MODIFY `LocationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT a táblához `material`
+-- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
-  MODIFY `MaterialID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `MaterialID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT a táblához `roletype`
---
-ALTER TABLE `roletype`
-  MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT a táblához `transaction`
+-- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `TransactionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `TransactionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT a táblához `user`
---
-ALTER TABLE `user`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- Megkötések a kiírt táblákhoz
+-- Constraints for dumped tables
 --
 
 --
--- Megkötések a táblához `inventory`
+-- Constraints for table `inventory`
 --
 ALTER TABLE `inventory`
   ADD CONSTRAINT `inventory_ibfk_2` FOREIGN KEY (`LocationID`) REFERENCES `location` (`LocationID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `inventory_ibfk_3` FOREIGN KEY (`MaterialID`) REFERENCES `material` (`MaterialID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Megkötések a táblához `transaction`
+-- Constraints for table `transaction`
 --
 ALTER TABLE `transaction`
-  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `transaction_ibfk_4` FOREIGN KEY (`TransactionFromID`) REFERENCES `location` (`LocationID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `transaction_ibfk_5` FOREIGN KEY (`TransactionToID`) REFERENCES `location` (`LocationID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `transaction_ibfk_6` FOREIGN KEY (`MaterialID`) REFERENCES `material` (`MaterialID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Megkötések a táblához `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`Role`) REFERENCES `roletype` (`RoleID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
