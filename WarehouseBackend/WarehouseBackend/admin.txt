@@ -1,0 +1,8 @@
+﻿You can log in with this. Only this user is alive in the default state.
+
+user id:Admin
+password:@Dmin1234
+role:admin
+
+
+available roles:admin,superuser,user

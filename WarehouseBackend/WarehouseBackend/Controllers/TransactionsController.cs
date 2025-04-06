@@ -26,7 +26,7 @@ namespace WarehouseBackend.Controllers
 
 
         #region// GET: api/Transactions
-        //[Authorize(Roles = "user,superuser,admin")]
+        [Authorize(Roles = "user,superuser,admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
         {
@@ -87,7 +87,7 @@ namespace WarehouseBackend.Controllers
         #endregion
 
         #region// POST: api/Transactions
-        //[Authorize(Roles = "user,superuser,admin")]
+        [Authorize(Roles = "user,superuser,admin")]
         [HttpPost]
         public async Task<ActionResult> AddTransaction(CreateTransaction CreateTransaction)
         {
@@ -150,26 +150,8 @@ namespace WarehouseBackend.Controllers
 
 
       
-        #region// DELETE: api/Transactions/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteTransaction(int id)
-        //{
-        //    var transaction = await _context.Transactions.FindAsync(id);
-        //    if (transaction == null)
-        //    {
-        //        return NotFound();
-        //    }
+        
 
-        //    _context.Transactions.Remove(transaction);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-        #endregion
-
-        //private bool TransactionExists(int id)
-        //{
-        //    return _context.Transactions.Any(e => e.TransactionId == id);
-        //}
+        
     }
 }
