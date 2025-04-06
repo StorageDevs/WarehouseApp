@@ -13,7 +13,8 @@ namespace WarehouseBackend.Models
             public string TransferFrom { get; set; }
             public string TransferTo { get; set; }
             public int TransferedQuantity { get; set; }
-            public string TransferBy { get; set; }
+
+            //public string TransferBy { get; set; }
             public DateTime TransferDate { get; set; }
         }
 
@@ -22,8 +23,8 @@ namespace WarehouseBackend.Models
          int MaterialNumber,
          string TransactionFromLocationName,
          string TransactionToLocationName,
-         int TransactedQty,
-         string UserName
+         int TransactedQty
+         //string UserName
         );
 
 

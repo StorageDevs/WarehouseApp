@@ -21,11 +21,11 @@ public partial class WarehouseContext : DbContext
 
     public virtual DbSet<Material> Materials { get; set; }
 
-    public virtual DbSet<Roletype> Roletypes { get; set; }
+    //public virtual DbSet<Roletype> Roletypes { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    //public virtual DbSet<User> Users { get; set; }
 
 
 
@@ -96,18 +96,18 @@ public partial class WarehouseContext : DbContext
                 .IsFixedLength();
         });
 
-        modelBuilder.Entity<Roletype>(entity =>
-        {
-            entity.HasKey(e => e.RoleId).HasName("PRIMARY");
+        //modelBuilder.Entity<Roletype>(entity =>
+        //{
+        //    entity.HasKey(e => e.RoleId).HasName("PRIMARY");
 
-            entity.ToTable("roletype");
+        //    entity.ToTable("roletype");
 
-            entity.Property(e => e.RoleId)
-                .HasColumnType("int(11)")
-                .HasColumnName("RoleID");
-            entity.Property(e => e.RoleDescription).HasMaxLength(256);
-            entity.Property(e => e.RoleName).HasMaxLength(30);
-        });
+        //    entity.Property(e => e.RoleId)
+        //        .HasColumnType("int(11)")
+        //        .HasColumnName("RoleID");
+        //    entity.Property(e => e.RoleDescription).HasMaxLength(256);
+        //    entity.Property(e => e.RoleName).HasMaxLength(30);
+        //});
 
         modelBuilder.Entity<Transaction>(entity =>
         {
@@ -125,7 +125,7 @@ public partial class WarehouseContext : DbContext
 
             entity.HasIndex(e => e.TransactionToId, "TransactionToID");
 
-            entity.HasIndex(e => e.UserId, "UserID");
+            //entity.HasIndex(e => e.UserId, "UserID");
 
             entity.Property(e => e.TransactionId)
                 .HasColumnType("int(11)")
@@ -143,9 +143,9 @@ public partial class WarehouseContext : DbContext
             entity.Property(e => e.TransactionToId)
                 .HasColumnType("int(11)")
                 .HasColumnName("TransactionToID");
-            entity.Property(e => e.UserId)
-                .HasColumnType("int(11)")
-                .HasColumnName("UserID");
+            //entity.Property(e => e.UserId)
+            //    .HasColumnType("int(11)")
+            //    .HasColumnName("UserID");
 
             entity.HasOne(d => d.Material).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.MaterialId)
@@ -159,36 +159,36 @@ public partial class WarehouseContext : DbContext
                 .HasForeignKey(d => d.TransactionToId)
                 .HasConstraintName("transaction_ibfk_5");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Transactions)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("transaction_ibfk_1");
+            //entity.HasOne(d => d.User).WithMany(p => p.Transactions)
+            //    .HasForeignKey(d => d.UserId)
+            //    .HasConstraintName("transaction_ibfk_1");
         });
 
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.HasKey(e => e.UserId).HasName("PRIMARY");
+        //modelBuilder.Entity<User>(entity =>
+        //{
+        //    entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
-            entity.ToTable("user");
+        //    entity.ToTable("user");
 
-            entity.HasIndex(e => e.Role, "Role");
+        //    entity.HasIndex(e => e.Role, "Role");
 
-            entity.Property(e => e.UserId)
-                .HasColumnType("int(11)")
-                .HasColumnName("UserID");
-            entity.Property(e => e.Hash)
-                .HasMaxLength(64)
-                .HasColumnName("HASH");
-            entity.Property(e => e.Password).HasMaxLength(8);
-            entity.Property(e => e.Role).HasColumnType("int(11)");
-            entity.Property(e => e.Salt)
-                .HasMaxLength(64)
-                .HasColumnName("SALT");
-            entity.Property(e => e.UserName).HasMaxLength(30);
+        //    entity.Property(e => e.UserId)
+        //        .HasColumnType("int(11)")
+        //        .HasColumnName("UserID");
+        //    entity.Property(e => e.Hash)
+        //        .HasMaxLength(64)
+        //        .HasColumnName("HASH");
+        //    entity.Property(e => e.Password).HasMaxLength(8);
+        //    entity.Property(e => e.Role).HasColumnType("int(11)");
+        //    entity.Property(e => e.Salt)
+        //        .HasMaxLength(64)
+        //        .HasColumnName("SALT");
+        //    entity.Property(e => e.UserName).HasMaxLength(30);
 
-            entity.HasOne(d => d.RoleNavigation).WithMany(p => p.Users)
-                .HasForeignKey(d => d.Role)
-                .HasConstraintName("user_ibfk_1");
-        });
+        //    entity.HasOne(d => d.RoleNavigation).WithMany(p => p.Users)
+        //        .HasForeignKey(d => d.Role)
+        //        .HasConstraintName("user_ibfk_1");
+        //});
 
         OnModelCreatingPartial(modelBuilder);
     }

@@ -26,7 +26,7 @@ namespace WarehouseBackend.Controllers
 
 
         #region// GET: api/Transactions
-        [Authorize(Roles = "user,superuser,admin")]
+        //[Authorize(Roles = "user,superuser,admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
         {
@@ -45,8 +45,8 @@ namespace WarehouseBackend.Controllers
                                 join locationTo in _context.Locations
                                 on transaction.TransactionToId equals locationTo.LocationId
 
-                                join transferby in _context.Users
-                                on transaction.UserId equals transferby.UserId
+                                //join transferby in _context.Users
+                                //on transaction.UserId equals transferby.UserId
                                 select new GetAllTransaction
                                 {
                                     TransactionId = transaction.TransactionId,
@@ -55,7 +55,7 @@ namespace WarehouseBackend.Controllers
                                     TransferFrom=locationFrom.LocationName,
                                     TransferTo=locationTo.LocationName,
                                     TransferedQuantity = transaction.TransactedQty,
-                                    TransferBy=transferby.UserName,
+                                    //TransferBy=transferby.UserName,
                                     TransferDate=transaction.TransactionDateTime,
                                 }
                             )
@@ -86,9 +86,8 @@ namespace WarehouseBackend.Controllers
         }
         #endregion
 
-
         #region// POST: api/Transactions
-        [Authorize(Roles = "user,superuser,admin")]
+        //[Authorize(Roles = "user,superuser,admin")]
         [HttpPost]
         public async Task<ActionResult> AddTransaction(CreateTransaction CreateTransaction)
         {
@@ -98,7 +97,7 @@ namespace WarehouseBackend.Controllers
                 var materialNumberToId = await _context.Materials.FirstOrDefaultAsync(m => m.MaterialNumber == CreateTransaction.MaterialNumber);
                 var transactionFromLocationNameToId = await _context.Locations.FirstOrDefaultAsync(m => m.LocationName == CreateTransaction.TransactionFromLocationName);
                 var transactionToLocationNameToId = await _context.Locations.FirstOrDefaultAsync(m => m.LocationName == CreateTransaction.TransactionToLocationName);
-                var transactionUserNameToId = await _context.Users.FirstOrDefaultAsync(m => m.UserName == CreateTransaction.UserName);
+                //var transactionUserNameToId = await _context.Users.FirstOrDefaultAsync(m => m.UserName == CreateTransaction.UserName);
 
                 if (materialNumberToId ==null)
                 {
@@ -118,11 +117,11 @@ namespace WarehouseBackend.Controllers
 
                 }
 
-                if (transactionUserNameToId == null)
-                {
-                    return NotFound("No such user");
+                //if (transactionUserNameToId == null)
+                //{
+                //    return NotFound("No such user");
 
-                }
+                //}
 
 
 
@@ -132,7 +131,7 @@ namespace WarehouseBackend.Controllers
                  TransactionFromId = transactionFromLocationNameToId.LocationId,
                  TransactionToId = transactionToLocationNameToId.LocationId,
                  TransactedQty = CreateTransaction.TransactedQty,
-                 UserId= transactionUserNameToId.UserId
+                 //UserId= transactionUserNameToId.UserId
                 };
 
                 await _context.Transactions.AddAsync(transaction);
@@ -148,6 +147,9 @@ namespace WarehouseBackend.Controllers
         }
         #endregion
 
+
+
+      
         #region// DELETE: api/Transactions/5
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> DeleteTransaction(int id)
