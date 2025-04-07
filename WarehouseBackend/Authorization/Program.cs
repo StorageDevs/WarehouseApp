@@ -24,6 +24,23 @@ namespace Authorization
             builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
             builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("AuthSettings:JwtOptions"));
 
+            #region //CORS policy
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+            builder.Services.AddCors(options =>
+            {
+
+                options.AddPolicy(MyAllowSpecificOrigins,
+                                      policy =>
+                                      {
+                                          policy.WithOrigins("http://localhost:3000",
+                                                             "http://localhost:3000")
+                                                                .AllowAnyHeader()
+                                                                .AllowAnyMethod();
+                                      });
+            });
+            #endregion
+
             var settingsSection = builder.Configuration.GetSection("AuthSettings:JwtOptions");
 
             var secret = settingsSection.GetValue<string>("Secret");
@@ -70,6 +87,7 @@ namespace Authorization
 
             app.UseAuthorization();
 
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.MapControllers();
 
