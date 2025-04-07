@@ -4,7 +4,7 @@ import UpdateUser from "./UpdateUser";
 import AddNewUser from "./AddNewUser";
 
 function GetAllUser() {
-  const url = "https://localhost:7055/api/Users";
+  const url = "https://localhost:7188/auth/GetAllUser";
   const [userData, setUserData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -78,11 +78,8 @@ function GetAllUser() {
                 {userData.map((user) => (
                   <div className="card" key={user.userId}>
                     <div className="card-body">
-                      <p><strong>UserId:</strong> {user.userId}</p>
                       <p><strong>Username:</strong> {user.userName}</p>
                       <p><strong>Password:</strong> {user.password}</p>
-                      <p><strong>Salt:</strong> {user.salt}</p>
-                      <p><strong>Hash:</strong> {user.hash}</p>
                       <p><strong>Role:</strong> {user.role}</p>
                     </div>
                     <DeleteUser userId={user.userId} handleDelete={(id) => setUserData(userData.filter(u => u.userId !== id))} />

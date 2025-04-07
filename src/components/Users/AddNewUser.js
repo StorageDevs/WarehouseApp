@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 
 function AddNewUser({ closeForm, addUser}) {
   const [userData, setUserData] = useState({
-    userId: "",
     userName: "",
+    fullName: "",
     password: "",
-    salt: "",
-    hash: "",
-    role: "",
+    email: "",
   });
 
   const handleChange = (event) => {
@@ -17,7 +15,7 @@ function AddNewUser({ closeForm, addUser}) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = "https://localhost:7055/api/Users";
+    const url = "https://localhost:7188/auth/Register";
 
     const request = await fetch(url, {
       method: "POST",
@@ -41,8 +39,6 @@ function AddNewUser({ closeForm, addUser}) {
     <div className="add-form">
       <h3>Add New User</h3>
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
-        <label>User ID:</label>
-        <input type="number" name="userId" value={userData.userId} onChange={handleChange} className="form-control" />
 
         <label>Username:</label>
         <input type="text" name="userName" value={userData.userName} onChange={handleChange} className="form-control" />
@@ -50,14 +46,11 @@ function AddNewUser({ closeForm, addUser}) {
         <label>Password:</label>
         <input type="text" name="password" value={userData.password} onChange={handleChange} className="form-control" />
 
-        <label>Salt:</label>
-        <input type="text" name="salt" value={userData.salt} onChange={handleChange} className="form-control" />
+        <label>Full Name:</label>
+        <input type="text" name="fullName" value={userData.fullName} onChange={handleChange} className="form-control" />
 
-        <label>Hash:</label>
-        <input type="text" name="hash" value={userData.hash} onChange={handleChange} className="form-control" />
-
-        <label>Role:</label>
-        <input type="number" name="role" value={userData.role} onChange={handleChange} className="form-control" />
+        <label>Email:</label>
+        <input type="email" name="email" value={userData.email} onChange={handleChange} className="form-control" />
 
         <button type="submit" className="btn btn-success">Submit</button>
         <button type="button" onClick={closeForm} className="btn btn-secondary">Cancel</button>

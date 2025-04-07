@@ -40,7 +40,7 @@ function GetInventory() {
               height: "auto",
               margin: 10,
               padding: 10,
-              border: "5px solid #ccc",
+              border: "2px solid #ccc",
               borderRadius: "8px",
               boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
               position: "relative",
@@ -48,10 +48,8 @@ function GetInventory() {
             key={inventory.inventoryId}
           >
           <div className="card-body">
-          <p><strong>Mat. Id:</strong> {inventory.materialId}</p><br />
           <p><strong>Mat. Number:</strong> {inventory.materialNumber}</p><br />
           <p><strong>Description:</strong> {inventory.materialDescription}</p><br />
-          <p><strong>Loc. Id:</strong> {inventory.locationId}</p><br />
           <p><strong>Loc. Name:</strong> {inventory.locationName}</p><br />
           <p><strong>Quantity:</strong> {inventory.quantity}</p></div>
           </div>

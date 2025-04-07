@@ -9,7 +9,8 @@ import NavigationBar from './components/Navbar';
 import GetLocation from "./components/Location/GetLocation";
 import VantaBackground from "./components/VantaBackground";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import GetAllUser from "./components/Users/GetAllUsers";
+import RegisterPage from "./pages/RegisterPage";
+// import GetAllUser from "./components/Users/GetAllUsers";
 
 const App = () => {
  // const isAuthenticated = localStorage.getItem('access_token'); 
@@ -34,12 +35,11 @@ const MainContent = ({ isAuthenticated }) => {
         <Route path = "*" element={<HomePage/>} />
         <Route path="/home" style={{ color: 'white' }} element={isAuthenticated ? <HomePage /> : <Navigate from="/login" />} />
         <Route path="/login" style={{ color: 'white' }} element={<LoginPage /> } />
+        <Route path="/register" style={{ color: 'white' }} element={<RegisterPage /> } />
         <Route path="/inventories" style={{ color: 'white' }} element={<GetInventory />} />
-        <Route path="/users" style={{ color: 'white' }} element={<GetAllUser />} />
         <Route path="/transactions" style={{ color: 'white' }} element={<GetTransactions />} />
         <Route path="/locations" style={{ color: 'white' }} element={<GetLocation />} />
         <Route path="/materials" style={{ color: 'white' }} element={<GetAllMaterial />} />
-      
       </Routes>
     </div>
   );

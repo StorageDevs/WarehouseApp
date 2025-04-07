@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as THREE from "three";
 import NET from "vanta/src/vanta.net";
+//import axios from "axios";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -27,10 +28,8 @@ const LoginPage = () => {
   }, []);
 
   const handleLogin = () => {
-    const isAdmin = username.toLowerCase().includes("admin");
-    if (username === "admin" && password === "admin") {
+    if (userName === "admin" && password === "admin") {
       localStorage.setItem("jwt", "fake-jwt-token"); 
-      localStorage.setItem("isAdmin", isAdmin);
       setError("");
       navigate("/home");
     } else {
@@ -38,18 +37,23 @@ const LoginPage = () => {
     }
   };
 
-
-
-    /*const handleLogin = async () => {
+  /* const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
-        username,
+      const response = await axios.post("https://localhost:7188/auth/Login", {
+        userName,
         password,
       });
-      const token = response.data.token;
-      localStorage.setItem("jwt", token);
-      setError("");
-      navigate("/inventories");
+  
+      const accessToken = response.data.access_token;
+      const refreshToken = response.data.refresh_token;
+  
+      if (accessToken && refreshToken) {
+        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("refresh_token", refreshToken);
+        navigate("/home");
+      } else {
+        setError("Error during authorization");
+      }
     } catch (error) {
       setError("Wrong username or password!!");
     }
@@ -65,7 +69,7 @@ const LoginPage = () => {
           <input
             type="text"
             placeholder="Username"
-            value={username}
+            value={userName}
             onChange={(e) => setUsername(e.target.value)}
             style={styles.input}
           />
@@ -82,6 +86,12 @@ const LoginPage = () => {
         </div>
         <button onClick={handleLogin} style={styles.button}>
           Login
+        </button>
+        <button
+            onClick={() => navigate("/home")}
+            style={{ ...styles.button, backgroundColor: "#6c757d", marginTop: "10px" }}
+        >
+            Cancel
         </button>
       </div>
     </div>

@@ -55,14 +55,13 @@ function GetAllTransaction() {
             {transactionData.map((transaction) => (
               <div className="card" key={transaction.transactionId}>
                 <div className="card-body">
-                  <p><strong>ID: {transaction.transactionId}</strong></p>
-                  <p><strong>Mat. Number: {transaction.materialNumber}</strong></p>          
-                  <p><strong>Mat. Description: {transaction.materialDescription}</strong></p>          
-                  <p><strong>From: {transaction.transferFrom}</strong></p>          
-                  <p><strong>To: {transaction.transferTo}</strong></p>          
-                  <p><strong>Quantity: {transaction.transferedQuantity}</strong></p>        
-                  <p><strong>By: {transaction.transferBy}</strong></p>     
-                  <p><strong>Date: {transaction.transferDate}</strong></p>
+                  <p><strong>ID: </strong>{transaction.transactionId}</p>
+                  <p><strong>Mat. Number: </strong> {transaction.materialNumber}</p>          
+                  <p><strong>Mat. Description: </strong>{transaction.materialDescription}</p>          
+                  <p><strong>From: </strong>{transaction.transferFrom}</p>          
+                  <p><strong>To: </strong>{transaction.transferTo}</p>          
+                  <p><strong>Quantity: </strong>{transaction.transferedQuantity}</p>           
+                  <p><strong>Date: </strong>{transaction.transferDate}</p>
                 </div>
               </div>
             ))}
