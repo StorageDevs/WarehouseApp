@@ -63,7 +63,7 @@ function AddNewMaterial({ closeForm, addMaterial }) {
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
             width: 90%;
-            max-width: 400px;
+            max-width: 350px;
           }
 
           @media (max-width: 600px) {

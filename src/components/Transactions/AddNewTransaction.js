@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 function AddNewTransaction({ closeForm, addTransaction }) {
   const [transactionData, setTransactionData] = useState({
-    materialNumberToId: "",
-    transactionFromLocationNameToId: "",
-    transactionToLocationNameToId: "",
+    materialNumber: "",
+    transactionFromLocationName: "",
+    transactionToLocationName: "",
     transactedQty: "",
   });
 
@@ -40,7 +40,7 @@ function AddNewTransaction({ closeForm, addTransaction }) {
       <h3>Add New Transaction</h3>
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
         <label>Mat. Number:</label>
-        <input type="number" name="materialNumberToId" value={transactionData.materialNumberToId} onChange={handleChange} className="form-control" />
+        <input type="number" name="materialNumber" value={transactionData.materialNumberToId} onChange={handleChange} className="form-control" />
 
         <label>From (Location):</label>
         <input type="text" name="transactionFromLocationName" value={transactionData.transactionFromLocationNameToId} onChange={handleChange} className="form-control" />

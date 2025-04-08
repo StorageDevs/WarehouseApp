@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import DeleteUser from "./DeleteUser";
-import UpdateUser from "./UpdateUser";
 import AddNewUser from "./AddNewUser";
 
 function GetAllUser() {
   const url = "https://localhost:7188/auth/GetAllUser";
   const [userData, setUserData] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [showAddForm, setShowAddForm] = useState(false); 
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -30,69 +27,47 @@ function GetAllUser() {
 
   const handleAddUser = (newUser) => {
     setUserData((prevData) => [...prevData, newUser]);
-    setShowAddForm(false); 
-  };
-
-  const handleUpdate = (id, updatedUser) => {
-    setUserData(userData.map(user => user.userId === id ? updatedUser : user));
-    setSelectedUser(null);
-    setIsEditing(false);
-  };
-
-  const handleEditClick = (user) => {
-    setSelectedUser(user);
-    setIsEditing(true);
+    setShowAddForm(false);
   };
 
   const handleAddNewUser = () => {
-    setShowAddForm(true); 
+    setShowAddForm(true);
   };
 
   const closeAddForm = () => {
-    setShowAddForm(false); 
+    setShowAddForm(false);
   };
 
   return (
     <div className="container">
-      {isEditing ? (
-        <UpdateUser
-          selectedUser={selectedUser}
-          handleUpdate={handleUpdate}
-          closeEdit={() => setIsEditing(false)}
-        />
+      {showAddForm ? (
+        <div className="overlay">
+          <AddNewUser closeForm={closeAddForm} addUser={handleAddUser} />
+        </div>
       ) : (
         <>
-          {showAddForm ? (
-            <div className="overlay">
-              <AddNewUser closeForm={closeAddForm} addUser={handleAddUser}/>
-            </div>
-          ) : (
-            <>
-              <h2 className="title">Users</h2>
-              <div className="button-container">
-                <button onClick={handleAddNewUser} className="btn btn-primary">
-                  Add New User
-                </button>
+          <h2 className="title">Users</h2>
+          <div className="button-container">
+            <button onClick={handleAddNewUser} className="btn btn-primary">
+              Add New User
+            </button>
+          </div>
+          <div className="card-container">
+            {userData.map((user) => (
+              <div className="card" key={user.userId}>
+                <div className="card-body">
+                  <p><strong>Username:</strong> {user.userName}</p>
+                  <p><strong>Password:</strong> {user.password}</p>
+                  <p><strong>Role:</strong> {user.role}</p>
+                </div>
+                <DeleteUser userId={user.userId} handleDelete={(id) => setUserData(userData.filter(u => u.userId !== id))} />
               </div>
-              <div className="card-container">
-                {userData.map((user) => (
-                  <div className="card" key={user.userId}>
-                    <div className="card-body">
-                      <p><strong>Username:</strong> {user.userName}</p>
-                      <p><strong>Password:</strong> {user.password}</p>
-                      <p><strong>Role:</strong> {user.role}</p>
-                    </div>
-                    <DeleteUser userId={user.userId} handleDelete={(id) => setUserData(userData.filter(u => u.userId !== id))} />
-                    <button onClick={() => handleEditClick(user)} className="btn btn-warning">Modify</button>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+            ))}
+          </div>
         </>
       )}
 
-<style>
+      <style>
         {`
           .container {
             max-width: 1200px;
@@ -103,9 +78,9 @@ function GetAllUser() {
             scrollbar-width: none;
             -ms-overflow-style: none;
           }
-          
+
           .container::-webkit-scrollbar {
-          display: none;
+            display: none;
           }
 
           .title {
@@ -125,13 +100,13 @@ function GetAllUser() {
             gap: 20px;
             justify-content: center;
             overflow-y: auto;
-            max-height: 80vh; 
+            max-height: 80vh;
             padding: 10px;
             scrollbar-width: none;
           }
 
           .card-container::-webkit-scrollbar {
-          display: none;
+            display: none;
           }
 
           .card {
@@ -168,3 +143,4 @@ function GetAllUser() {
 }
 
 export default GetAllUser;
+

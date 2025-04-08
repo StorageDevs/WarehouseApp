@@ -137,7 +137,7 @@ const styles = {
   },
   input: {
     width: "100%",
-    padding: "10px",
+    padding: "8px",
     borderRadius: "5px",
     border: "1px solid #ccc",
     fontSize: "16px",
@@ -147,7 +147,7 @@ const styles = {
     color: "white",
     border: "none",
     padding: "10px 15px",
-    borderRadius: "5px",
+    borderRadius: "8px",
     cursor: "pointer",
     fontWeight: "bold",
     fontSize: "16px",

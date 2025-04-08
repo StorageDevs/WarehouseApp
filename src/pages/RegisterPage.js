@@ -80,7 +80,7 @@ const RegisterPage = () => {
           <label style={styles.label}>Username:</label>
           <input
             type="text"
-            placeholder="Choose a username"
+            placeholder=""
             value={userName}
             onChange={(e) => setUsername(e.target.value)}
             style={styles.input}
@@ -90,7 +90,7 @@ const RegisterPage = () => {
           <label style={styles.label}>Password:</label>
           <input
             type="password"
-            placeholder="Choose a password"
+            placeholder=""
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={styles.input}
@@ -100,7 +100,7 @@ const RegisterPage = () => {
           <label style={styles.label}>Full name:</label>
           <input
             type="text"
-            placeholder="Full name"
+            placeholder=""
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             style={styles.input}
@@ -110,7 +110,7 @@ const RegisterPage = () => {
           <label style={styles.label}>Email:</label>
           <input
             type="text"
-            placeholder="Email"
+            placeholder=""
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             style={styles.input}
@@ -168,12 +168,12 @@ const styles = {
   label: {
     display: "block",
     fontWeight: "bold",
-    marginBottom: "5px",
+    marginBottom: "1px",
     color: "#333",
   },
   input: {
     width: "100%",
-    padding: "10px",
+    padding: "5px",
     borderRadius: "5px",
     border: "1px solid #ccc",
     fontSize: "16px",
@@ -183,7 +183,7 @@ const styles = {
     color: "white",
     border: "none",
     padding: "10px 15px",
-    borderRadius: "5px",
+    borderRadius: "8px",
     cursor: "pointer",
     fontWeight: "bold",
     fontSize: "16px",

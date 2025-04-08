@@ -36,6 +36,7 @@ const NavigationBar = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ms-auto">
+          <Nav.Link as={Link} to="/users" style={{ color: 'white' }}>Users</Nav.Link>
           <Nav.Link as={Link} to="/inventories" style={{ color: 'white' }}>Inventory</Nav.Link>
           <Nav.Link as={Link} to="/transactions" style={{ color: 'white' }}>Transactions</Nav.Link>
           <Nav.Link as={Link} to="/locations" style={{ color: 'white' }}>Locations</Nav.Link>
