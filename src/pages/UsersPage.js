@@ -1,4 +1,4 @@
-/* import React from 'react';
+import React from 'react';
 import GetAllUsers from '../components/Users/GetAllUsers';
 
 const UsersPage = () => {
@@ -10,4 +10,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage; */
+export default UsersPage;
