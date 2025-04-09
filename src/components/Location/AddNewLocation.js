@@ -41,13 +41,13 @@ function AddNewLocation({ closeForm, addLocation }) {
       <h3>Add New Location</h3>
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
           <label>ID:</label>
-            <input type="number" id="id" name="locationId" value={locationData.locationId} onChange={handleChange} className='form-control' placeholder='Location Id'/>
+            <input type="number" id="id" name="locationId" value={locationData.locationId} onChange={handleChange} className='form-control' placeholder=''/>
           <label>Name:</label>
-            <input type="text" id="name" name="locationName" value={locationData.locationName} onChange={handleChange} className='form-control' placeholder='Location Name'/>
+            <input type="text" id="name" name="locationName" value={locationData.locationName} onChange={handleChange} className='form-control' placeholder=''/>
           <label>Description:</label>
-            <input type="text" id="description" name="locationDescription" value={locationData.locationDescription} onChange={handleChange} className='form-control' placeholder='Location Description'/>
+            <input type="text" id="description" name="locationDescription" value={locationData.locationDescription} onChange={handleChange} className='form-control' placeholder=''/>
           <label>Capacity:</label>
-            <input type="number" id="capacity" name="locationCapacity" value={locationData.locationCapacity} onChange={handleChange} className='form-control' placeholder='Location Capacity'/>
+            <input type="number" id="capacity" name="locationCapacity" value={locationData.locationCapacity} onChange={handleChange} className='form-control' placeholder=''/>
 
         <button type="submit" className="btn btn-success">Submit</button>
         <button type="button" onClick={closeForm} className="btn btn-secondary">Cancel</button>
