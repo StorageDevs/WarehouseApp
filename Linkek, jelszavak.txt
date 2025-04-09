@@ -8,7 +8,7 @@ Autorizáció esetén:
 Admin
 @Dmin1234
 
-Tesztelés:
+Frontend kipróbálása backend nélkül:
 admin
 admin
 
