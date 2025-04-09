@@ -45,8 +45,7 @@ namespace WarehouseBackend.Controllers
                                 join locationTo in _context.Locations
                                 on transaction.TransactionToId equals locationTo.LocationId
 
-                                //join transferby in _context.Users
-                                //on transaction.UserId equals transferby.UserId
+                                
                                 select new GetAllTransaction
                                 {
                                     TransactionId = transaction.TransactionId,
@@ -55,7 +54,7 @@ namespace WarehouseBackend.Controllers
                                     TransferFrom=locationFrom.LocationName,
                                     TransferTo=locationTo.LocationName,
                                     TransferedQuantity = transaction.TransactedQty,
-                                    //TransferBy=transferby.UserName,
+                                    
                                     TransferDate=transaction.TransactionDateTime,
                                 }
                             )
@@ -97,7 +96,7 @@ namespace WarehouseBackend.Controllers
                 var materialNumberToId = await _context.Materials.FirstOrDefaultAsync(m => m.MaterialNumber == CreateTransaction.MaterialNumber);
                 var transactionFromLocationNameToId = await _context.Locations.FirstOrDefaultAsync(m => m.LocationName == CreateTransaction.TransactionFromLocationName);
                 var transactionToLocationNameToId = await _context.Locations.FirstOrDefaultAsync(m => m.LocationName == CreateTransaction.TransactionToLocationName);
-                //var transactionUserNameToId = await _context.Users.FirstOrDefaultAsync(m => m.UserName == CreateTransaction.UserName);
+               
 
                 if (materialNumberToId ==null)
                 {
@@ -117,13 +116,7 @@ namespace WarehouseBackend.Controllers
 
                 }
 
-                //if (transactionUserNameToId == null)
-                //{
-                //    return NotFound("No such user");
-
-                //}
-
-
+             
 
                 var transaction= new Transaction
                 {
@@ -131,7 +124,7 @@ namespace WarehouseBackend.Controllers
                  TransactionFromId = transactionFromLocationNameToId.LocationId,
                  TransactionToId = transactionToLocationNameToId.LocationId,
                  TransactedQty = CreateTransaction.TransactedQty,
-                 //UserId= transactionUserNameToId.UserId
+                 
                 };
 
                 await _context.Transactions.AddAsync(transaction);

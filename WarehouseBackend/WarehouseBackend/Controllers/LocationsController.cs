@@ -156,18 +156,7 @@ namespace WarehouseBackend.Controllers
 
         }
 
-   
-
-
-
-        //private bool LocationExists(int id)
-        //{
-        //    return _context.Locations.Any(e => e.LocationId == id);
-        //}
-
-
-
-
+  
         #endregion
     }
 }
