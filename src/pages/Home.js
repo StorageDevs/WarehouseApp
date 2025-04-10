@@ -7,23 +7,16 @@ const HomePage = () => {
   useEffect(() => {
     const wasLoggedOut = localStorage.getItem("logoutSuccess");
     if (wasLoggedOut) {
-      
+      setLogoutMessage("Successful logout.");
       setShowMessage(true);
       localStorage.removeItem("logoutSuccess");
-      setLogoutMessage("Successful logout.");
-
-      const timer = setTimeout(() => {
-        setShowMessage(false); 
-      }, 500);
-
-      const removeTimer = setTimeout(() => {
-        setLogoutMessage("");
-      }, 3500);
   
-      return () => {
-        clearTimeout(timer);
-        clearTimeout(removeTimer);
-      };
+      const timer = setTimeout(() => {
+        setShowMessage(false);
+        setTimeout(() => setLogoutMessage(""), 1000);
+      }, 2000); 
+  
+      return () => clearTimeout(timer);
     }
   }, []);
 

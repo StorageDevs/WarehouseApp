@@ -1,3 +1,109 @@
+/* import React, { useEffect, useState } from "react";
+import DeleteUser from "./DeleteUser";
+import { jwtDecode } from "jwt-decode";
+
+function GetAllUser() {
+  const url = "https://localhost:7188/auth/GetAllUser";
+  const [userData, setUserData] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      const decoded = jwtDecode(token);
+      const roles = Array.isArray(decoded.role) ? decoded.role : [decoded.role];
+      if (roles.includes("admin")) {
+        setIsAdmin(true);
+        fetchUsers(token);
+      }
+    }
+  }, []);
+
+  const fetchUsers = async (token) => {
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}`
+      },
+    });
+
+    if (!request.ok) {
+      console.log("Error");
+      return;
+    }
+
+    const response = await request.json();
+    setUserData(response.result);
+  };
+
+  const assignRole = async (userName, roleName) => {
+    const token = localStorage.getItem("jwt");
+    const response = await fetch("https://localhost:7188/auth/AssignRole", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ userName, roleName })
+    });
+
+    const data = await response.json();
+    alert(data.message);
+  };
+
+  const removeRole = async (userName, roleName) => {
+    const token = localStorage.getItem("jwt");
+    const response = await fetch("https://localhost:7188/auth/RemoveRole", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ userName, roleName })
+    });
+
+    const data = await response.json();
+    alert(data.message);
+  };
+
+  if (!isAdmin) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <h2>Access Denied.</h2>
+        <p>Ehhez az oldalhoz csak adminisztrátor férhet hozzá.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container">
+      <h2 className="title">Users</h2>
+      <div className="card-container">
+        {userData.map((user) => (
+          <div className="card" key={user.userID}>
+            <div className="card-body">
+              <p><strong>Username:</strong> {user.userName}</p>
+              <p><strong>Email:</strong> {user.email}</p>
+              <p><strong>Role:</strong> {user.role?.join(", ") || "None"}</p>
+            </div>
+            <div className="role-buttons">
+              <button onClick={() => assignRole(user.userName, "")}>Assign Role</button>
+              <button onClick={() => removeRole(user.userName, "")}>Remove Role</button>
+            </div>
+            <DeleteUser
+              userId={user.userID}
+              handleDelete={(id) => setUserData(userData.filter(u => u.userID !== id))}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default GetAllUser; */
+
 import React, { useEffect, useState } from "react";
 import DeleteUser from "./DeleteUser";
 
@@ -12,7 +118,7 @@ function GetAllUser() {
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-      },
+        },
       });
 
       if (!request.ok) {
@@ -21,31 +127,72 @@ function GetAllUser() {
       }
 
       const response = await request.json();
-      setUserData(response);
+      setUserData(response.result);
       console.log(response);
     })();
   }, []);
 
+  const assignRole = async (userName, roleName) => {
+    try {
+      const response = await fetch("https://localhost:7188/auth/Assignrole", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+        },
+        body: JSON.stringify({ userName, roleName })
+      });
+
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      console.error("Error assigning role:", error);
+    }
+  };
+
+  const removeRole = async (userName, roleName) => {
+    try {
+      const response = await fetch("https://localhost:7188/auth/Removerole", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+        },
+        body: JSON.stringify({ userName, roleName })
+      });
+
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      console.error("Error removing role:", error);
+    }
+  };
+
   return (
-    <div className="container"> : (
-        <>
-          <h2 className="title">Users</h2>
-          <div className="button-container">
-          </div>
-          <div className="card-container">
-            {userData.map((user) => (
-              <div className="card" key={user.userId}>
-                <div className="card-body">
-                  <p><strong>Username:</strong> {user.userName}</p>
-                  <p><strong>Password:</strong> {user.password}</p>
-                  <p><strong>Role:</strong> {user.role}</p>
-                </div>
-                <DeleteUser userId={user.userId} handleDelete={(id) => setUserData(userData.filter(u => u.userId !== id))} />
+    <div className="container">
+      <>
+        <h2 className="title">Users</h2>
+        <div className="button-container"></div>
+        <div className="card-container">
+          {userData.map((user) => (
+            <div className="card" key={user.userID}>
+              <div className="card-body">
+                <p><strong>Username:</strong> {user.userName}</p>
+                <p><strong>Email:</strong> {user.email}</p>
+                <p><strong>Role:</strong> {user.role?.join(", ") || "None"}</p>
               </div>
-            ))}
-          </div>
-        </>
-      )
+              <div className="role-buttons">
+                <button onClick={() => assignRole(user.userName, "")}>Assign Role</button>
+                <button onClick={() => removeRole(user.userName, "")}>Remove Role</button>
+              </div>
+              <DeleteUser
+                userId={user.userID}
+                handleDelete={(id) => setUserData(userData.filter(u => u.userID !== id))}
+              />
+            </div>
+          ))}
+        </div>
+      </>
 
       <style>
         {`
@@ -68,12 +215,6 @@ function GetAllUser() {
             margin-bottom: 20px;
           }
 
-          .button-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-          }
-
           .card-container {
             display: flex;
             flex-wrap: wrap;
@@ -82,11 +223,6 @@ function GetAllUser() {
             overflow-y: auto;
             max-height: 80vh;
             padding: 10px;
-            scrollbar-width: none;
-          }
-
-          .card-container::-webkit-scrollbar {
-            display: none;
           }
 
           .card {
@@ -99,22 +235,22 @@ function GetAllUser() {
             text-align: center;
           }
 
-          @media (max-width: 768px) {
-            .card {
-              max-width: 100%;
-            }
+          .role-buttons {
+            margin: 10px 0;
           }
 
-          .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          .role-buttons button {
+            margin: 5px;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+          }
+
+          .role-buttons button:hover {
+            background-color: #0056b3;
           }
         `}
       </style>
