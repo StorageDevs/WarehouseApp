@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import DeleteUser from "./DeleteUser";
-import AddNewUser from "./AddNewUser";
 
 function GetAllUser() {
   const url = "https://localhost:7188/auth/GetAllUser";
   const [userData, setUserData] = useState([]);
-  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     (async () => {
       const request = await fetch(url, {
         method: "GET",
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+      },
       });
 
       if (!request.ok) {
@@ -25,32 +26,11 @@ function GetAllUser() {
     })();
   }, []);
 
-  const handleAddUser = (newUser) => {
-    setUserData((prevData) => [...prevData, newUser]);
-    setShowAddForm(false);
-  };
-
-  const handleAddNewUser = () => {
-    setShowAddForm(true);
-  };
-
-  const closeAddForm = () => {
-    setShowAddForm(false);
-  };
-
   return (
-    <div className="container">
-      {showAddForm ? (
-        <div className="overlay">
-          <AddNewUser closeForm={closeAddForm} addUser={handleAddUser} />
-        </div>
-      ) : (
+    <div className="container"> : (
         <>
           <h2 className="title">Users</h2>
           <div className="button-container">
-            <button onClick={handleAddNewUser} className="btn btn-primary">
-              Add New User
-            </button>
           </div>
           <div className="card-container">
             {userData.map((user) => (
@@ -65,7 +45,7 @@ function GetAllUser() {
             ))}
           </div>
         </>
-      )}
+      )
 
       <style>
         {`

@@ -7,9 +7,10 @@ const HomePage = () => {
   useEffect(() => {
     const wasLoggedOut = localStorage.getItem("logoutSuccess");
     if (wasLoggedOut) {
-      setLogoutMessage("Successful logout.");
+      
       setShowMessage(true);
-      localStorage.removeItem("logoutSuccess"); 
+      localStorage.removeItem("logoutSuccess");
+      setLogoutMessage("Successful logout.");
 
       const timer = setTimeout(() => {
         setShowMessage(false); 

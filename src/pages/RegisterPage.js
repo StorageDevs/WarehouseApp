@@ -30,45 +30,24 @@ const RegisterPage = () => {
     };
   }, []);
 
-  const handleRegister = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post("https://localhost:7188/auth/Register", {
         userName,
-        password,
         fullName,
+        password,
         email,
       });
-      const token = response.data.token;
-      localStorage.setItem("jwt", token);
+
+      console.log(response)
       setSuccess("Registration successful! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 2000);
-      setError("");
-      navigate("/home");
+      setTimeout(() => navigate("/login"), 3000);
     } catch (error) {
       setError("Registration failed. Username might be taken.");
       setSuccess("");
     }
-  }; 
-
-  /* const handleRegister = async () =>{
-        try {
-            const token = localStorage.getItem('jwt');
-            if(!token) {
-                throw new Error('Not found JWT token!');
-            }
-            const response = await axios.post("https://localhost:7188/auth/Register", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setSuccess(response.data);
-        }
-        catch(error) {
-            setError('Registration failed. Username might be taken.');
-        }
-    }
-    handleRegister();
-    */
+  };
 
   return (
     <div ref={vantaRef} style={styles.vantaBackground}>
@@ -76,55 +55,58 @@ const RegisterPage = () => {
         <h1 style={styles.title}>StorageDevs WH Registration</h1>
         {error && <p style={styles.error}>{error}</p>}
         {success && <p style={styles.success}>{success}</p>}
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Username:</label>
-          <input
-            type="text"
-            placeholder=""
-            value={userName}
-            onChange={(e) => setUsername(e.target.value)}
-            style={styles.input}
-          />
-        </div>
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Password:</label>
-          <input
-            type="password"
-            placeholder=""
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-          />
-        </div>
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Full name:</label>
-          <input
-            type="text"
-            placeholder=""
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            style={styles.input}
-          />
-        </div>
-        <div style={styles.inputGroup}>
-          <label style={styles.label}>Email:</label>
-          <input
-            type="text"
-            placeholder=""
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
-          />
-        </div>
-        <button onClick={handleRegister} style={styles.button}>
-          Register
-        </button>
-        <button
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Username:</label>
+            <input
+              type="text"
+              placeholder=""
+              value={userName}
+              onChange={(e) => setUsername(e.target.value)}
+              style={styles.input}
+            />
+          </div>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Password:</label>
+            <input
+              type="password"
+              placeholder=""
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={styles.input}
+            />
+          </div>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Full name:</label>
+            <input
+              type="text"
+              placeholder=""
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              style={styles.input}
+            />
+          </div>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Email:</label>
+            <input
+              type="text"
+              placeholder=""
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={styles.input}
+            />
+          </div>
+          <button type="submit" style={styles.button}>
+            Register
+          </button>
+          <button
+            type="button"
             onClick={() => navigate("/home")}
             style={{ ...styles.button, backgroundColor: "#6c757d", marginTop: "10px" }}
-        >
+          >
             Cancel
-        </button>
+          </button>
+        </form>
       </div>
     </div>
   );
@@ -188,6 +170,12 @@ const styles = {
     fontWeight: "bold",
     fontSize: "16px",
     width: "100%",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    maxWidth: "300px",
   },
 };
 

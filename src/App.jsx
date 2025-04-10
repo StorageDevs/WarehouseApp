@@ -13,9 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import GetAllUser from "./components/Users/GetAllUsers";
 
 const App = () => {
- // const isAuthenticated = localStorage.getItem('access_token'); 
-  const isAuthenticated = true;
-
+ const isAuthenticated = localStorage.getItem('jwt') != null; 
   return (
     <Router>
       <MainContent isAuthenticated={isAuthenticated} />
@@ -29,18 +27,30 @@ const MainContent = ({ isAuthenticated }) => {
 
   return (
     <div style={{ minHeight: "100vh", width: "100vw", position: "relative" }}>
-    {!isHomePage && <VantaBackground />}
-    {isAuthenticated && <NavigationBar />} {}
+      {!isHomePage && <VantaBackground />}
+      <NavigationBar isAuthenticated={isAuthenticated} />
+
       <Routes>
-        <Route path = "*" element={<HomePage/>} />
-        <Route path="/home" style={{ color: 'white' }} element={isAuthenticated ? <HomePage /> : <Navigate from="/login" />} />
-        <Route path="/login" style={{ color: 'white' }} element={<LoginPage /> } />
-        <Route path="/register" style={{ color: 'white' }} element={<RegisterPage /> } />
-        <Route path="/users" style={{ color: 'white' }} element={<GetAllUser />} />
-        <Route path="/inventories" style={{ color: 'white' }} element={<GetInventory />} />
-        <Route path="/transactions" style={{ color: 'white' }} element={<GetTransactions />} />
-        <Route path="/locations" style={{ color: 'white' }} element={<GetLocation />} />
-        <Route path="/materials" style={{ color: 'white' }} element={<GetAllMaterial />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        {isAuthenticated && (
+          <>
+            <Route path="*" element={<HomePage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/users" element={<GetAllUser />} />
+            <Route path="/inventories" element={<GetInventory />} />
+            <Route path="/transactions" element={<GetTransactions />} />
+            <Route path="/locations" element={<GetLocation />} />
+            <Route path="/materials" element={<GetAllMaterial />} />
+          </>
+        )}
+        {!isAuthenticated && (
+          <>
+            <Route path="*" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<Navigate from="/login" />} />
+          </>
+        )}
       </Routes>
     </div>
   );

@@ -10,7 +10,10 @@ function GetAllTransaction() {
     (async () => {
       const request = await fetch(url, {
         method: "GET",
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+      },
       });
 
       if (!request.ok) {

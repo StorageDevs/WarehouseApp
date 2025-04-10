@@ -19,7 +19,10 @@ function AddNewMaterial({ closeForm, addMaterial }) {
 
     const request = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+    },
       body: JSON.stringify(materialData),
     });
 

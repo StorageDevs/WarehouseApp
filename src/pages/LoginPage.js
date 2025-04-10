@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as THREE from "three";
 import NET from "vanta/src/vanta.net";
-//import axios from "axios";
+import axios from "axios";
 
 const LoginPage = () => {
   const [userName, setUsername] = useState("");
@@ -27,37 +27,25 @@ const LoginPage = () => {
     };
   }, []);
 
-  const handleLogin = () => {
-    if (userName === "admin" && password === "admin") {
-      localStorage.setItem("jwt", "fake-jwt-token"); 
-      setError("");
-      navigate("/home");
-    } else {
-      setError("Wrong username or password!");
-    }
-  };
-
-  /* const handleLogin = async () => {
+  const handleLogin = async () => {
     try {
       const response = await axios.post("https://localhost:7188/auth/Login", {
         userName,
         password,
       });
   
-      const accessToken = response.data.access_token;
-      const refreshToken = response.data.refresh_token;
+      const Token = response.data.token;
   
-      if (accessToken && refreshToken) {
-        localStorage.setItem("access_token", accessToken);
-        localStorage.setItem("refresh_token", refreshToken);
-        navigate("/home");
+      if (Token) {
+        localStorage.setItem("jwt", Token);
+        window.location.href = "/home";
       } else {
         setError("Error during authorization");
       }
     } catch (error) {
       setError("Wrong username or password!!");
     }
-  }; */
+  }; 
 
   return (
     <div ref={vantaRef} style={styles.vantaBackground}>
