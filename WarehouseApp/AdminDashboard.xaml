@@ -1,0 +1,25 @@
+﻿<Window x:Class="WarehouseApp.AdminDashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Admin Dashboard" MinHeight="500" MinWidth="950" Height="600" Width="950">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <!-- Bal oldali navigáció -->
+            <ColumnDefinition Width="*"/>
+            <!-- Jobb oldali tartalom -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Bal oldali navigációs panel -->
+        <StackPanel Background="#2e3137" Width="200" Grid.Column="0">
+            <Button Content="Dashboard" Click="BtnDashboard_Click" Height="50" Background="#545d6a" Foreground="White"/>
+            <Button Content="Inventory" Click="BtnInventory_Click" Height="50" Background="#545d6a" Foreground="White"/>
+            <Button Content="Materials" Click="BtnMaterials_Click" Height="50" Background="#545d6a" Foreground="White"/>
+            <Button Content="Locations" Click="BtnLocations_Click" Height="50" Background="#545d6a" Foreground="White"/>
+            <Button Content="Fiók beállítása" Click="BtnSettings_Click" Height="50" Background="#545d6a" Foreground="White"/>
+            <Button Content="Felhasználók kezelése" Click="BtnUsers_Click" Height="50" Background="#545d6a" Foreground="White"/>
+        </StackPanel>
+        <!-- Jobb oldali tartalom -->
+        <Frame Name="ContentFrame" Grid.Column="1" NavigationUIVisibility="Hidden" />
+    </Grid>
+</Window>

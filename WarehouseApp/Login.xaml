@@ -1,0 +1,21 @@
+﻿<Window x:Class="WarehouseApp.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WarehouseApp"
+        mc:Ignorable="d"
+        Title="Login" MinHeight="350" MinWidth="350" Height="600" Width="950" FontSize="16">
+    <Border Background="#2e3137" CornerRadius="20" Margin="20">
+        <StackPanel MaxHeight="350" MaxWidth="300" Margin="20">
+            <Label Content="Login" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+            <Separator></Separator>
+            <Label Content="Username" Foreground="White" Padding="0 0 0 5"/>
+            <TextBox Name="txtUsername" Background="#545d6a" Foreground="White" FontSize="18" />
+            <Label Content="Password" Foreground="White" Padding="0 0 0 5"/>
+            <PasswordBox Name="txtPassword" KeyDown="txtPassword_KeyDown" Background="#545d6a" Foreground="White" FontSize="18" />
+            <Button Name="btnLogin" Click="btnLogin_Click" Content="Login" Margin="60 25" Background="#545d6e" Foreground="White" FontSize="18" />
+        </StackPanel>
+    </Border>
+
+</Window>

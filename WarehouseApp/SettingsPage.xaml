@@ -1,0 +1,48 @@
+﻿<Page x:Class="WarehouseApp.Windows.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Settings">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Felhasználónév beállítás -->
+            <RowDefinition Height="20"/>
+            <!-- Üres hely -->
+            <RowDefinition Height="Auto"/>
+            <!-- Jelszó beállítás -->
+        </Grid.RowDefinitions>
+
+        <!-- Felhasználónév beállítás -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center">
+            <TextBlock Text="Felhasználónév változtatása" FontSize="18" FontWeight="Bold" Margin="0,10,0,10" TextAlignment="Center"/>
+
+            <Label Content="Jelenlegi felhasználónév:" HorizontalAlignment="Center"/>
+            <TextBlock Name="TxtCurrentUsername" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+            <Label Content="Új felhasználónév:" HorizontalAlignment="Center"/>
+            <TextBox Name="TxtNewUsername" Width="200" HorizontalAlignment="Center"/>
+
+            <Label Content="Új felhasználónév megismétlése:" HorizontalAlignment="Center"/>
+            <TextBox Name="TxtConfirmUsername" Width="200" HorizontalAlignment="Center"/>
+
+            <Button Name="BtnChangeUsername" Content="Felhasználónév változtatása" Click="BtnChangeUsername_Click" Width="200" Margin="10" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Jelszó beállítás -->
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+            <TextBlock Text="Jelszó változtatása" FontSize="18" FontWeight="Bold" Margin="0,10,0,10" TextAlignment="Center"/>
+
+            <Label Content="Jelenlegi jelszó:" HorizontalAlignment="Center"/>
+            <PasswordBox Name="TxtCurrentPassword" Width="200" HorizontalAlignment="Center"/>
+
+            <Label Content="Új jelszó:" HorizontalAlignment="Center"/>
+            <PasswordBox Name="TxtNewPassword" Width="200" HorizontalAlignment="Center"/>
+
+            <Label Content="Új jelszó megismétlése:" HorizontalAlignment="Center"/>
+            <PasswordBox Name="TxtConfirmPassword" Width="200" HorizontalAlignment="Center"/>
+
+            <Button Name="BtnChangePassword" Content="Jelszó változtatása" Click="BtnChangePassword_Click" Width="200" Margin="10" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Page>

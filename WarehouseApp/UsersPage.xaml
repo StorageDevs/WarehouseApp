@@ -1,0 +1,30 @@
+﻿<Page x:Class="WarehouseApp.Windows.Pages.UsersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="User Management">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Gombok a felhasználók kezelésére -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
+            <Button Content="Add User" Click="AddUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <Button Content="Edit User" Click="EditUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <Button Content="Delete User" Click="DeleteUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        </StackPanel>
+
+        <!-- Felhasználók listája -->
+        <ListView Grid.Row="1" ItemsSource="{Binding Users}" Margin="10" SelectionMode="Extended">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding UserId}"/>
+                    <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}"/>
+                    <GridViewColumn Header="Role" DisplayMemberBinding="{Binding DisplayRole}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

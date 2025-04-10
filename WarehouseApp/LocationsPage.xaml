@@ -1,0 +1,33 @@
+﻿<Page x:Class="WarehouseApp.LocationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Locations">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Gomb a helyszínek frissítésére -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
+            <Button Content="Hozzáadás" Click="AddLocation_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <Button Content="Eltávolítás" Click="RemoveLocation_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <Button Content="Módosítás" Click="EditLocation_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        </StackPanel>
+        <!-- Helyszínek listája -->
+        <ListView Name="LocationList" Grid.Row="1" ItemsSource="{Binding Locations}" Margin="10" SelectionMode="Extended">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding LocationID}"/>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding LocationName}"/>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding LocationDescription}"/>
+                    <GridViewColumn Header="Capacity" DisplayMemberBinding="{Binding LocationCapacity}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
+
+    </Grid>
+</Page>

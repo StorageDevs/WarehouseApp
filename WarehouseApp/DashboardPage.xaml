@@ -1,0 +1,8 @@
+﻿<Page x:Class="WarehouseApp.DashboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Dashboard">
+    <Grid>
+        <TextBlock Text="Üdvözöllek az Admin Dashboardon!" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    </Grid>
+</Page>

@@ -1,0 +1,25 @@
+﻿<Window x:Class="WarehouseApp.Windows.Popups.AddMaterialWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Új anyag hozzáadása" Height="300.877" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="Anyag száma:" Padding="0 0 0 0"/>
+            <TextBox x:Name="txtNumber" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Leírás:" Padding="0 0 0 0"/>
+            <TextBox x:Name="txtDescription" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Mértékegység:" Padding="0 0 0 0"/>
+            <TextBox x:Name="txtUnit" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Ár:" Padding="0 0 0 0"/>
+            <TextBox x:Name="txtPrice" Margin="0 0 0 10"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Hozzáadás" Click="Add_Click" Width="100" Margin="10"/>
+                <Button Content="Mégse" Click="Cancel_Click" Width="100" Margin="10"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

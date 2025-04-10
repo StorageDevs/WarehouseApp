@@ -1,0 +1,32 @@
+﻿<Page x:Class="WarehouseApp.MaterialsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Materials">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Gombok -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
+            <Button Content="Hozzáadás" Click="AddMaterial_Click" Height="40" Width="150" Margin="10"/>
+            <Button Content="Eltávolítás" Click="RemoveMaterial_Click" Height="40" Width="150" Margin="10"/>
+            <Button Content="Módosítás" Click="EditMaterial_Click" Height="40" Width="150" Margin="10"/>
+        </StackPanel>
+
+        <!-- Lista -->
+        <ListView x:Name="MaterialsListView" Grid.Row="1" ItemsSource="{Binding Materials}" Margin="10" SelectionMode="Extended">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding MaterialId}"/>
+                    <GridViewColumn Header="Number" DisplayMemberBinding="{Binding MaterialNumber}"/>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding MaterialDescription}"/>
+                    <GridViewColumn Header="Unit" DisplayMemberBinding="{Binding Unit}"/>
+                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding PriceUnit}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

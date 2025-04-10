@@ -1,0 +1,50 @@
+﻿<Window x:Class="WarehouseApp.Windows.Popups.EditMaterialWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Anyag módosítása" Height="457.632" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <StackPanel>
+            <!-- Anyagszám -->
+            <TextBlock Text="Anyagszám (jelenlegi):" FontWeight="Bold" TextDecorations="Underline" Padding="0 0 0 0"/>
+            <TextBlock x:Name="lblNumberCurrent" Margin="0 0 0 5" Padding="0 0 0 0"/>
+            <TextBlock Text="Új anyagszám:" Padding="0 0 0 0"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="txtNumberNew" Width="250" Margin="0 0 10 0" TextChanged="txtNumberNew_TextChanged"/>
+                <CheckBox x:Name="chkNumberKeep" Content="Marad" VerticalAlignment="Center" Checked="chkNumberKeep_Checked" Padding="0 0 0 0"/>
+            </StackPanel>
+
+            <!-- Leírás -->
+            <TextBlock Text="Leírás (jelenlegi):" FontWeight="Bold" TextDecorations="Underline" Padding="0 0 0 0" Margin="0 10 0 0"/>
+            <TextBlock x:Name="lblDescriptionCurrent" Margin="0 0 0 5" Padding="0 0 0 0"/>
+            <TextBlock Text="Új leírás:" Padding="0 0 0 0"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="txtDescriptionNew" Width="250" Margin="0 0 10 0"/>
+                <CheckBox x:Name="chkDescriptionKeep" Content="Marad" VerticalAlignment="Center" Padding="0 0 0 0"/>
+            </StackPanel>
+
+            <!-- Mértékegység -->
+            <TextBlock Text="Mértékegység (jelenlegi):" FontWeight="Bold" TextDecorations="Underline" Padding="0 0 0 0" Margin="0 10 0 0"/>
+            <TextBlock x:Name="lblUnitCurrent" Margin="0 0 0 5" Padding="0 0 0 0"/>
+            <TextBlock Text="Új mértékegység:" Padding="0 0 0 0"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="txtUnitNew" Width="250" Margin="0 0 10 0"/>
+                <CheckBox x:Name="chkUnitKeep" Content="Marad" VerticalAlignment="Center" Padding="0 0 0 0"/>
+            </StackPanel>
+
+            <!-- Ár -->
+            <TextBlock Text="Ár (jelenlegi):" FontWeight="Bold" TextDecorations="Underline" Padding="0 0 0 0" Margin="0 10 0 0"/>
+            <TextBlock x:Name="lblPriceCurrent" Margin="0 0 0 5" Padding="0 0 0 0"/>
+            <TextBlock Text="Új ár:" Padding="0 0 0 0"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="txtPriceNew" Width="250" Margin="0 0 10 0"/>
+                <CheckBox x:Name="chkPriceKeep" Content="Marad" VerticalAlignment="Center" Padding="0 0 0 0"/>
+            </StackPanel>
+
+            <!-- Gombok -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
+                <Button Content="Módosítás" Width="100" Margin="10" Click="ConfirmEdit_Click"/>
+                <Button Content="Mégse" Width="100" Margin="10" Click="Cancel_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

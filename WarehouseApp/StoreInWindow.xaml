@@ -1,0 +1,50 @@
+﻿<Window x:Class="WarehouseApp.Windows.Popups.StoreInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Betárolás" Height="282.947" Width="401.737" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <StackPanel>
+
+            <!-- Anyag választó -->
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                <Label Content="Anyag:" Width="100"/>
+                <ComboBox x:Name="cmbMaterials" Width="200" DisplayMemberPath="MaterialDescription"/>
+                <Button Content="ℹ" Width="30" Margin="10,0,0,0" Click="MaterialInfo_Click"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Tárhely választó -->
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                <Label Content="Tárhely:" Width="100"/>
+                <ComboBox x:Name="cmbLocations" Width="200" DisplayMemberPath="LocationName" SelectionChanged="cmbLocations_SelectionChanged"/>
+                <Button Content="ℹ" Width="30" Margin="10,0,0,0" Click="LocationInfo_Click"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Mennyiség -->
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                <Label Content="Mennyiség:" Width="100"/>
+                <xctk:IntegerUpDown x:Name="numQuantity" Width="100" Minimum="1" Maximum="1" Value="1"/>
+                <TextBlock x:Name="txtMaxCapacityLabel" Margin="10,4,0,0" VerticalAlignment="Center" FontSize="12" Foreground="Gray" Padding="0 0 0 0"/>
+            </StackPanel>
+
+            
+            <!-- MOCK: Felhasználó választás (csak amíg nincs login/authentication) -->
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                <Label Content="Felhasználó:" Width="100"/>
+                <ComboBox x:Name="cmbUsers" Width="200" DisplayMemberPath="Username"/>
+            </StackPanel>
+            <!-- /MOCK -->
+
+            
+            
+            <!-- Gombok -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10 0 0">
+                <Button Content="Betárolás" Width="120" Height="30" Margin="10" Click="Submit_Click"/>
+                <Button Content="Mégse" Width="120" Height="30" Margin="10" Click="Cancel_Click"/>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Window>
