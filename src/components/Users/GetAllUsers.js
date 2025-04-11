@@ -182,8 +182,10 @@ function GetAllUser() {
                 <p><strong>Role:</strong> {user.role?.join(", ") || "None"}</p>
               </div>
               <div className="role-buttons">
-                <button onClick={() => assignRole(user.userName, "admin")}>Assign Role</button>
-                <button onClick={() => removeRole(user.userName, "admin")}>Remove Role</button>
+                <button onClick={() => assignRole(user.userName, "admin")}>Admin</button>
+                <button onClick={() => assignRole(user.userName, "superuser")}>Superuser</button>
+                <button onClick={() => assignRole(user.userName, "user")}>User</button>
+                <button onClick={() => removeRole(user.userName, "admin" && "superuser")}>Remove Role</button>
               </div>
               <DeleteUser
                 userId={user.userID}
