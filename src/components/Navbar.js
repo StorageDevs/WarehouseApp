@@ -24,7 +24,6 @@ const NavigationBar = ({ isAuthenticated }) => {
     color: 'white',
     textTransform: 'uppercase',
   };
-
   return (
     <Navbar style={navbarStyle} expand="lg">
       <Navbar.Brand as={Link} to="/home" style={logoStyle}>

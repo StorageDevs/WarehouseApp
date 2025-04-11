@@ -132,15 +132,15 @@ function GetAllUser() {
     })();
   }, []);
 
-  const assignRole = async (userName, roleName) => {
+  const assignRole = async (UserName, roleName) => {
     try {
-      const response = await fetch("https://localhost:7188/auth/Assignrole", {
+      const response = await fetch(`https://localhost:7188/auth/Assignrole?UserName=${encodeURIComponent(UserName)}&roleName=${encodeURIComponent(roleName)}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("jwt")}`
         },
-        body: JSON.stringify({ userName, roleName })
+        body: JSON.stringify({ UserName, roleName })
       });
 
       const data = await response.json();
@@ -150,15 +150,15 @@ function GetAllUser() {
     }
   };
 
-  const removeRole = async (userName, roleName) => {
+  const removeRole = async (UserName, roleName) => {
     try {
-      const response = await fetch("https://localhost:7188/auth/Removerole", {
+      const response = await fetch(`https://localhost:7188/auth/Removerole?UserName=${encodeURIComponent(UserName)}&roleName=${encodeURIComponent(roleName)}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("jwt")}`
         },
-        body: JSON.stringify({ userName, roleName })
+        body: JSON.stringify({ UserName, roleName })
       });
 
       const data = await response.json();
@@ -182,8 +182,8 @@ function GetAllUser() {
                 <p><strong>Role:</strong> {user.role?.join(", ") || "None"}</p>
               </div>
               <div className="role-buttons">
-                <button onClick={() => assignRole(user.userName, "")}>Assign Role</button>
-                <button onClick={() => removeRole(user.userName, "")}>Remove Role</button>
+                <button onClick={() => assignRole(user.userName, "admin")}>Assign Role</button>
+                <button onClick={() => removeRole(user.userName, "admin")}>Remove Role</button>
               </div>
               <DeleteUser
                 userId={user.userID}

@@ -4,7 +4,7 @@ function DeleteUser (props)
 {
     const handleUserId = async () => 
         {
-          const url = `https://localhost:7188/auth/DeleteUser`
+          const url = `https://localhost:7188/auth/DeleteUser/${props.userId}`
       
           const request = await fetch(url, {
             method: "DELETE",
