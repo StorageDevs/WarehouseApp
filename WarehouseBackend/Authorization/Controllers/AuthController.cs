@@ -80,7 +80,7 @@ namespace Authorization.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete("DeleteUser")]
+        [HttpDelete("DeleteUser/{id}")]
         public async Task<ActionResult> DeleteUser(string id)
         {
             var res = await auth.DeleteUser(id);
@@ -112,20 +112,7 @@ namespace Authorization.Controllers
             }
         }
 
-        //[HttpPut("ModifyUser")]
-        //public async Task<ActionResult> ModifyUserer()
-        //{
-        //    try
-        //    {
-
-        //        return Ok();
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+       
     }
 } 
 

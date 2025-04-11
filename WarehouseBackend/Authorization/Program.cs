@@ -39,6 +39,8 @@ namespace Authorization
                                                                 .AllowAnyMethod();
                                       });
             });
+
+            //http://localhost:3000
             #endregion
 
             var settingsSection = builder.Configuration.GetSection("AuthSettings:JwtOptions");
