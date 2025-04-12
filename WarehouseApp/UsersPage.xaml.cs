@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
+using System.Linq;
 using WarehouseApp.Models;
+using WarehouseApp.Windows.Popups;
 
 
 namespace WarehouseApp.Windows.Pages
 {
     public partial class UsersPage : Page
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7188/") };
         public ObservableCollection<User> Users { get; set; }
 
         public UsersPage()
@@ -28,22 +31,27 @@ namespace WarehouseApp.Windows.Pages
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync("Users");
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseData = await response.Content.ReadAsStringAsync();
-                    var users = JsonConvert.DeserializeObject<ObservableCollection<User>>(responseData);
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
 
-                    // Frissítjük a listát
+                HttpResponseMessage response = await _httpClient.GetAsync("auth/GetAllUser");
+                string responseData = await response.Content.ReadAsStringAsync();
+
+                var jsonObject = JsonConvert.DeserializeObject<dynamic>(responseData);
+                if (jsonObject.result != null)
+                {
+                    string resultJson = JsonConvert.SerializeObject(jsonObject.result);
+                    var users = JsonConvert.DeserializeObject<ObservableCollection<User>>(resultJson);
+
                     Users.Clear();
                     foreach (var user in users)
                     {
-                        Users.Add(user); // Az új DisplayRole automatikusan generálódik
+                        Users.Add(user);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Nem sikerült betölteni a felhasználókat!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("A válasz nem tartalmazott 'result' mezőt.", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             catch (Exception ex)
@@ -51,21 +59,68 @@ namespace WarehouseApp.Windows.Pages
                 MessageBox.Show($"Hiba történt: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private async void DeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
 
+            var selectedUsers = UserList.SelectedItems.Cast<User>().ToList(); // `UserList` a ListView neve
+
+            if (selectedUsers.Count == 0)
+            {
+                MessageBox.Show("Kérlek jelölj ki legalább egy felhasználót!", "Figyelmeztetés", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            foreach (var user in selectedUsers.ToList())
+            {
+                var confirm = MessageBox.Show(
+                    $"Biztosan törölni szeretnéd ezt a felhasználót?\n\n" +
+                    $"Név: {user.UserName}\n" +
+                    $"Email: {user.Email}\n" +
+                    $"Szerepkör: {user.DisplayRole}",
+                    "Törlés megerősítése",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (confirm != MessageBoxResult.Yes)
+                    continue;
+
+                // Második visszakérdezés
+                var confirmSecond = MessageBox.Show("Biztos vagy benne?", "Végső megerősítés", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (confirmSecond != MessageBoxResult.Yes)
+                    continue;
+
+                try
+                {
+                    HttpResponseMessage response = await _httpClient.DeleteAsync($"auth/DeleteUser?id={user.UserID}");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Users.Remove(user);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Nem sikerült törölni: {user.UserName}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba történt: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
 
         private void AddUser_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Add User gomb megnyomva!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            var addUserWindow = new AddUserWindow();
+            addUserWindow.ShowDialog(); // Megnyitja az AddUserWindow ablakot
         }
+
 
         private void EditUser_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Edit User gomb megnyomva!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void DeleteUser_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Delete User gomb megnyomva!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

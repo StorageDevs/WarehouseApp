@@ -288,7 +288,7 @@ namespace WarehouseApp.Windows.Popups
                 transactionFromLocationName = fromLoc.LocationName,
                 transactionToLocationName = toLoc.LocationName,
                 transactedQty = quantity,
-                userName = user.Username // MOCK
+                //userName = user.Username // MOCK
             };
 
             try

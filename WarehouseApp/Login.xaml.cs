@@ -50,7 +50,7 @@ namespace WarehouseApp
                             Properties.Settings.Default.AccessToken = token;
                             Properties.Settings.Default.Save();
 
-                            AdminDashboard adminWindow = new AdminDashboard();
+                            AdminDashboard adminWindow = new AdminDashboard(username);
                             adminWindow.Show();
                             this.Close();
                         }

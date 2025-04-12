@@ -11,18 +11,19 @@
 
         <!-- Gombok a felhasználók kezelésére -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
-            <Button Content="Add User" Click="AddUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            <Button Content="Edit User" Click="EditUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            <Button Content="Delete User" Click="DeleteUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <Button Content="Hozzáadás" Click="AddUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <Button Content="Eltávolítás" Click="DeleteUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <Button Content="Módosítás" Click="EditUser_Click" Height="40" Width="150" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         </StackPanel>
 
         <!-- Felhasználók listája -->
-        <ListView Grid.Row="1" ItemsSource="{Binding Users}" Margin="10" SelectionMode="Extended">
+        <ListView x:Name="UserList" Grid.Row="1" ItemsSource="{Binding Users}" Margin="10" SelectionMode="Extended">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding UserId}"/>
-                    <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}"/>
-                    <GridViewColumn Header="Role" DisplayMemberBinding="{Binding DisplayRole}"/>
+                    <GridViewColumn Header="Username" DisplayMemberBinding="{Binding UserName}" />
+                    <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" />
+                    <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" />
+                    <GridViewColumn Header="Role" DisplayMemberBinding="{Binding DisplayRole}" />
                 </GridView>
             </ListView.View>
         </ListView>

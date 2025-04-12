@@ -8,19 +8,13 @@ namespace WarehouseApp.Models
 {
     public class User
     {
-        public int UserId { get; set; }
-        public string Username { get; set; }
-        public int Role { get; set; } // Eredeti numerikus szerepkör
-        public string DisplayRole // Új tulajdonság a szöveges szerepkörhöz
-        {
-            get
-            {
-                if (Role == 1) return "user";
-                if (Role == 2) return "superuser";
-                if (Role == 3) return "admin";
-                return "unknown";
-            }
-        }
-    }
+        public string UserID { get; set; }
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+        public List<string> Role { get; set; }
 
+        public string DisplayRole => Role != null && Role.Count > 0 ? Role[0] : "N/A";
+    }
 }

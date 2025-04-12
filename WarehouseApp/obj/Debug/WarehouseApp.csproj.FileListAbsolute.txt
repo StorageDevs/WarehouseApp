@@ -295,3 +295,5 @@ D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\Ware
 D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\WarehouseApp\obj\Debug\WarehouseApp.csproj.CopyComplete
 D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\WarehouseApp\obj\Debug\WarehouseApp.exe
 D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\WarehouseApp\obj\Debug\WarehouseApp.pdb
+D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\WarehouseApp\obj\Debug\AddUserWindow.baml
+D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\WarehouseApp\obj\Debug\AddUserWindow.g.cs

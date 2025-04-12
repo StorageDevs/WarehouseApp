@@ -8,16 +8,22 @@ namespace WarehouseApp
 {
     public partial class AdminDashboard : Window
     {
-        public AdminDashboard()
+        private string _userName;
+
+        public AdminDashboard(string userName)
         {
             InitializeComponent();
-            ContentFrame.Content = new DashboardPage();
+            _userName = userName;
+
+            // Itt adjuk át a nevet a DashboardPage-nek
+            ContentFrame.Content = new DashboardPage(_userName);
         }
 
         private void BtnDashboard_Click(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Content = new DashboardPage();
+            ContentFrame.Content = new DashboardPage(_userName); // A gombnál is átadjuk
         }
+
         private void BtnInventory_Click(object sender, RoutedEventArgs e)
         {
             ContentFrame.Content = new InventoryPage();
@@ -32,10 +38,12 @@ namespace WarehouseApp
         {
             ContentFrame.Content = new LocationsPage();
         }
+
         private void BtnSettings_Click(object sender, RoutedEventArgs e)
         {
             ContentFrame.Content = new SettingsPage();
         }
+
         private void BtnUsers_Click(object sender, RoutedEventArgs e)
         {
             ContentFrame.Content = new UsersPage();

@@ -4,9 +4,15 @@ namespace WarehouseApp
 {
     public partial class DashboardPage : Page
     {
-        public DashboardPage()
+        public string CurrentUserName { get; set; }
+
+        public DashboardPage(string userName)
         {
             InitializeComponent();
+            CurrentUserName = userName;
+
+            // Ez kell, hogy a Binding működjön
+            DataContext = this;
         }
     }
 }
