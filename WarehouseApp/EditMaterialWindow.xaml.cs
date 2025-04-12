@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ namespace WarehouseApp.Windows.Popups
     public partial class EditMaterialWindow : Window
     {
         private readonly Material _material;
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient();
 
         public EditMaterialWindow(Material material)
         {
@@ -97,10 +98,24 @@ namespace WarehouseApp.Windows.Popups
 
             try
             {
+                // Token ellenőrzés
+                if (string.IsNullOrEmpty(Properties.Settings.Default.AccessToken))
+                {
+                    MessageBox.Show("Nincs bejelentkezett felhasználó (hiányzik a token).", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 string json = JsonConvert.SerializeObject(updatedMaterial);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+                // 🔐 Token beállítása
+                _httpClient.BaseAddress = new Uri("https://localhost:7055/api/");
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
                 var response = await _httpClient.PutAsync($"Materials/{_material.MaterialId}", content);
+                string serverResponse = await response.Content.ReadAsStringAsync();
+
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show("Sikeres módosítás!", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -115,8 +130,7 @@ namespace WarehouseApp.Windows.Popups
                 }
                 else
                 {
-                    string serverResponse = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Sikertelen módosítás!\nSzerver válasza:\n{serverResponse}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Sikertelen módosítás!\nStatus: {response.StatusCode}\nSzerver válasza:\n{serverResponse}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -128,16 +142,6 @@ namespace WarehouseApp.Windows.Popups
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void txtNumberNew_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-
-        }
-
-        private void chkNumberKeep_Checked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

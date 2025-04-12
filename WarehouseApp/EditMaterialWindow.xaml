@@ -9,8 +9,8 @@
             <TextBlock x:Name="lblNumberCurrent" Margin="0 0 0 5" Padding="0 0 0 0"/>
             <TextBlock Text="Új anyagszám:" Padding="0 0 0 0"/>
             <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="txtNumberNew" Width="250" Margin="0 0 10 0" TextChanged="txtNumberNew_TextChanged"/>
-                <CheckBox x:Name="chkNumberKeep" Content="Marad" VerticalAlignment="Center" Checked="chkNumberKeep_Checked" Padding="0 0 0 0"/>
+                <TextBox x:Name="txtNumberNew" Width="250" Margin="0 0 10 0"/>
+                <CheckBox x:Name="chkNumberKeep" Content="Marad" VerticalAlignment="Center" Padding="0 0 0 0"/>
             </StackPanel>
 
             <!-- Leírás -->

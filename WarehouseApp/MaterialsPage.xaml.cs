@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,7 +15,7 @@ namespace WarehouseApp
 {
     public partial class MaterialsPage : Page
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7055/api/Materials/") };
         public ObservableCollection<Material> Materials { get; set; }
 
         public MaterialsPage()
@@ -29,11 +30,14 @@ namespace WarehouseApp
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync("Materials");
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
+                HttpResponseMessage response = await _httpClient.GetAsync("");
+                string responseData = await response.Content.ReadAsStringAsync();
+
                 if (response.IsSuccessStatusCode)
                 {
-                    string responseData = await response.Content.ReadAsStringAsync();
-
                     var jsonObject = JsonConvert.DeserializeObject<dynamic>(responseData);
                     if (jsonObject.result != null)
                     {
@@ -50,6 +54,10 @@ namespace WarehouseApp
                     {
                         MessageBox.Show("Hiba: Az API válasz nem tartalmaz 'result' mezőt.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
+                }
+                else
+                {
+                    MessageBox.Show($"API hiba: {(int)response.StatusCode} - {response.StatusCode}\n{responseData}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -85,7 +93,10 @@ namespace WarehouseApp
                 {
                     try
                     {
-                        HttpResponseMessage response = await _httpClient.DeleteAsync($"Materials/{selected.MaterialId}");
+                        _httpClient.DefaultRequestHeaders.Authorization =
+                            new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
+                        HttpResponseMessage response = await _httpClient.DeleteAsync($"{selected.MaterialId}");
                         if (response.IsSuccessStatusCode)
                         {
                             Materials.Remove(selected);

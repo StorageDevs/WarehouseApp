@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using Newtonsoft.Json;
@@ -8,7 +9,7 @@ namespace WarehouseApp.Windows.Popups
 {
     public partial class AddMaterialWindow : Window
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7055/api/Materials/") };
 
         public AddMaterialWindow()
         {
@@ -39,7 +40,11 @@ namespace WarehouseApp.Windows.Popups
                 string json = JsonConvert.SerializeObject(newMaterial);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync("Materials", content);
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
+                HttpResponseMessage response = await _httpClient.PostAsync("", content);
+
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show("Sikeres hozzáadás!", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -50,11 +55,13 @@ namespace WarehouseApp.Windows.Popups
                         adminWindow.ContentFrame.Content = new MaterialsPage();
                     }
 
+                    this.DialogResult = true;
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Nem sikerült az anyag hozzáadása!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                    string serverResponse = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Nem sikerült az anyag hozzáadása!\n\nSzerver válasza:\n{serverResponse}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -65,6 +72,7 @@ namespace WarehouseApp.Windows.Popups
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            this.DialogResult = false;
             this.Close();
         }
     }
