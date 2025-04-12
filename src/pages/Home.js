@@ -71,6 +71,7 @@ const styles = {
   container: {
     position: "relative",
     display: "flex",
+    width: "100vw",
     height: "100vh",
     justifyContent: "center",
     alignItems: "center",
@@ -78,14 +79,12 @@ const styles = {
   },
   videoBackground: {
     position: "absolute",
-    top: "50%",
-    left: "50%",
-    width: "100%",
-    height: "100%",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
     objectFit: "cover",
-    transform: "translate(-50%, -50%)",
     zIndex: "-1",
-    yIndex: "0",
   },
   card: {
     backgroundColor: "rgba(65, 126, 196, 0.9)",

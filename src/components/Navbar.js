@@ -14,6 +14,7 @@ const NavigationBar = ({ isAuthenticated }) => {
     background: 'linear-gradient(to right, rgb(129, 176, 230), rgb(32, 60, 112))',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    padding: '10px'
   };
 
   const logoStyle = {

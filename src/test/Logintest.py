@@ -12,7 +12,6 @@ driver.set_window_size(1920, 1080)
 
 # Nyisd meg a login oldalt
 driver.get("http://localhost:3000/login")
-driver.save_screenshot("LoginPage.png")
 
 # Várakozzunk, amíg a bejelentkezési mezők láthatóvá válnak
 wait = WebDriverWait(driver, 10)
@@ -23,16 +22,23 @@ login_button = driver.find_element(By.XPATH, '//button[text()="Login"]')
 # Töltsd ki a bejelentkezési mezőket
 username_input.send_keys('Admin')
 password_input.send_keys('@Dmin1234')
+
+driver.save_screenshot("LoginPage.png")
+
+time.sleep(5)
+
 login_button.click()
 
 # Várakozás, amíg a felhasználó átirányításra kerül a /home oldalra
 wait.until(EC.url_contains("/home"))
 
-# Képmentés a bejelentkezett állapot után
-driver.save_screenshot("PostLoginHomePage.png")
+time.sleep(3)
 
 # Ellenőrizzük, hogy sikeres bejelentkezés után a helyes oldalra irányítanak
 assert "home" in driver.current_url, "User was not redirected to home page"
+
+# Képmentés a bejelentkezett állapot után
+driver.save_screenshot("PostLoginHomePage.png")
 
 # Böngésző bezárása
 time.sleep(2)

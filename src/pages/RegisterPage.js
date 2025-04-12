@@ -60,7 +60,7 @@ const RegisterPage = () => {
             <label style={styles.label}>Username:</label>
             <input
               type="text"
-              placeholder=""
+              placeholder="Username"
               value={userName}
               onChange={(e) => setUsername(e.target.value)}
               style={styles.input}
@@ -70,7 +70,7 @@ const RegisterPage = () => {
             <label style={styles.label}>Password:</label>
             <input
               type="password"
-              placeholder=""
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={styles.input}
@@ -80,7 +80,7 @@ const RegisterPage = () => {
             <label style={styles.label}>Full name:</label>
             <input
               type="text"
-              placeholder=""
+              placeholder="Fullname"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               style={styles.input}
@@ -90,7 +90,7 @@ const RegisterPage = () => {
             <label style={styles.label}>Email:</label>
             <input
               type="text"
-              placeholder=""
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={styles.input}
