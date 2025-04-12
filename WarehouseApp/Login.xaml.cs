@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,8 +10,6 @@ namespace WarehouseApp
 {
     public partial class Login : Window
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5000/api/auth/") };
-
         public Login()
         {
             InitializeComponent();
@@ -21,31 +20,60 @@ namespace WarehouseApp
             string username = txtUsername.Text;
             string password = txtPassword.Password;
 
-            // -----------------------------------------
-            // 🔹 MOCK BEJELENTKEZÉS (NINCS BACKEND)
-            if (username == "admin" && password == "admin")
+            var loginData = new
             {
-                // Fake token mentése
-                Properties.Settings.Default.AccessToken = "fake-jwt-token";
-                Properties.Settings.Default.Save();
+                userName = username,
+                password = password
+            };
 
-                // Admin felület megnyitása
-                AdminDashboard adminWindow = new AdminDashboard();
-                adminWindow.Show();
-                this.Close();
-                return; // Megakadályozza a további futást
-            }
-            else
+            try
             {
-                MessageBox.Show("Sikertelen bejelentkezés!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            // 🔹 Eddig tart a MOCKOLT bejelentkezés
-            // -----------------------------------------
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:7188/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                    var json = JsonConvert.SerializeObject(loginData);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await client.PostAsync("auth/Login", content);
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        dynamic result = JsonConvert.DeserializeObject(responseData);
+                        string token = result.token;
+
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            Properties.Settings.Default.AccessToken = token;
+                            Properties.Settings.Default.Save();
+
+                            AdminDashboard adminWindow = new AdminDashboard();
+                            adminWindow.Show();
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Hibás felhasználónév vagy jelszó!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Bejelentkezés sikertelen! {(int)response.StatusCode} - {response.StatusCode}\n{responseData}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba történt a bejelentkezéskor: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        // 🔹 ENTER GOMB FIGYELÉSE A JELSZÓ MEZŐBEN
-        private void txtPassword_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+
+// 🔹 ENTER GOMB FIGYELÉSE A JELSZÓ MEZŐBEN
+private void txtPassword_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter) // Csak akkor fut le, ha az Entert nyomják meg
             {

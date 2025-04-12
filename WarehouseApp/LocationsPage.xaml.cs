@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,13 +10,12 @@ using System.Windows.Controls;
 using Newtonsoft.Json;
 using WarehouseApp.Models;
 using WarehouseApp.Windows.Popups;
-using System.Linq;
 
 namespace WarehouseApp
 {
     public partial class LocationsPage : Page
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/Locations/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7055/api/Locations/") };
         public ObservableCollection<Location> Locations { get; set; }
 
         public LocationsPage()
@@ -29,11 +30,14 @@ namespace WarehouseApp
         {
             try
             {
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
                 HttpResponseMessage response = await _httpClient.GetAsync("");
+                string responseData = await response.Content.ReadAsStringAsync();
+
                 if (response.IsSuccessStatusCode)
                 {
-                    string responseData = await response.Content.ReadAsStringAsync();
-
                     var jsonObject = JsonConvert.DeserializeObject<dynamic>(responseData);
                     if (jsonObject.result != null)
                     {
@@ -54,6 +58,10 @@ namespace WarehouseApp
                         MessageBox.Show("Hiba: Az API válasz nem tartalmaz 'result' mezőt.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
+                else
+                {
+                    MessageBox.Show($"API hiba: {(int)response.StatusCode} - {response.StatusCode}\n{responseData}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             catch (Exception ex)
             {
@@ -69,6 +77,9 @@ namespace WarehouseApp
 
         private async void RemoveLocation_Click(object sender, RoutedEventArgs e)
         {
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
             var selectedLocations = LocationList.SelectedItems.Cast<Location>().ToList();
 
             if (selectedLocations.Count == 0)
@@ -77,7 +88,7 @@ namespace WarehouseApp
                 return;
             }
 
-            foreach (var location in selectedLocations.ToList()) // ToList(), mert módosítjuk
+            foreach (var location in selectedLocations.ToList())
             {
                 var confirm = MessageBox.Show(
                     $"Biztosan törölni szeretnéd ezt a helyszínt?\n\n" +
@@ -111,11 +122,15 @@ namespace WarehouseApp
             }
         }
 
-
-
         private void EditLocation_Click(object sender, RoutedEventArgs e)
         {
             var selectedItems = LocationList.SelectedItems.Cast<Location>().ToList();
+
+            if (selectedItems.Count == 0)
+            {
+                MessageBox.Show("Kérlek jelölj ki legalább egy helyszínt!", "Figyelmeztetés", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             foreach (var location in selectedItems)
             {
@@ -125,6 +140,8 @@ namespace WarehouseApp
 
             _ = LoadLocations();
         }
+
+
     }
 
     public class Location

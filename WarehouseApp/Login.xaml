@@ -15,6 +15,7 @@
             <Label Content="Password" Foreground="White" Padding="0 0 0 5"/>
             <PasswordBox Name="txtPassword" KeyDown="txtPassword_KeyDown" Background="#545d6a" Foreground="White" FontSize="18" />
             <Button Name="btnLogin" Click="btnLogin_Click" Content="Login" Margin="60 25" Background="#545d6e" Foreground="White" FontSize="18" />
+
         </StackPanel>
     </Border>
 

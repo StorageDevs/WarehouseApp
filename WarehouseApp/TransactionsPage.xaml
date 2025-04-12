@@ -10,9 +10,6 @@
         </Grid.RowDefinitions>
 
         <!-- Gomb -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
-            <Button Content="Mozgatások blokkolása" Click="BlockTransactions_Click" Height="40" Width="200" Margin="10"/>
-        </StackPanel>
         <Button Content="↩" FontSize="20" Click="Back_Click" Height="40" HorizontalAlignment="Right" Padding="10 0 10 0" Margin="10" Background="LightCoral"/>
 
         <!-- Lista -->

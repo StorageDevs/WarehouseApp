@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\MolnarM2\Desktop\Új mappa\5 - inventoryPage többi funkciói, illetve szűrű funkció autómatizálása\WarehouseApp\WarehouseApp\obj\Debug\
+D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\WarehouseApp\obj\Debug\
 WarehouseApp
 none
 false
 DEBUG;TRACE
-C:\Users\MolnarM2\Desktop\Új mappa\5 - inventoryPage többi funkciói, illetve szűrű funkció autómatizálása\WarehouseApp\WarehouseApp\App.xaml
+D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\WarehouseApp\App.xaml
 16-1584802445
 
 251629996940
-191470109143
+19-1970639205
 AddLocation.xaml;AddMaterialWindow.xaml;AdminDashboard.xaml;DashboardPage.xaml;EditLocationWindow.xaml;EditMaterialWindow.xaml;InventoryPage.xaml;LocationsPage.xaml;Login.xaml;MaterialsPage.xaml;SettingsPage.xaml;StoreInWindow.xaml;StoreOutWindow.xaml;TransactionsPage.xaml;TransferWindow.xaml;UsersPage.xaml;
 
-True
+False
 

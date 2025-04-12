@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using Newtonsoft.Json;
@@ -8,7 +9,9 @@ namespace WarehouseApp.Windows.Popups
 {
     public partial class AddLocationWindow : Window
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7055/api/") };
+
+        public Location NewLocation { get; private set; }
 
         public AddLocationWindow()
         {
@@ -39,11 +42,21 @@ namespace WarehouseApp.Windows.Popups
                 string json = JsonConvert.SerializeObject(newLocation);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
                 HttpResponseMessage response = await _httpClient.PostAsync("Locations", content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show("Sikeresen hozzáadva!", "Siker", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    NewLocation = new Location
+                    {
+                        LocationName = name,
+                        LocationDescription = description,
+                        LocationCapacity = capacity
+                    };
 
                     var adminWindow = Application.Current.Windows[0] as AdminDashboard;
                     if (adminWindow != null)
@@ -51,17 +64,25 @@ namespace WarehouseApp.Windows.Popups
                         adminWindow.ContentFrame.Content = new LocationsPage();
                     }
 
-                    this.Close(); // bezárja a popupot
+                    this.DialogResult = true;
+                    this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Hiba történt a hozzáadáskor!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                    string serverResponse = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Hiba történt a hozzáadáskor!\nSzerver válasza:\n{serverResponse}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Hálózati hiba: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+            this.Close();
         }
     }
 }

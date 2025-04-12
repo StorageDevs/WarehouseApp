@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using Newtonsoft.Json;
@@ -9,19 +10,19 @@ namespace WarehouseApp
     public partial class EditLocationWindow : Window
     {
         private readonly Location _location;
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7055/api/") };
+
+        public Location UpdatedLocation { get; private set; }
 
         public EditLocationWindow(Location location)
         {
             InitializeComponent();
             _location = location;
 
-            // Aktuális értékek megjelenítése
             lblNameCurrent.Text = _location.LocationName;
             lblDescriptionCurrent.Text = _location.LocationDescription;
             lblCapacityCurrent.Text = _location.LocationCapacity.ToString();
 
-            // Események a pipákhoz
             chkNameKeep.Checked += ToggleFields;
             chkNameKeep.Unchecked += ToggleFields;
 
@@ -41,51 +42,16 @@ namespace WarehouseApp
 
         private async void ConfirmEdit_Click(object sender, RoutedEventArgs e)
         {
-            // NÉV validálás
-            string name;
-            if (chkNameKeep.IsChecked == true)
-            {
-                name = _location.LocationName;
-            }
-            else if (string.IsNullOrWhiteSpace(txtNameNew.Text))
-            {
-                MessageBox.Show("Az új név nem lehet üres!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            else
-            {
-                name = txtNameNew.Text.Trim();
-            }
+            string name = chkNameKeep.IsChecked == true ? _location.LocationName : txtNameNew.Text.Trim();
+            string description = chkDescriptionKeep.IsChecked == true ? _location.LocationDescription : txtDescriptionNew.Text.Trim();
+            int capacity = chkCapacityKeep.IsChecked == true ? _location.LocationCapacity : int.TryParse(txtCapacityNew.Text, out int c) ? c : -1;
 
-            // LEÍRÁS validálás
-            string description;
-            if (chkDescriptionKeep.IsChecked == true)
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(description) || capacity < 0)
             {
-                description = _location.LocationDescription;
-            }
-            else if (string.IsNullOrWhiteSpace(txtDescriptionNew.Text))
-            {
-                MessageBox.Show("Az új leírás nem lehet üres!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            else
-            {
-                description = txtDescriptionNew.Text.Trim();
-            }
-
-            // KAPACITÁS validálás
-            int capacity;
-            if (chkCapacityKeep.IsChecked == true)
-            {
-                capacity = _location.LocationCapacity;
-            }
-            else if (string.IsNullOrWhiteSpace(txtCapacityNew.Text) || !int.TryParse(txtCapacityNew.Text, out capacity))
-            {
-                MessageBox.Show("Az új kapacitás nem lehet üres és számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Kérlek töltsd ki az adatokat helyesen!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // JSON objektum létrehozása a backend formátum szerint
             var updatedLocation = new
             {
                 locationID = _location.LocationID,
@@ -99,17 +65,24 @@ namespace WarehouseApp
                 string json = JsonConvert.SerializeObject(updatedLocation);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+                // 🔐 Token beállítása
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
                 HttpResponseMessage response = await _httpClient.PutAsync($"Locations/{_location.LocationID}", content);
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show("Sikeres módosítás!", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    var adminWindow = Application.Current.Windows[0] as AdminDashboard;
-                    if (adminWindow != null)
+                    UpdatedLocation = new Location
                     {
-                        adminWindow.ContentFrame.Content = new LocationsPage();
-                    }
+                        LocationID = _location.LocationID,
+                        LocationName = name,
+                        LocationDescription = description,
+                        LocationCapacity = capacity
+                    };
 
+                    this.DialogResult = true;
                     this.Close();
                 }
                 else
@@ -124,9 +97,9 @@ namespace WarehouseApp
             }
         }
 
-
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            this.DialogResult = false;
             this.Close();
         }
     }
