@@ -147,5 +147,20 @@ namespace Authorization.Services.IAuthService
 
         }
 
+        public async Task<object> UpdatePassword(string Id, UpdatePasswordDto updatePasswordDto)
+        {
+            var user = await userManager.FindByIdAsync(Id);
+            if (user != null)
+            {
+
+                var result= await userManager.ChangePasswordAsync(user, updatePasswordDto.OldPassword,updatePasswordDto.NewPassword);
+                return new { result= "", message = "Password changed succesfully" };
+                
+            }
+
+            return new { result = "", message = "User is not registered."};
+        }
+
+
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Authorization.Controllers
 {
     [Route("auth")]
@@ -112,7 +113,25 @@ namespace Authorization.Controllers
             }
         }
 
-       
+        [Authorize(Roles = "admin,superuser,user")]
+        [HttpPut("UpdatePassword/{id}")]
+        public async Task<ActionResult> UpdatePass(string id, UpdatePasswordDto updatePasswordDto)
+        {
+
+            var res = await auth.UpdatePassword(id, updatePasswordDto);
+            try
+            {
+
+                return Ok(res);
+            }
+
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 } 
 

@@ -5,4 +5,13 @@ password:@Dmin1234
 role:admin
 
 
+{
+  "userName": "BCsab",
+  "fullName": "Bihari Csaba",
+  "password": "ProbaP@ss123",
+  "email": "biharicsaba83@gmail.com"
+}
+
+
+
 available roles:admin,superuser,user

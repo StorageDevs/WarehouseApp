@@ -4,4 +4,6 @@
 
     public record LoginRequestDto(string UserName, string Password);
 
+    public record UpdatePasswordDto( string OldPassword, string NewPassword);
+
 }

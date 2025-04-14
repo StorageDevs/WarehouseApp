@@ -13,6 +13,8 @@ namespace Authorization.Services.IAuthService
 
         Task<object> GetAllUser();
         Task<object> DeleteUser(string id);
+        Task<object> UpdatePassword(string id,UpdatePasswordDto updatePasswordDto);
+
         //Task<object> ModifyUser();
 
     }
