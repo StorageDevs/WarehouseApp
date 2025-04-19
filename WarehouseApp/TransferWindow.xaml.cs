@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +14,7 @@ namespace WarehouseApp.Windows.Popups
 {
     public partial class TransferWindow : Window
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7055/api/") };
         private readonly InventoryPage _inventoryPage;
         private readonly InventoryDisplayItem _preselected;
 
@@ -43,6 +44,9 @@ namespace WarehouseApp.Windows.Popups
         {
             try
             {
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
                 var inventoryResponse = await _httpClient.GetAsync("Inventories");
                 if (inventoryResponse.IsSuccessStatusCode)
                 {
@@ -70,18 +74,6 @@ namespace WarehouseApp.Windows.Popups
                     _allLocations.Insert(0, new LocationModel { LocationId = -1, LocationName = "-" });
                     cmbFromLocations.ItemsSource = _allLocations;
                 }
-
-                // MOCK: Felhasználók betöltése, amíg nincs bejelentkezés/autentikáció
-                var usersResponse = await _httpClient.GetAsync("Users");
-                if (usersResponse.IsSuccessStatusCode)
-                {
-                    var json = await usersResponse.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<List<User>>(json);
-                    cmbUsers.ItemsSource = result;
-                    cmbUsers.DisplayMemberPath = "Username";
-                }
-                // /MOCK
-
 
                 if (_preselected != null)
                 {
@@ -256,14 +248,10 @@ namespace WarehouseApp.Windows.Popups
             var selectedMaterial = cmbMaterials.SelectedItem as Material;
             var fromLoc = cmbFromLocations.SelectedItem as LocationModel;
             var toLoc = cmbToLocations.SelectedItem as LocationModel;
-            // MOCK: Felhasználó kiválasztása mock dropdownból
-            var user = cmbUsers.SelectedItem as User;
-            // /MOCK
-
 
             if (selectedMaterial == null || selectedMaterial.MaterialId == -1 ||
                 fromLoc == null || fromLoc.LocationId == -1 ||
-                toLoc == null || toLoc.LocationId == -1 || user == null)
+                toLoc == null || toLoc.LocationId == -1)
             {
                 MessageBox.Show("Kérlek válassz ki minden mezőt!");
                 return;
@@ -288,11 +276,13 @@ namespace WarehouseApp.Windows.Popups
                 transactionFromLocationName = fromLoc.LocationName,
                 transactionToLocationName = toLoc.LocationName,
                 transactedQty = quantity,
-                //userName = user.Username // MOCK
             };
 
             try
             {
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
                 var json = JsonConvert.SerializeObject(payload);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 

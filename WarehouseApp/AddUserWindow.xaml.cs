@@ -25,7 +25,7 @@ namespace WarehouseApp.Windows.Popups
             string userName = txtUserName.Text.Trim();
             string fullName = txtFullName.Text.Trim();
             string email = txtEmail.Text.Trim();
-            string password = "TempPassword-123!";
+            string password = "TempPassword-123";
 
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email))
             {
@@ -53,10 +53,8 @@ namespace WarehouseApp.Windows.Popups
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // 👇 Itt lekérjük a szerepkört a ComboBoxból
                     string selectedRole = ((ComboBoxItem)cmbRole.SelectedItem).Content.ToString();
 
-                    // 👇 Második kérés: szerepkör hozzárendelése
                     HttpResponseMessage roleResponse = await _httpClient.PostAsync($"auth/Assignrole?UserName={userName}&roleName={selectedRole}", null);
 
                     if (roleResponse.IsSuccessStatusCode)
@@ -91,7 +89,7 @@ namespace WarehouseApp.Windows.Popups
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); // Bezárja az ablakot anélkül, hogy bármit mentene
+            this.Close();
         }
     }
 }

@@ -3,16 +3,17 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Threading.Tasks;
 using WarehouseApp.Models;
 
 namespace WarehouseApp
 {
     public partial class TransactionsPage : Page
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7055/api/") };
 
         public TransactionsPage()
         {
@@ -24,13 +25,16 @@ namespace WarehouseApp
         {
             try
             {
+                // 🔐 Token hozzáadása a kéréshez
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
                 var response = await _httpClient.GetAsync("Transactions");
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     var data = JsonConvert.DeserializeObject<ApiResponse<List<TransactionDisplayItem>>>(json);
 
-                    // Rendezés dátum szerint csökkenő sorrendbe
                     var sorted = (data.Result ?? new List<TransactionDisplayItem>())
                                  .OrderByDescending(t => t.TransferDate)
                                  .ToList();
@@ -39,7 +43,7 @@ namespace WarehouseApp
                 }
                 else
                 {
-                    MessageBox.Show("Nem sikerült betölteni a tranzakciókat!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Nem sikerült betölteni a tranzakciókat.\nHTTP {(int)response.StatusCode}: {response.ReasonPhrase}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -61,7 +65,6 @@ namespace WarehouseApp
                 mainWindow.ContentFrame.Content = new InventoryPage();
             }
         }
-
 
         public class ApiResponse<T>
         {

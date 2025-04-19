@@ -3,11 +3,11 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Dashboard">
     <Grid>
-        <StackPanel VerticalAlignment="Center">
+        <StackPanel VerticalAlignment="Center" Margin="0 0 0 30">
             <!-- Üdvözlő szöveg -->
             <TextBlock Text="Üdvözöllek az Admin Dashboardon!" HorizontalAlignment="Center" FontSize="24"/>
-            <!-- Felhasználónév -->
-            <TextBlock Text="{Binding CurrentUserName}" HorizontalAlignment="Center" FontSize="35" FontWeight="Bold" Foreground="DarkBlue" />
+            <!-- Teljes név -->
+            <TextBlock Text="{Binding CurrentFullName}" HorizontalAlignment="Center" FontSize="35" FontWeight="Bold" Foreground="DarkBlue" />
         </StackPanel>
     </Grid>
 </Page>

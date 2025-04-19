@@ -11,11 +11,10 @@
             <Label Content="Login" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
             <Separator></Separator>
             <Label Content="Username" Foreground="White" Padding="0 0 0 5"/>
-            <TextBox Name="txtUsername" Background="#545d6a" Foreground="White" FontSize="18" />
+            <TextBox Name="txtUsername" KeyDown="txtPassword_KeyDown" Background="#545d6a" Foreground="White" FontSize="18" />
             <Label Content="Password" Foreground="White" Padding="0 0 0 5"/>
             <PasswordBox Name="txtPassword" KeyDown="txtPassword_KeyDown" Background="#545d6a" Foreground="White" FontSize="18" />
             <Button Name="btnLogin" Click="btnLogin_Click" Content="Login" Margin="60 25" Background="#545d6e" Foreground="White" FontSize="18" />
-
         </StackPanel>
     </Border>
 

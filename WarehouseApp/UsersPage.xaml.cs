@@ -64,7 +64,7 @@ namespace WarehouseApp.Windows.Pages
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
 
-            var selectedUsers = UserList.SelectedItems.Cast<User>().ToList(); // `UserList` a ListView neve
+            var selectedUsers = UserList.SelectedItems.Cast<User>().ToList();
 
             if (selectedUsers.Count == 0)
             {
@@ -76,7 +76,8 @@ namespace WarehouseApp.Windows.Pages
             {
                 var confirm = MessageBox.Show(
                     $"Biztosan törölni szeretnéd ezt a felhasználót?\n\n" +
-                    $"Név: {user.UserName}\n" +
+                    $"Felhasználónév: {user.UserName}\n" +
+                    $"Teljes név: {user.FullName}\n" +
                     $"Email: {user.Email}\n" +
                     $"Szerepkör: {user.DisplayRole}",
                     "Törlés megerősítése",
@@ -86,22 +87,23 @@ namespace WarehouseApp.Windows.Pages
                 if (confirm != MessageBoxResult.Yes)
                     continue;
 
-                // Második visszakérdezés
                 var confirmSecond = MessageBox.Show("Biztos vagy benne?", "Végső megerősítés", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (confirmSecond != MessageBoxResult.Yes)
                     continue;
 
                 try
                 {
-                    HttpResponseMessage response = await _httpClient.DeleteAsync($"auth/DeleteUser?id={user.UserID}");
+                    HttpResponseMessage response = await _httpClient.DeleteAsync($"auth/DeleteUser/{user.UserID}");
 
                     if (response.IsSuccessStatusCode)
                     {
                         Users.Remove(user);
+                        MessageBox.Show($"Felhasználó törölve: {user.UserName}", "Siker", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
-                        MessageBox.Show($"Nem sikerült törölni: {user.UserName}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                        string errorMsg = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Nem sikerült törölni: {user.UserName}\n\nSzerver válasza: {errorMsg}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 catch (Exception ex)
@@ -111,16 +113,11 @@ namespace WarehouseApp.Windows.Pages
             }
         }
 
+
         private void AddUser_Click(object sender, RoutedEventArgs e)
         {
             var addUserWindow = new AddUserWindow();
             addUserWindow.ShowDialog(); // Megnyitja az AddUserWindow ablakot
-        }
-
-
-        private void EditUser_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Edit User gomb megnyomva!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

@@ -4,14 +4,15 @@ namespace WarehouseApp
 {
     public partial class DashboardPage : Page
     {
-        public string CurrentUserName { get; set; }
+        public string CurrentFullName { get; set; }
 
-        public DashboardPage(string userName)
+        public DashboardPage()
         {
             InitializeComponent();
-            CurrentUserName = userName;
 
-            // Ez kell, hogy a Binding működjön
+            // Settingsből olvassuk ki a bejelentkezett felhasználó teljes nevét
+            CurrentFullName = Properties.Settings.Default.FullName;
+
             DataContext = this;
         }
     }

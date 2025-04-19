@@ -88,6 +88,9 @@
     <Compile Include="EditMaterialWindow.xaml.cs">
       <DependentUpon>EditMaterialWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FirstLoginWindow.xaml.cs">
+      <DependentUpon>FirstLoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InventoryPage.xaml.cs">
       <DependentUpon>InventoryPage.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EditMaterialWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FirstLoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

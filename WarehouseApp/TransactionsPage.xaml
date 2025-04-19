@@ -22,7 +22,6 @@
                     <GridViewColumn Header="Honnan" DisplayMemberBinding="{Binding TransferFrom}"/>
                     <GridViewColumn Header="Hova" DisplayMemberBinding="{Binding TransferTo}"/>
                     <GridViewColumn Header="Mennyiség" DisplayMemberBinding="{Binding TransferedQuantity}" />
-                    <GridViewColumn Header="Felhasználó" DisplayMemberBinding="{Binding TransferBy}"/>
                     <GridViewColumn Header="Dátum" DisplayMemberBinding="{Binding TransferDate}"/>
                 </GridView>
             </ListView.View>

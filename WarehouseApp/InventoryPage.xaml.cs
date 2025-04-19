@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +14,7 @@ namespace WarehouseApp
 {
     public partial class InventoryPage : Page
     {
-        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5118/api/") };
+        private readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7055/api/") };
         public List<InventoryDisplayItem> Inventories { get; set; } = new List<InventoryDisplayItem>();
 
         public InventoryPage()
@@ -27,15 +28,20 @@ namespace WarehouseApp
             _ = LoadInventories();
         }
 
+
         private async Task LoadInventories(int? materialId = null, int? locationId = null)
         {
             try
             {
+                // 🔐 Auth token beállítása minden lekérés előtt
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", Properties.Settings.Default.AccessToken);
+
                 string query;
 
                 if (!materialId.HasValue && !locationId.HasValue)
                 {
-                    query = "Inventories"; // teljes lekérdezés
+                    query = "Inventories";
                 }
                 else
                 {
@@ -47,12 +53,13 @@ namespace WarehouseApp
                 }
 
                 var response = await _httpClient.GetAsync(query);
+                var json = await response.Content.ReadAsStringAsync();
+
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
                     var data = JsonConvert.DeserializeObject<ApiResponse<List<InventoryDisplayItem>>>(json);
 
-                    Inventories = data.Result ?? new List<InventoryDisplayItem>();
+                    Inventories = data?.Result ?? new List<InventoryDisplayItem>();
                     InventoryList.ItemsSource = Inventories;
                 }
                 else
@@ -117,7 +124,6 @@ namespace WarehouseApp
                 }
             }
         }
-
 
         private void TransferHistory_click(object sender, RoutedEventArgs e)
         {

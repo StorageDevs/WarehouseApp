@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WarehouseApp.AdminDashboard"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Admin Dashboard" MinHeight="500" MinWidth="950" Height="600" Width="950">
+        Title="Admin Dashboard" MinHeight="600" MinWidth="950" Height="600" Width="950">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -23,3 +23,40 @@
         <Frame Name="ContentFrame" Grid.Column="1" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>
+
+    
+    
+    
+    
+<!--  
+<Window x:Class="WarehouseApp.AdminDashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Admin Dashboard" MinHeight="650" MinWidth="1085" Height="650" Width="1085" ResizeMode="CanResize" SizeChanged="Window_SizeChanged">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <!- Bal oldali navigáció ->
+            <ColumnDefinition Width="*"/>
+            <!- Jobb oldali tartalom ->
+        </Grid.ColumnDefinitions>
+
+        <!- Bal oldali navigációs panel ->
+        <Viewbox Stretch="UniformToFill" Grid.Column="0">
+            <StackPanel Background="#2e3137" Width="200">
+                <Button Content="Dashboard" Click="BtnDashboard_Click" Height="50" Background="#545d6a" Foreground="White"/>
+                <Button Content="Inventory" Click="BtnInventory_Click" Height="50" Background="#545d6a" Foreground="White"/>
+                <Button Content="Materials" Click="BtnMaterials_Click" Height="50" Background="#545d6a" Foreground="White"/>
+                <Button Content="Locations" Click="BtnLocations_Click" Height="50" Background="#545d6a" Foreground="White"/>
+                <Button Content="Fiók beállítása" Click="BtnSettings_Click" Height="50" Background="#545d6a" Foreground="White"/>
+                <Button Content="Felhasználók kezelése" Click="BtnUsers_Click" Height="50" Background="#545d6a" Foreground="White"/>
+                <Frame Height="250"/>
+            </StackPanel>
+        </Viewbox>
+        <!- Jobb oldali tartalom ->
+        <Viewbox Stretch="UniformToFill" Margin="7 0 7 0" HorizontalAlignment="Left" Grid.Column="1">
+            <Frame Name="ContentFrame" Height="550" Width="750" HorizontalAlignment="Right" NavigationUIVisibility="Hidden" />
+        </Viewbox>
+    </Grid>
+</Window>
+-->

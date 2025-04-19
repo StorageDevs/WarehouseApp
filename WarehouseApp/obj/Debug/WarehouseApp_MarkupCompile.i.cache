@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Márkó dolgai\tanulás\KANDÓ\csapatmunka\github\WPF-CLONE\WarehouseApp\WarehouseApp\App.xaml
-171984974905
+181937774479
 
-27465043148
+28490475221
 19-1970639205
-AddLocation.xaml;AddMaterialWindow.xaml;AddUserWindow.xaml;AdminDashboard.xaml;DashboardPage.xaml;EditLocationWindow.xaml;EditMaterialWindow.xaml;InventoryPage.xaml;LocationsPage.xaml;Login.xaml;MaterialsPage.xaml;SettingsPage.xaml;StoreInWindow.xaml;StoreOutWindow.xaml;TransactionsPage.xaml;TransferWindow.xaml;UsersPage.xaml;
+AddLocation.xaml;AddMaterialWindow.xaml;AddUserWindow.xaml;AdminDashboard.xaml;DashboardPage.xaml;EditLocationWindow.xaml;EditMaterialWindow.xaml;FirstLoginWindow.xaml;InventoryPage.xaml;LocationsPage.xaml;Login.xaml;MaterialsPage.xaml;SettingsPage.xaml;StoreInWindow.xaml;StoreOutWindow.xaml;TransactionsPage.xaml;TransferWindow.xaml;UsersPage.xaml;
 
-False
+True
 
